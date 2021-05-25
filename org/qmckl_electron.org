@@ -26,11 +26,16 @@ up-spin and down-spin electrons, and the electron coordinates.
 #include "config.h"
 #endif
 
+#ifdef HAVE_VERIFICARLO
+#include <vfc_probes.h>
+#endif
+
 #include "chbrclf.h"
 
 int main() {
   qmckl_context context;
   context = qmckl_context_create();
+  vfc_probes probes = vfc_init_probes();
   #+end_src
 
   #+begin_src c :tangle (eval c)
@@ -861,6 +866,12 @@ assert(ee_distance[0] == 0.);
 assert(ee_distance[1] == ee_distance[elec_num]);
 
 // value of (1,0,0)
+// This is a test that will be compiled with Verificarlo
+
+#ifdef HAVE_VERIFICARLO
+vfc_probe(&probes, "qmckl_electron", "ee_distance[1]", ee_distance[1]);
+#endif
+
 assert(fabs(ee_distance[1]-7.152322512964209) < 1.e-12);
 
 // (0,0,1) == 0.
