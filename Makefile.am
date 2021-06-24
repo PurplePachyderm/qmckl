@@ -31,6 +31,13 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+
+if VFC_CI
+AM_LDFLAGS=-lvfc_probes -lvfc_probes_f -Mpreprocess -D VFC_CI
+AM_FCFLAGS=-lvfc_probes -lvfc_probes_f -Mpreprocess -D VFC_CI
+AM_CCFLAGS=-lvfc_probes -lvfc_probes_f -Mpreprocess -D VFC_CI
+endif
+
 ACLOCAL_AMFLAGS = -I m4
 
 VERSION_MAJOR   = @VERSION_MAJOR@
@@ -64,7 +71,7 @@ src_libqmckl_la_SOURCES = $(qmckl_h) $(src_qmckl_f) $(C_FILES) $(F_FILES) $(H_PR
 
 export qmckl_f qmckl_h srcdir
 
-CLEANFILES+=$(test_qmckl_f) $(src_qmckl_f) $(test_qmckl_o) $(src_qmckl_o) 
+CLEANFILES+=$(test_qmckl_f) $(src_qmckl_f) $(test_qmckl_o) $(src_qmckl_o)
 
 htmlize_el=share/doc/qmckl/html/htmlize.el
 
@@ -156,13 +163,13 @@ $(htmlize_el):
 	$(srcdir)/tools/install_htmlize.sh $(htmlize_el)
 
 tests/chbrclf.h: $(qmckl_h)
-	
+
 
 generated.mk: $(ORG_FILES)
 	$(PYTHON) $(srcdir)/tools/build_makefile.py
 
 cppcheck: cppcheck.out
-	
+
 cppcheck.out: $(qmckl_h)
 	cd src/ && \
 	cppcheck --addon=cert -q --error-exitcode=0  \
