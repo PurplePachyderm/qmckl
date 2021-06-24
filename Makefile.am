@@ -33,9 +33,7 @@
 
 
 if VFC_CI
-AM_LDFLAGS=-lvfc_probes -lvfc_probes_f -Mpreprocess -D VFC_CI
-AM_FCFLAGS=-lvfc_probes -lvfc_probes_f -Mpreprocess -D VFC_CI
-AM_CCFLAGS=-lvfc_probes -lvfc_probes_f -Mpreprocess -D VFC_CI
+AM_LDFLAGS=-lvfc_probes -lvfc_probes_f
 endif
 
 ACLOCAL_AMFLAGS = -I m4
