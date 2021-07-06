@@ -201,11 +201,24 @@ fi
 AC_ARG_ENABLE([vfc_ci],
 [  --enable-vfc_ci    Build the library with vfc_ci support],
 [case "${enableval}" in
-  yes) vfc_ci=true ;;
+  yes) vfc_ci=true &&  FCFLAGS="-D VFC_CI $FCFLAGS";;
   no)  vfc_ci=false ;;
   *) AC_MSG_ERROR([bad value ${enableval} for --enable_vfc_ci]) ;;
 esac],[vfc_ci=false])
 AM_CONDITIONAL([VFC_CI], [test x$vfc_ci = xtrue])
+
+# Enable Fortran preprocessor
+if test "$FC" = "gfortran"; then
+  AC_MSG_NOTICE(gfortran detected)
+  # Arguments order is important here
+  FCFLAGS="-cpp $FCFLAGS"
+fi
+
+if test "$FC" = "verificarlo-f"; then
+  AC_MSG_NOTICE(verificarlo-f detected)
+  # Arguments order is important here
+  FCFLAGS="-Mpreprocess $FCFLAGS"
+fi
 
 #PKG-CONFIG
 #mkl-dynamic-lp64-seq
