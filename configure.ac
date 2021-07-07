@@ -201,7 +201,7 @@ fi
 AC_ARG_ENABLE([vfc_ci],
 [  --enable-vfc_ci    Build the library with vfc_ci support],
 [case "${enableval}" in
-  yes) vfc_ci=true &&  FCFLAGS="-D VFC_CI $FCFLAGS";;
+  yes) vfc_ci=true &&  FCFLAGS="-D VFC_CI $FCFLAGS" && CFLAGS="-D VFC_CI $CFLAGS";;
   no)  vfc_ci=false ;;
   *) AC_MSG_ERROR([bad value ${enableval} for --enable_vfc_ci]) ;;
 esac],[vfc_ci=false])

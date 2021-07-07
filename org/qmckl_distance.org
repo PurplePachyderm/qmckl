@@ -302,9 +302,11 @@ integer(qmckl_exit_code) function test_qmckl_distance_sq(context) bind(C)
   use iso_c_binding
   use vfc_probes_f
 #endif
+
   implicit none
 
   integer(qmckl_context), intent(in), value :: context
+
 #ifdef VFC_CI
   type(vfc_probes) :: probes
   integer(C_INT) :: vfc_err
@@ -320,6 +322,8 @@ integer(qmckl_exit_code) function test_qmckl_distance_sq(context) bind(C)
   LDA = m
   LDB = n
   LDC = 5
+
+  print *, "Entering test 1"
 
   allocate( A(LDA,m), B(LDB,n), C(LDC,n) )
 
@@ -337,10 +341,11 @@ integer(qmckl_exit_code) function test_qmckl_distance_sq(context) bind(C)
   test_qmckl_distance_sq = &
        qmckl_distance_sq(context, 'X', 't', m, n, A, LDA, B, LDB, C, LDC)
 
-
 #ifdef VFC_CI
+  print *, "About to create probe"
   vfc_err = vfc_probe(probes, "distance"//C_NULL_CHAR, &
     "distance_sq_Xt"//C_NULL_CHAR, DBLE(test_qmckl_distance_sq))
+  print *, "Created probe"
 #else
   if (test_qmckl_distance_sq == 0) return
 #endif
@@ -1573,9 +1578,11 @@ end function qmckl_distance_rescaled_deriv_e_f
 
    #+begin_src c :comments link :tangle (eval c_test)
   assert (qmckl_context_destroy(context) == QMCKL_SUCCESS);
+
 #ifdef VFC_CI
   vfc_dump_probes(&probes);
 #endif
+
   return 0;
 }
 
