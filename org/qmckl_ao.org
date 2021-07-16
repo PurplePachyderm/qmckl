@@ -2499,9 +2499,11 @@ integer(c_int32_t) function test_qmckl_ao_power(context) bind(C)
   do j=1,n
      do i=1,LMAX(j)
         if ( X(j)**i == 0.d0 ) then
+#ifndef VFC_CI
            if ( P(i,j) /= 0.d0) return
         else
            if ( dabs(1.d0 - P(i,j) / (X(j)**i)) > epsilon ) return
+#endif
         end if
      end do
   end do
@@ -2855,7 +2857,7 @@ integer(c_int32_t) function test_qmckl_ao_polynomial_vgl(context) bind(C)
   if (n /= d) return
 #endif
 
-#ifdef VFC_CI
+#ifndef VFC_CI
   do j=1,n
      test_qmckl_ao_polynomial_vgl = QMCKL_FAILURE
      do i=1,3

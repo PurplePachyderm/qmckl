@@ -323,8 +323,6 @@ integer(qmckl_exit_code) function test_qmckl_distance_sq(context) bind(C)
   LDB = n
   LDC = 5
 
-  print *, "Entering test 1"
-
   allocate( A(LDA,m), B(LDB,n), C(LDC,n) )
 
   do j=1,m
@@ -342,10 +340,8 @@ integer(qmckl_exit_code) function test_qmckl_distance_sq(context) bind(C)
        qmckl_distance_sq(context, 'X', 't', m, n, A, LDA, B, LDB, C, LDC)
 
 #ifdef VFC_CI
-  print *, "About to create probe"
   vfc_err = vfc_probe(probes, "distance"//C_NULL_CHAR, &
     "distance_sq_Xt"//C_NULL_CHAR, DBLE(test_qmckl_distance_sq))
-  print *, "Created probe"
 #else
   if (test_qmckl_distance_sq == 0) return
 #endif
