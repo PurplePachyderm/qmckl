@@ -34,6 +34,9 @@
 
 if VFC_CI
 AM_LDFLAGS=-lvfc_probes -lvfc_probes_f
+enable_vfc_ci = "true"
+else
+enable_vfc_ci = "famse"
 endif
 
 
@@ -153,6 +156,7 @@ cat_h_verbose_0 = @echo "  HEADER   $@";
 SUFFIXES = .f90 .h .org .c _f.f90 _func.h _type.h _private_func.h _private_type.h
 
 $(qmckl_h): $(H_FUNC_FILES) $(H_TYPE_FILES)
+	$(srcdir)/tools/build_qmckl_probes.sh $(CC) $(FC) $(enable_vfc_ci)
 	$(cat_h_verbose)$(srcdir)/tools/build_qmckl_h.sh
 
 $(qmckl_f): $(FH_FUNC_FILES) $(FH_TYPE_FILES)
@@ -167,9 +171,10 @@ tests/chbrclf.h: $(qmckl_h)
 generated.mk: $(ORG_FILES)
 	$(PYTHON) $(srcdir)/tools/build_makefile.py
 
+
 cppcheck: cppcheck.out
 
-cppcheck.out: $(qmckl_h)
+cppcheck.out: $(qmckl_h) qmckl_probes
 	cd src/ && \
 	cppcheck --addon=cert -q --error-exitcode=0  \
           --enable=all --suppress="unusedStructMember"\
