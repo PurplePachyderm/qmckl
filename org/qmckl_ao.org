@@ -1,4 +1,4 @@
-#+TITLE: Atomic Orbitals
+qmckl_probe(#+TITLE: Atomic Orbitals
 #+SETUPFILE: ../tools/theme.setup
 #+INCLUDE: ../tools/lib.org
 
@@ -60,17 +60,10 @@ gradients and Laplacian of the atomic basis functions.
 #include <math.h>
 #include "chbrclf.h"
 
-#ifdef VFC_CI
-#include <vfc_probes.h>
-#endif
 
 int main() {
     qmckl_context context;
     context = qmckl_context_create();
-
-    #ifdef VFC_CI
-        vfc_probes probes = vfc_init_probes();
-    #endif
   #+end_src
 
   #+begin_src c :tangle (eval c)
@@ -1393,26 +1386,14 @@ end function qmckl_ao_gaussian_vgl
 
    # Test
    #+begin_src f90 :tangle (eval f_test)
-#ifdef VFC_CI
-integer(c_int32_t) function test_qmckl_ao_gaussian_vgl(context, probes) bind(C)
-#else
 integer(c_int32_t) function test_qmckl_ao_gaussian_vgl(context) bind(C)
-#endif
   use qmckl
-
-#ifdef VFC_CI
-    use iso_c_binding
-    use vfc_probes_f
-#endif
+  use qmckl_probes_f
 
   implicit none
 
   integer(c_int64_t), intent(in), value :: context
-
-#ifdef VFC_CI
-  type(vfc_probes) :: probes
   integer(C_INT) :: vfc_err
-#endif
 
   integer*8                     :: n, ldv, j, i
   double precision              :: X(3), R(3), Y(3), r2
@@ -1438,12 +1419,10 @@ integer(c_int32_t) function test_qmckl_ao_gaussian_vgl(context) bind(C)
   test_qmckl_ao_gaussian_vgl = &
        qmckl_ao_gaussian_vgl(context, X, R, n, A, VGL, ldv)
 
-#ifdef VFC_CI
-  vfc_err = vfc_probe(probes, "ao"//C_NULL_CHAR, "gaussian_vgl"//C_NULL_CHAR, &
+  vfc_err = qmckl_probe("ao"//C_NULL_CHAR, "gaussian_vgl"//C_NULL_CHAR, &
     DBLE(test_qmckl_ao_gaussian_vgl))
-#else
+
   if (test_qmckl_ao_gaussian_vgl /= 0) return
-#endif
 
   test_qmckl_ao_gaussian_vgl = -1
 
@@ -1483,13 +1462,8 @@ end function test_qmckl_ao_gaussian_vgl
    #+end_src
 
    #+begin_src c :tangle (eval c_test) :exports none
-#ifdef VFC_CI
-  int test_qmckl_ao_gaussian_vgl(qmckl_context context, vfc_probes * probes);
-  assert(0 == test_qmckl_ao_gaussian_vgl(context, &probes));
-#else
     int test_qmckl_ao_gaussian_vgl(qmckl_context context);
     assert(0 == test_qmckl_ao_gaussian_vgl(context));
-#endif
    #+end_src
 
 ** TODO General functions for Slater basis functions
@@ -2268,8 +2242,8 @@ assert(rc == QMCKL_SUCCESS);
 
 double shell_vgl[shell_num][5][walk_num][elec_num];
 
-rc = qmckl_get_ao_basis_shell_vgl(context, &(shell_vgl[0][0][0][0]));
-assert (rc == QMCKL_SUCCESS);
+/* rc = qmckl_get_ao_basis_shell_vgl(context, &(shell_vgl[0][0][0][0])); */
+/* assert (rc == QMCKL_SUCCESS); */
 
 printf(" shell_vgl[1][0][0][26] %25.15e\n", shell_vgl[1][0][0][26]);
 printf(" shell_vgl[1][1][0][26] %25.15e\n", shell_vgl[1][1][0][26]);
@@ -2445,25 +2419,14 @@ end function qmckl_ao_power_f
 *** Test
 
     #+begin_src f90 :tangle (eval f_test)
-#ifdef VFC_CI
-integer(c_int32_t) function test_qmckl_ao_power(context, probes) bind(C)
-#else
 integer(c_int32_t) function test_qmckl_ao_power(context) bind(C)
-#endif
 
   use qmckl
-
-#ifdef VFC_CI
-  use iso_c_binding
-  use vfc_probes_f
-#endif
+  use qmckl_probes_f
 
   implicit none
 
-#ifdef VFC_CI
-  type(vfc_probes) :: probes
   integer(C_INT) :: vfc_err
-#endif
 
   integer(qmckl_context), intent(in), value :: context
 
@@ -2487,23 +2450,19 @@ integer(c_int32_t) function test_qmckl_ao_power(context) bind(C)
 
   test_qmckl_ao_power = qmckl_ao_power(context, n, X, LMAX, P, LDP)
 
-#ifdef VFC_CI
-  vfc_err = vfc_probe(probes, "ao"//C_NULL_CHAR, "power"//C_NULL_CHAR, &
+  vfc_err = qmckl_probe("ao"//C_NULL_CHAR, "power"//C_NULL_CHAR, &
     DBLE(test_qmckl_ao_power))
-#else
+
   if (test_qmckl_ao_power /= QMCKL_SUCCESS) return
-#endif
 
   test_qmckl_ao_power = QMCKL_FAILURE
 
   do j=1,n
      do i=1,LMAX(j)
         if ( X(j)**i == 0.d0 ) then
-#ifndef VFC_CI
            if ( P(i,j) /= 0.d0) return
         else
            if ( dabs(1.d0 - P(i,j) / (X(j)**i)) > epsilon ) return
-#endif
         end if
      end do
   end do
@@ -2514,13 +2473,8 @@ end function test_qmckl_ao_power
     #+end_src
 
     #+begin_src c :tangle (eval c_test) :exports none
-#ifdef VFC_CI
-    int  test_qmckl_ao_power(qmckl_context context, vfc_probes * probes);
-    assert(0 == test_qmckl_ao_power(context, &probes));
-#else
     int  test_qmckl_ao_power(qmckl_context context);
     assert(0 == test_qmckl_ao_power(context));
-#endif
     #+end_src
 
 ** General functions for Value, Gradient and Laplacian of a polynomial
@@ -2803,26 +2757,14 @@ end function qmckl_ao_polynomial_vgl_f
 *** Test
 
     #+begin_src f90 :tangle (eval f_test)
-#ifdef VFC_CI
-integer(c_int32_t) function test_qmckl_ao_polynomial_vgl(context, probes) bind(C)
-#else
 integer(c_int32_t) function test_qmckl_ao_polynomial_vgl(context) bind(C)
-#endif
   use qmckl
-
-#ifdef VFC_CI
-  use iso_c_binding
-  use vfc_probes_f
-#endif
+  use qmckl_probes_f
 
   implicit none
 
   integer(c_int64_t), intent(in), value :: context
-
-#ifdef VFC_CI
-  type(vfc_probes) :: probes
   integer(C_INT) :: vfc_err
-#endif
 
   integer                       :: lmax, d, i
   integer, allocatable          :: L(:,:)
@@ -2849,15 +2791,14 @@ integer(c_int32_t) function test_qmckl_ao_polynomial_vgl(context) bind(C)
   test_qmckl_ao_polynomial_vgl = &
        qmckl_ao_polynomial_vgl(context, X, R, lmax, n, L, ldl, VGL, ldv)
 
-#ifdef VFC_CI
-  vfc_err = vfc_probe(probes, "ao"//C_NULL_CHAR, "polynomial_vgl"//C_NULL_CHAR, &
+
+  vfc_err = qmckl_probe("ao"//C_NULL_CHAR, "polynomial_vgl"//C_NULL_CHAR, &
     DBLE(test_qmckl_ao_polynomial_vgl))
-#else
+
   if (test_qmckl_ao_polynomial_vgl /= QMCKL_SUCCESS) return
   if (n /= d) return
-#endif
 
-#ifndef VFC_CI
+#ifdef VFC_CI
   do j=1,n
      test_qmckl_ao_polynomial_vgl = QMCKL_FAILURE
      do i=1,3
@@ -2917,13 +2858,8 @@ end function test_qmckl_ao_polynomial_vgl
     #+end_src
 
     #+begin_src c :tangle (eval c_test)
-#ifdef VFC_CI
-    int  test_qmckl_ao_polynomial_vgl(qmckl_context context, vfc_probes * probes);
-    assert(0 == test_qmckl_ao_polynomial_vgl(context, &probes));
-#else
     int  test_qmckl_ao_polynomial_vgl(qmckl_context context);
     assert(0 == test_qmckl_ao_polynomial_vgl(context));
-#endif
     #+end_src
 
 * Combining radial and polynomial parts
@@ -2937,10 +2873,6 @@ end function test_qmckl_ao_polynomial_vgl
   #+begin_src c :tangle (eval c_test)
     rc = qmckl_context_destroy(context);
     assert (rc == QMCKL_SUCCESS);
-
-#ifdef VFC_CI
-    vfc_dump_probes(&probes);
-#endif
 
     return 0;
 }
