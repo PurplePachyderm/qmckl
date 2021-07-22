@@ -2,11 +2,18 @@
 
 #ifdef VFC_CI
 #include <vfc_probes.h>
-vfc_probes * probes = NULL;
+vfc_probes probes;
 #endif
 
 
 // Wrappers to Verificarlo functions
+
+#ifdef VFC_CI
+void qmckl_init_probes() __attribute__((constructor)){
+	probes = vfc_init_probes();
+}
+#endif
+
 
 bool qmckl_probe(
     char * testName,
@@ -15,12 +22,9 @@ bool qmckl_probe(
     double expectedValue
 ) {
 #ifdef VFC_CI
-    if(probes == NULL) {
-        *probes = vfc_init_probes();
-    }
-    return vfc_probe(probes, testName, varName, value);
+    return vfc_probe(&probes, testName, varName, value);
 #else
-    return value == expectedValue;
+	return false;
 #endif
 }
 
@@ -33,17 +37,14 @@ bool qmckl_probe_check(
     double accuracyTarget
 ) {
 #ifdef VFC_CI
-    if(probes == NULL) {
-        *probes = vfc_init_probes();
-    }
-    return vfc_probe_check(probes, testName, varName, value, accuracyTarget);
+    return vfc_probe_check(&probes, testName, varName, value, accuracyTarget);
 #else
-    return value == expectedValue;
+    return !(value == expectedValue);
 #endif
 }
 
 
-bool qmckl_probe_check_relative(
+bool qmckl_probe_check_relative (
     char * testName,
     char * varName,
     double value,
@@ -51,18 +52,16 @@ bool qmckl_probe_check_relative(
     double accuracyTarget
 ) {
 #ifdef VFC_CI
-    if(probes == NULL) {
-        *probes = vfc_init_probes();
-    }
-    return vfc_probe_check_relative(probes, testName, varName, value, accuracyTarget);
+    return vfc_probe_check_relative(&probes, testName, varName, value, accuracyTarget);
 #else
-    return value == expectedValue;
+    return !(value <= expectedValue + accuracyTarget || value >= expectedValue - accuracyTarget);
 #endif
 }
 
-void qmckl_dump_probes() {
+
+void qmckl_dump_probes() __attribute__((destructor)){
 #ifdef VFC_CI
-    vfc_dump_probes(probes);
+    vfc_dump_probes(&probes);
 #endif
 }
 

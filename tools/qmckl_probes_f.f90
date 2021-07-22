@@ -1,7 +1,7 @@
 module qmckl_probes_f
     interface
         logical(c_bool) function qmckl_probe &
-             (testName, varName, val, expectedValue) &
+             (testName, varName, val) &
              bind(C, name="qmckl_probe_f")
 
             use, intrinsic :: iso_c_binding
@@ -12,7 +12,6 @@ module qmckl_probes_f
             character(C_CHAR), dimension(*) :: varName
 
             real(C_DOUBLE) :: val
-            real(C_DOUBLE) :: expectedValue
         end function qmckl_probe
 
         logical(c_bool) function qmckl_probe_check &

@@ -1,7 +1,16 @@
 #include <stdbool.h>
 
 
+#ifdef VFC_CI
+#include <vfc_probes.h>
+extern vfc_probes * probes;
+#endif
+
 // Wrappers to Verificarlo functions
+
+#ifdef VFC_CI
+void qmckl_init_probes() __attribute__((constructor));
+#endif
 
 bool qmckl_probe(
     char * testName,
@@ -18,7 +27,6 @@ bool qmckl_probe_check(
     double accuracyTarget
 );
 
-
 bool qmckl_probe_check_relative(
     char * testName,
     char * varName,
@@ -27,7 +35,9 @@ bool qmckl_probe_check_relative(
     double accuracyTarget
 );
 
-void qmckl_dump_probes();
+#ifdef VFC_CI
+void qmckl_dump_probes() __attribute__((destructor));
+#endif
 
 
 // Fortran wrappers
