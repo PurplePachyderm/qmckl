@@ -15,8 +15,7 @@ void qmckl_init_probes() __attribute__((constructor));
 bool qmckl_probe(
     char * testName,
     char * varName,
-    double value,
-    double expectedValue
+    double value
 );
 
 bool qmckl_probe_check(
@@ -45,8 +44,7 @@ void qmckl_dump_probes() __attribute__((destructor));
 bool qmckl_probe_f(
     char * testName,
     char * varName,
-    double * value,
-    double * expectedValue
+    double * value
 );
 
 bool qmckl_probe_check_f(

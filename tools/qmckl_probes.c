@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 
 #ifdef VFC_CI
 #include <vfc_probes.h>
@@ -9,7 +10,7 @@ vfc_probes probes;
 // Wrappers to Verificarlo functions
 
 #ifdef VFC_CI
-void qmckl_init_probes() __attribute__((constructor)){
+void __attribute__((constructor)) qmckl_init_probes(){
 	probes = vfc_init_probes();
 }
 #endif
@@ -18,8 +19,7 @@ void qmckl_init_probes() __attribute__((constructor)){
 bool qmckl_probe(
     char * testName,
     char * varName,
-    double value,
-    double expectedValue
+    double value
 ) {
 #ifdef VFC_CI
     return vfc_probe(&probes, testName, varName, value);
@@ -59,7 +59,7 @@ bool qmckl_probe_check_relative (
 }
 
 
-void qmckl_dump_probes() __attribute__((destructor)){
+void __attribute__((destructor)) qmckl_dump_probes(){
 #ifdef VFC_CI
     vfc_dump_probes(&probes);
 #endif
@@ -71,10 +71,9 @@ void qmckl_dump_probes() __attribute__((destructor)){
 bool qmckl_probe_f(
     char * testName,
     char * varName,
-    double * value,
-    double * expectedValue
+    double * value
 ) {
-    return qmckl_probe(testName, varName, *value, *expectedValue);
+    return qmckl_probe(testName, varName, *value);
 }
 
 

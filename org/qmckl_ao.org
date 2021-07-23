@@ -1393,7 +1393,7 @@ integer(c_int32_t) function test_qmckl_ao_gaussian_vgl(context) bind(C)
   implicit none
 
   integer(c_int64_t), intent(in), value :: context
-  integer(C_INT) :: vfc_err
+  logical(C_BOOL) :: vfc_err
 
   integer*8                     :: n, ldv, j, i
   double precision              :: X(3), R(3), Y(3), r2
@@ -2242,8 +2242,8 @@ assert(rc == QMCKL_SUCCESS);
 
 double shell_vgl[shell_num][5][walk_num][elec_num];
 
-/* rc = qmckl_get_ao_basis_shell_vgl(context, &(shell_vgl[0][0][0][0])); */
-/* assert (rc == QMCKL_SUCCESS); */
+rc = qmckl_get_ao_basis_shell_vgl(context, &(shell_vgl[0][0][0][0]));
+assert (rc == QMCKL_SUCCESS);
 
 printf(" shell_vgl[1][0][0][26] %25.15e\n", shell_vgl[1][0][0][26]);
 printf(" shell_vgl[1][1][0][26] %25.15e\n", shell_vgl[1][1][0][26]);
@@ -2426,7 +2426,7 @@ integer(c_int32_t) function test_qmckl_ao_power(context) bind(C)
 
   implicit none
 
-  integer(C_INT) :: vfc_err
+  logical(C_BOOL) :: vfc_err
 
   integer(qmckl_context), intent(in), value :: context
 
@@ -2764,7 +2764,7 @@ integer(c_int32_t) function test_qmckl_ao_polynomial_vgl(context) bind(C)
   implicit none
 
   integer(c_int64_t), intent(in), value :: context
-  integer(C_INT) :: vfc_err
+  logical(C_BOOL) :: vfc_err
 
   integer                       :: lmax, d, i
   integer, allocatable          :: L(:,:)
