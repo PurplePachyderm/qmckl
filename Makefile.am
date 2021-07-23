@@ -31,11 +31,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-
 if VFC_CI
 AM_LDFLAGS=-lvfc_probes -lvfc_probes_f
 endif
-
 
 
 ACLOCAL_AMFLAGS = -I m4
