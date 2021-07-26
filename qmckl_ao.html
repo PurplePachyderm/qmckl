@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-06-23 Wed 07:11 -->
+<!-- 2021-07-26 Mon 05:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Atomic Orbitals</title>
@@ -333,69 +333,81 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgaa2e6a1">1. Context</a>
+<li><a href="#org2c0209c">1. Context</a>
 <ul>
-<li><a href="#orgc161e2e">1.1. Data structure</a></li>
-<li><a href="#org0c389e4">1.2. Access functions</a></li>
-<li><a href="#org3125122">1.3. Initialization functions</a></li>
-<li><a href="#org951571a">1.4. <span class="todo TODO">TODO</span> Fortran interfaces</a></li>
+<li><a href="#org0cc42eb">1.1. Data structure</a></li>
+<li><a href="#org09238fc">1.2. Access functions</a></li>
+<li><a href="#org1154b40">1.3. Initialization functions</a></li>
+<li><a href="#org55f966e">1.4. Fortran interfaces</a></li>
 </ul>
 </li>
-<li><a href="#org12635a6">2. Radial part</a>
+<li><a href="#org4f3e94e">2. Radial part</a>
 <ul>
-<li><a href="#org8e3f471">2.1. General functions for Gaussian basis functions</a></li>
-<li><a href="#org2a3cb8b">2.2. <span class="todo TODO">TODO</span> General functions for Slater basis functions</a></li>
-<li><a href="#orgde1f8cf">2.3. <span class="todo TODO">TODO</span> General functions for Radial functions on a grid</a></li>
-<li><a href="#org3ef4c7f">2.4. <span class="done DONE">DONE</span> Computation of primitives</a>
+<li><a href="#orgf436734">2.1. <span class="todo TODO">TODO</span> Helper functions to accelerate calculations</a></li>
+<li><a href="#org501ced7">2.2. General functions for Gaussian basis functions</a></li>
+<li><a href="#org2068673">2.3. <span class="todo TODO">TODO</span> General functions for Slater basis functions</a></li>
+<li><a href="#org0e63b30">2.4. <span class="todo TODO">TODO</span> General functions for Radial functions on a grid</a></li>
+<li><a href="#org40ffdca">2.5. Computation of primitives</a>
 <ul>
-<li><a href="#orgc61ce63">2.4.1. Get</a></li>
-<li><a href="#org7e29b59">2.4.2. Provide</a></li>
-<li><a href="#org0f910cc">2.4.3. Compute</a></li>
-<li><a href="#org68bd1aa">2.4.4. Test</a></li>
-<li><a href="#orgee24714">2.4.5. Ideas for improvement</a></li>
+<li><a href="#orgdd083a0">2.5.1. Get</a></li>
+<li><a href="#org78eeb89">2.5.2. Provide</a></li>
+<li><a href="#org912a7f5">2.5.3. Compute</a></li>
+<li><a href="#orge250641">2.5.4. Test</a></li>
+<li><a href="#orgd38e33e">2.5.5. Ideas for improvement</a></li>
 </ul>
 </li>
-<li><a href="#org258c301">2.5. Computation of shells</a>
+<li><a href="#orge7f8e29">2.6. Computation of shells</a>
 <ul>
-<li><a href="#org526e87a">2.5.1. Get</a></li>
-<li><a href="#orge1b512f">2.5.2. Provide</a></li>
-<li><a href="#orgde2c312">2.5.3. Compute</a></li>
-<li><a href="#org25c3c3b">2.5.4. Test</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org975ed4c">3. Polynomial part</a>
-<ul>
-<li><a href="#orgdaf24fa">3.1. General functions for Powers of \(x-X_i\)</a>
-<ul>
-<li><a href="#orgbd46014">3.1.1. Requirements</a></li>
-<li><a href="#orgf4f8f8a">3.1.2. C Header</a></li>
-<li><a href="#org78f713f">3.1.3. Source</a></li>
-<li><a href="#org8069888">3.1.4. C interface</a></li>
-<li><a href="#org0ccd90f">3.1.5. Fortran interface</a></li>
-<li><a href="#orgff8b36a">3.1.6. Test</a></li>
-</ul>
-</li>
-<li><a href="#org8fa5cf0">3.2. General functions for Value, Gradient and Laplacian of a polynomial</a>
-<ul>
-<li><a href="#org4787db6">3.2.1. Requirements</a></li>
-<li><a href="#org73d3e12">3.2.2. C Header</a></li>
-<li><a href="#org7af979d">3.2.3. Source</a></li>
-<li><a href="#org4ff8f76">3.2.4. C interface</a></li>
-<li><a href="#org1f99233">3.2.5. Fortran interface</a></li>
-<li><a href="#org912e628">3.2.6. Test</a></li>
+<li><a href="#org90a24fc">2.6.1. Get</a></li>
+<li><a href="#orgf18dc29">2.6.2. Provide</a></li>
+<li><a href="#orgeec43a8">2.6.3. Compute</a></li>
+<li><a href="#orgf616c9b">2.6.4. Test</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org4a577ae">4. Combining radial and polynomial parts</a></li>
+<li><a href="#org9234d15">3. Polynomial part</a>
+<ul>
+<li><a href="#org080b51d">3.1. General functions for Powers of \(x-X_i\)</a>
+<ul>
+<li><a href="#orga875962">3.1.1. Requirements</a></li>
+<li><a href="#orga0c24a9">3.1.2. C Header</a></li>
+<li><a href="#org7152907">3.1.3. Source</a></li>
+<li><a href="#org4919eef">3.1.4. C interface</a></li>
+<li><a href="#org743cc79">3.1.5. Fortran interface</a></li>
+<li><a href="#orga2b8eb6">3.1.6. Test</a></li>
+</ul>
+</li>
+<li><a href="#orga21ce0d">3.2. General functions for Value, Gradient and Laplacian of a polynomial</a>
+<ul>
+<li><a href="#org3b8d433">3.2.1. Requirements</a></li>
+<li><a href="#org3f9ac93">3.2.2. C Header</a></li>
+<li><a href="#orgf7986f5">3.2.3. Source</a></li>
+<li><a href="#org073c4ba">3.2.4. C interface</a></li>
+<li><a href="#org0229bf0">3.2.5. Fortran interface</a></li>
+<li><a href="#org63d2c54">3.2.6. Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3b5734a">4. Combining radial and polynomial parts</a>
+<ul>
+<li>
+<ul>
+<li><a href="#org7d5622c">4.0.1. Get</a></li>
+<li><a href="#org792575c">4.0.2. Provide</a></li>
+<li><a href="#org18848cd">4.0.3. Compute</a></li>
+<li><a href="#org65253c3">4.0.4. Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgaa2e6a1" class="outline-2">
-<h2 id="orgaa2e6a1"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-org2c0209c" class="outline-2">
+<h2 id="org2c0209c"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following arrays are stored in the context:
@@ -434,6 +446,12 @@ The following arrays are stored in the context:
 <td class="org-left"><code>nucleus_index</code></td>
 <td class="org-left"><code>[nucl_num]</code></td>
 <td class="org-left">Index of the first shell of each nucleus</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>nucleus_shell_num</code></td>
+<td class="org-left"><code>[nucl_num]</code></td>
+<td class="org-left">Number of shells per nucleus</td>
 </tr>
 
 <tr>
@@ -477,6 +495,30 @@ The following arrays are stored in the context:
 <td class="org-left"><code>[prim_num]</code></td>
 <td class="org-left">Normalization factors of the primtives</td>
 </tr>
+
+<tr>
+<td class="org-left"><code>ao_num</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Number of AOs</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ao_cartesian</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">If true, use polynomials. Otherwise, use spherical harmonics</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ao_factor</code></td>
+<td class="org-left"><code>[ao_num]</code></td>
+<td class="org-left">Normalization factor of the AO</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ao_shell</code></td>
+<td class="org-left"><code>[ao_num]</code></td>
+<td class="org-left">For each AO, specify to which shell it belongs</td>
+</tr>
 </tbody>
 </table>
 
@@ -496,35 +538,66 @@ Computed data:
 </colgroup>
 <thead>
 <tr>
+<th scope="col" class="org-left"><code>coefficient_normalized</code></th>
+<th scope="col" class="org-left"><code>[prim_num]</code></th>
+<th scope="col" class="org-left">Normalized primitive coefficients</th>
+</tr>
+
+<tr>
 <th scope="col" class="org-left"><code>nucleus_prim_index</code></th>
 <th scope="col" class="org-left"><code>[nucl_num]</code></th>
 <th scope="col" class="org-left">Index of the first primitive for each nucleus</th>
 </tr>
 
 <tr>
-<th scope="col" class="org-left"><code>primitive_vgl</code></th>
-<th scope="col" class="org-left"><code>[prim_num][5][walk_num][elec_num]</code></th>
-<th scope="col" class="org-left">Value, gradients, Laplacian of the primitives at electron positions</th>
+<th scope="col" class="org-left"><code>nucleus_max_ang_mom</code></th>
+<th scope="col" class="org-left"><code>[nucl_num]</code></th>
+<th scope="col" class="org-left">Maximum angular momentum for each nucleus</th>
 </tr>
 
 <tr>
-<th scope="col" class="org-left"><code>primitive_vgl_date</code></th>
-<th scope="col" class="org-left"><code>uint64_t</code></th>
-<th scope="col" class="org-left">Late modification date of Value, gradients, Laplacian of the primitives at electron positions</th>
-</tr>
-
-<tr>
-<th scope="col" class="org-left"><code>shell_vgl</code></th>
-<th scope="col" class="org-left"><code>[prim_num][5][walk_num][elec_num]</code></th>
-<th scope="col" class="org-left">Value, gradients, Laplacian of the primitives at electron positions</th>
-</tr>
-
-<tr>
-<th scope="col" class="org-left"><code>shell_vgl_date</code></th>
-<th scope="col" class="org-left"><code>uint64_t</code></th>
-<th scope="col" class="org-left">Late modification date of Value, gradients, Laplacian of the shells at electron positions</th>
+<th scope="col" class="org-left"><code>nucleus_range</code></th>
+<th scope="col" class="org-left"><code>[nucl_num]</code></th>
+<th scope="col" class="org-left">Distance beyond which all the AOs are zero</th>
 </tr>
 </thead>
+<tbody>
+<tr>
+<td class="org-left"><code>primitive_vgl</code></td>
+<td class="org-left"><code>[5][walk_num][elec_num][prim_num]</code></td>
+<td class="org-left">Value, gradients, Laplacian of the primitives at electron positions</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>primitive_vgl_date</code></td>
+<td class="org-left"><code>uint64_t</code></td>
+<td class="org-left">Late modification date of Value, gradients, Laplacian of the primitives at electron positions</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>shell_vgl</code></td>
+<td class="org-left"><code>[5][walk_num][elec_num][shell_num]</code></td>
+<td class="org-left">Value, gradients, Laplacian of the primitives at electron positions</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>shell_vgl_date</code></td>
+<td class="org-left"><code>uint64_t</code></td>
+<td class="org-left">Late modification date of Value, gradients, Laplacian of the AOs at electron positions</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ao_vgl</code></td>
+<td class="org-left"><code>[5][walk_num][elec_num][ao_num]</code></td>
+<td class="org-left">Value, gradients, Laplacian of the primitives at electron positions</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ao_vgl_date</code></td>
+<td class="org-left"><code>uint64_t</code></td>
+<td class="org-left">Late modification date of Value, gradients, Laplacian of the AOs at electron positions</td>
+</tr>
+</tbody>
 <tbody>
 <tr>
 <td class="org-left"><code>nucl_shell_index</code></td>
@@ -548,12 +621,6 @@ Computed data:
 <td class="org-left"><code>prim_factor_sorted</code></td>
 <td class="org-left"><code>[prim_num]</code></td>
 <td class="org-left">Normalization factors of the sorted primtives</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>nuclear_radius</code></td>
-<td class="org-left"><code>[nucl_num]</code></td>
-<td class="org-left">Distance beyond which all the AOs are zero</td>
 </tr>
 </tbody>
 </table>
@@ -590,6 +657,7 @@ we have:
 type = 'G'
 shell_num = 12
 prim_num = 20
+ao_num = 38
 nucleus_index = [0 , 6]
 shell_ang_mom = [0, 0, 0, 1, 1, 2, 0, 0, 0, 1, 1, 2]
 shell_factor  = [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.]
@@ -611,29 +679,39 @@ prim_factor = [ 1.0006253235944540e+01, 2.4169531573445120e+00, 7.96109248497664
 </pre>
 </div>
 
-<div id="outline-container-orgc161e2e" class="outline-3">
-<h3 id="orgc161e2e"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-org0cc42eb" class="outline-3">
+<h3 id="org0cc42eb"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_ao_basis_struct</span> {
-  <span style="color: #228b22;">int32_t</span>   <span style="color: #a0522d;">uninitialized</span>;
   <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">shell_num</span>;
   <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">prim_num</span>;
+  <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">ao_num</span>;
   <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">nucleus_index</span>;
   <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">nucleus_shell_num</span>;
   <span style="color: #228b22;">int32_t</span> * <span style="color: #a0522d;">shell_ang_mom</span>;
   <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">shell_prim_num</span>;
-  <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">nucleus_prim_index</span>;
   <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">shell_prim_index</span>;
   <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">shell_factor</span>;
-  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">exponent</span>    ;
-  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span> ;
-  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">prim_factor</span> ;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">exponent</span>;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">prim_factor</span>;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">ao_factor</span>;
+
+  <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">nucleus_prim_index</span>;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient_normalized</span>;
+  <span style="color: #228b22;">int32_t</span> * <span style="color: #a0522d;">nucleus_max_ang_mom</span>;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">nucleus_range</span>;
   <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">primitive_vgl</span>;
   <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">primitive_vgl_date</span>;
   <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">shell_vgl</span>;
   <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">shell_vgl_date</span>;
+  <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">ao_vgl</span>;
+  <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">ao_vgl_date</span>;
+
+  <span style="color: #228b22;">int32_t</span>   <span style="color: #a0522d;">uninitialized</span>;
   <span style="color: #228b22;">bool</span>      <span style="color: #a0522d;">provided</span>;
+  <span style="color: #228b22;">bool</span>      <span style="color: #a0522d;">ao_cartesian</span>;
   <span style="color: #228b22;">char</span>      <span style="color: #a0522d;">type</span>;
 } <span style="color: #228b22;">qmckl_ao_basis_struct</span>;
 </pre>
@@ -663,11 +741,10 @@ this mechanism.
   <span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ctx</span> = (<span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a020f0;">const</span>) context;
   assert (ctx != <span style="color: #008b8b;">NULL</span>);
 
-  ctx-&gt;ao_basis.uninitialized = (1 &lt;&lt; 12) - 1;
+  ctx-&gt;ao_basis.uninitialized = (1 &lt;&lt; 14) - 1;
 
   /* <span style="color: #b22222;">Default values </span>*/
-  /* <span style="color: #b22222;">ctx-&gt;ao_basis.</span>
-<span style="color: #b22222;">     </span>*/
+  ctx-&gt;ao_basis.ao_cartesian = <span style="color: #008b8b;">true</span>;
 
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
 }
@@ -676,8 +753,8 @@ this mechanism.
 </div>
 </div>
 
-<div id="outline-container-org0c389e4" class="outline-3">
-<h3 id="org0c389e4"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-org09238fc" class="outline-3">
+<h3 id="org09238fc"><span class="section-number-3">1.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 When all the data for the AOs have been provided, the following
@@ -691,8 +768,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org3125122" class="outline-3">
-<h3 id="org3125122"><span class="section-number-3">1.3</span> Initialization functions</h3>
+<div id="outline-container-org1154b40" class="outline-3">
+<h3 id="org1154b40"><span class="section-number-3">1.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 To set the basis set, all the following functions need to be
@@ -703,6 +780,7 @@ called.
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_type</span>             (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">char</span>      <span style="color: #a0522d;">t</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_shell_num</span>        (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">shell_num</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_prim_num</span>         (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">prim_num</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_ao_num</span>           (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">ao_num</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index</span>    (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">nucleus_index</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">nucleus_shell_num</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom</span>    (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span> * <span style="color: #a0522d;">shell_ang_mom</span>);
@@ -712,6 +790,8 @@ called.
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_exponent</span>         (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">exponent</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_coefficient</span>      (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>);
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor</span>      (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">prim_factor</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor</span>        (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">ao_factor</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_ao_basis_cartesian</span>        (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">bool</span>      <span style="color: #a0522d;">cartesian</span>);
 </pre>
 </div>
 
@@ -727,18 +807,21 @@ the context.
 </div>
 </div>
 
-<div id="outline-container-org951571a" class="outline-3">
-<h3 id="org951571a"><span class="section-number-3">1.4</span> <span class="todo TODO">TODO</span> Fortran interfaces</h3>
+<div id="outline-container-org55f966e" class="outline-3">
+<h3 id="org55f966e"><span class="section-number-3">1.4</span> Fortran interfaces</h3>
 </div>
 </div>
 
-<div id="outline-container-org12635a6" class="outline-2">
-<h2 id="org12635a6"><span class="section-number-2">2</span> Radial part</h2>
+<div id="outline-container-org4f3e94e" class="outline-2">
+<h2 id="org4f3e94e"><span class="section-number-2">2</span> Radial part</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org8e3f471" class="outline-3">
-<h3 id="org8e3f471"><span class="section-number-3">2.1</span> General functions for Gaussian basis functions</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgf436734" class="outline-3">
+<h3 id="orgf436734"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Helper functions to accelerate calculations</h3>
+</div>
+<div id="outline-container-org501ced7" class="outline-3">
+<h3 id="org501ced7"><span class="section-number-3">2.2</span> General functions for Gaussian basis functions</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
 <code>qmckl_ao_gaussian_vgl</code> computes the values, gradients and
 Laplacians at a given point of <code>n</code> Gaussian functions centered at
@@ -901,10 +984,14 @@ Requirements
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>) <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">test_qmckl_ao_gaussian_vgl</span>(context) <span style="color: #a020f0;">bind</span>(C)
+
   <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl</span>
+  <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl_probes_f</span>
+
   <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
 
   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int64_t</span>), <span style="color: #a020f0;">intent</span>(in), <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+  <span style="color: #228b22;">logical</span>(<span style="color: #008b8b;">C_BOOL</span>) ::<span style="color: #a0522d;"> vfc_err</span>
 
   <span style="color: #228b22;">integer</span>*8                     ::<span style="color: #a0522d;"> n, ldv, j, i</span>
   <span style="color: #228b22;">double precision</span>              ::<span style="color: #a0522d;"> X(3), R(3), Y(3), r2</span>
@@ -929,10 +1016,28 @@ Requirements
 
   test_qmckl_ao_gaussian_vgl = <span style="color: #a020f0;">&amp;</span>
        qmckl_ao_gaussian_vgl(context, X, R, n, A, VGL, ldv)
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"gaussian_vgl_2_1"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(2,1)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"gaussian_vgl_2_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(2,2)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"gaussian_vgl_2_3"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(2,3)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"gaussian_vgl_2_4"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(2,4)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"gaussian_vgl_2_5"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(2,5)))
+
+
   <span style="color: #a020f0;">if</span> (test_qmckl_ao_gaussian_vgl /= 0) <span style="color: #a020f0;">return</span>
 
   test_qmckl_ao_gaussian_vgl = -1
 
+<span style="color: #483d8b;">#ifndef</span> VFC_CI
   <span style="color: #a020f0;">do</span> i=1,n
      test_qmckl_ao_gaussian_vgl = -11
      <span style="color: #a020f0;">if</span> (dabs(1.d0 - VGL(i,1) / (<span style="color: #a020f0;">&amp;</span>
@@ -959,6 +1064,7 @@ Requirements
           A(i) * (4.d0*r2*A(i) - 6.d0) * dexp(-A(i) * r2) <span style="color: #a020f0;">&amp;</span>
           )) &gt; epsilon ) <span style="color: #a020f0;">return</span>
   <span style="color: #a020f0;">end do</span>
+<span style="color: #483d8b;">#endif</span>
 
   test_qmckl_ao_gaussian_vgl = 0
 
@@ -969,19 +1075,19 @@ Requirements
 </div>
 </div>
 
-<div id="outline-container-org2a3cb8b" class="outline-3">
-<h3 id="org2a3cb8b"><span class="section-number-3">2.2</span> <span class="todo TODO">TODO</span> General functions for Slater basis functions</h3>
+<div id="outline-container-org2068673" class="outline-3">
+<h3 id="org2068673"><span class="section-number-3">2.3</span> <span class="todo TODO">TODO</span> General functions for Slater basis functions</h3>
 </div>
-<div id="outline-container-orgde1f8cf" class="outline-3">
-<h3 id="orgde1f8cf"><span class="section-number-3">2.3</span> <span class="todo TODO">TODO</span> General functions for Radial functions on a grid</h3>
+<div id="outline-container-org0e63b30" class="outline-3">
+<h3 id="org0e63b30"><span class="section-number-3">2.4</span> <span class="todo TODO">TODO</span> General functions for Radial functions on a grid</h3>
 </div>
-<div id="outline-container-org3ef4c7f" class="outline-3">
-<h3 id="org3ef4c7f"><span class="section-number-3">2.4</span> <span class="done DONE">DONE</span> Computation of primitives</h3>
-<div class="outline-text-3" id="text-2-4">
+<div id="outline-container-org40ffdca" class="outline-3">
+<h3 id="org40ffdca"><span class="section-number-3">2.5</span> Computation of primitives</h3>
+<div class="outline-text-3" id="text-2-5">
 </div>
-<div id="outline-container-orgc61ce63" class="outline-4">
-<h4 id="orgc61ce63"><span class="section-number-4">2.4.1</span> Get</h4>
-<div class="outline-text-4" id="text-2-4-1">
+<div id="outline-container-orgdd083a0" class="outline-4">
+<h4 id="orgdd083a0"><span class="section-number-4">2.5.1</span> Get</h4>
+<div class="outline-text-4" id="text-2-5-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_ao_basis_primitive_vgl</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">primitive_vgl</span>);
 </pre>
@@ -989,14 +1095,14 @@ Requirements
 </div>
 </div>
 
-<div id="outline-container-org7e29b59" class="outline-4">
-<h4 id="org7e29b59"><span class="section-number-4">2.4.2</span> Provide</h4>
+<div id="outline-container-org78eeb89" class="outline-4">
+<h4 id="org78eeb89"><span class="section-number-4">2.5.2</span> Provide</h4>
 </div>
 
-<div id="outline-container-org0f910cc" class="outline-4">
-<h4 id="org0f910cc"><span class="section-number-4">2.4.3</span> Compute</h4>
-<div class="outline-text-4" id="text-2-4-3">
-<table id="orgaddafbc" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<div id="outline-container-org912a7f5" class="outline-4">
+<h4 id="org912a7f5"><span class="section-number-4">2.5.3</span> Compute</h4>
+<div class="outline-text-4" id="text-2-5-3">
+<table id="org226c0c3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1074,7 +1180,7 @@ Requirements
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">primitive<sub>vgl</sub>[prim<sub>num</sub>][5][walk<sub>num</sub>][elec<sub>num</sub>]</td>
+<td class="org-left">primitive<sub>vgl</sub>[5][walk<sub>num</sub>][elec<sub>num</sub>][prim<sub>num</sub>]</td>
 <td class="org-left">out</td>
 <td class="org-left">Value, gradients and Laplacian of the primitives</td>
 </tr>
@@ -1097,7 +1203,7 @@ Requirements
   <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> elec_coord(elec_num,3,walk_num)</span>
   <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucl_coord(nucl_num,3)</span>
   <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> expo(prim_num)</span>
-  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(out) ::<span style="color: #a0522d;"> primitive_vgl(elec_num,walk_num,5,prim_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(out) ::<span style="color: #a0522d;"> primitive_vgl(prim_num,elec_num,walk_num,5)</span>
 
   <span style="color: #228b22;">integer</span>*8 ::<span style="color: #a0522d;"> inucl, iprim, iwalk, ielec</span>
   <span style="color: #228b22;">double precision</span> ::<span style="color: #a0522d;"> x, y, z, two_a, ar2, r2, v, cutoff</span>
@@ -1112,9 +1218,9 @@ Requirements
      <span style="color: #a020f0;">do</span> iprim = nucleus_prim_index(inucl)+1, nucleus_prim_index(inucl+1)
         <span style="color: #a020f0;">do</span> iwalk = 1, walk_num
            <span style="color: #a020f0;">do</span> ielec = 1, elec_num
-              x = elec_coord(ielec,1,iwalk) - nucl_coord(inucl,1) 
-              y = elec_coord(ielec,2,iwalk) - nucl_coord(inucl,2) 
-              z = elec_coord(ielec,3,iwalk) - nucl_coord(inucl,3) 
+              x = elec_coord(ielec,1,iwalk) - nucl_coord(inucl,1)
+              y = elec_coord(ielec,2,iwalk) - nucl_coord(inucl,2)
+              z = elec_coord(ielec,3,iwalk) - nucl_coord(inucl,3)
 
               r2 = x*x + y*y + z*z
               ar2 = expo(iprim)*r2
@@ -1123,11 +1229,11 @@ Requirements
               v = dexp(-ar2)
               two_a = -2.d0 * expo(iprim) * v
 
-              primitive_vgl(ielec, iwalk, 1, iprim) = v
-              primitive_vgl(ielec, iwalk, 2, iprim) = two_a * x 
-              primitive_vgl(ielec, iwalk, 3, iprim) = two_a * y
-              primitive_vgl(ielec, iwalk, 4, iprim) = two_a * z
-              primitive_vgl(ielec, iwalk, 5, iprim) = two_a * (3.d0 - 2.d0*ar2)
+              primitive_vgl(iprim, ielec, iwalk, 1) = v
+              primitive_vgl(iprim, ielec, iwalk, 2) = two_a * x
+              primitive_vgl(iprim, ielec, iwalk, 3) = two_a * y
+              primitive_vgl(iprim, ielec, iwalk, 4) = two_a * z
+              primitive_vgl(iprim, ielec, iwalk, 5) = two_a * (3.d0 - 2.d0*ar2)
 
            <span style="color: #a020f0;">end do</span>
         <span style="color: #a020f0;">end do</span>
@@ -1140,13 +1246,13 @@ Requirements
 </div>
 </div>
 
-<div id="outline-container-org68bd1aa" class="outline-4">
-<h4 id="org68bd1aa"><span class="section-number-4">2.4.4</span> Test</h4>
+<div id="outline-container-orge250641" class="outline-4">
+<h4 id="orge250641"><span class="section-number-4">2.5.4</span> Test</h4>
 </div>
 
-<div id="outline-container-orgee24714" class="outline-4">
-<h4 id="orgee24714"><span class="section-number-4">2.4.5</span> Ideas for improvement</h4>
-<div class="outline-text-4" id="text-2-4-5">
+<div id="outline-container-orgd38e33e" class="outline-4">
+<h4 id="orgd38e33e"><span class="section-number-4">2.5.5</span> Ideas for improvement</h4>
+<div class="outline-text-4" id="text-2-5-5">
 <div class="org-src-container">
 <pre class="src src-c">// <span style="color: #b22222;">m : walkers</span>
 // <span style="color: #b22222;">j : electrons</span>
@@ -1182,13 +1288,13 @@ k=0;
 </div>
 </div>
 
-<div id="outline-container-org258c301" class="outline-3">
-<h3 id="org258c301"><span class="section-number-3">2.5</span> Computation of shells</h3>
-<div class="outline-text-3" id="text-2-5">
+<div id="outline-container-orge7f8e29" class="outline-3">
+<h3 id="orge7f8e29"><span class="section-number-3">2.6</span> Computation of shells</h3>
+<div class="outline-text-3" id="text-2-6">
 </div>
-<div id="outline-container-org526e87a" class="outline-4">
-<h4 id="org526e87a"><span class="section-number-4">2.5.1</span> Get</h4>
-<div class="outline-text-4" id="text-2-5-1">
+<div id="outline-container-org90a24fc" class="outline-4">
+<h4 id="org90a24fc"><span class="section-number-4">2.6.1</span> Get</h4>
+<div class="outline-text-4" id="text-2-6-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_vgl</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_vgl</span>);
 </pre>
@@ -1196,14 +1302,14 @@ k=0;
 </div>
 </div>
 
-<div id="outline-container-orge1b512f" class="outline-4">
-<h4 id="orge1b512f"><span class="section-number-4">2.5.2</span> Provide</h4>
+<div id="outline-container-orgf18dc29" class="outline-4">
+<h4 id="orgf18dc29"><span class="section-number-4">2.6.2</span> Provide</h4>
 </div>
 
-<div id="outline-container-orgde2c312" class="outline-4">
-<h4 id="orgde2c312"><span class="section-number-4">2.5.3</span> Compute</h4>
-<div class="outline-text-4" id="text-2-5-3">
-<table id="org941fcad" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<div id="outline-container-orgeec43a8" class="outline-4">
+<h4 id="orgeec43a8"><span class="section-number-4">2.6.3</span> Compute</h4>
+<div class="outline-text-4" id="text-2-6-3">
+<table id="org88569ea" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1309,14 +1415,14 @@ k=0;
 
 <tr>
 <td class="org-left"><code>double</code></td>
-<td class="org-left"><code>coef[prim_num]</code></td>
+<td class="org-left"><code>coef_normalized[prim_num]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Coefficients of the primitives</td>
 </tr>
 
 <tr>
 <td class="org-left"><code>double</code></td>
-<td class="org-left"><code>shell_vgl[shell_num][5][walk_num][elec_num]</code></td>
+<td class="org-left"><code>shell_vgl[5][walk_num][elec_num][shell_num]</code></td>
 <td class="org-left">out</td>
 <td class="org-left">Value, gradients and Laplacian of the shells</td>
 </tr>
@@ -1327,7 +1433,7 @@ k=0;
 <pre class="src src-f90"><span style="color: #228b22;">integer</span><span style="color: #a0522d;"> function qmckl_compute_ao_basis_shell_gaussian_vgl_f(context, </span><span style="color: #a020f0;">&amp;</span>
      prim_num, shell_num, elec_num, nucl_num, walk_num, <span style="color: #a020f0;">&amp;</span>
      nucleus_shell_num, nucleus_index, shell_prim_index, shell_prim_num, <span style="color: #a020f0;">&amp;</span>
-     elec_coord, nucl_coord, expo, coef, shell_vgl) <span style="color: #a020f0;">&amp;</span>
+     elec_coord, nucl_coord, expo, coef_normalized, shell_vgl) <span style="color: #a020f0;">&amp;</span>
      <span style="color: #a020f0;">result</span>(info)
   <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl</span>
   <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
@@ -1344,8 +1450,8 @@ k=0;
   <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> elec_coord(elec_num,3,walk_num)</span>
   <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucl_coord(nucl_num,3)</span>
   <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> expo(prim_num)</span>
-  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> coef(prim_num)</span>
-  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(out) ::<span style="color: #a0522d;"> shell_vgl(elec_num,walk_num,5,shell_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> coef_normalized(prim_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(out) ::<span style="color: #a0522d;"> shell_vgl(shell_num,elec_num,walk_num,5)</span>
 
   <span style="color: #228b22;">integer</span>*8 ::<span style="color: #a0522d;"> inucl, iprim, iwalk, ielec, ishell</span>
   <span style="color: #228b22;">double precision</span> ::<span style="color: #a0522d;"> x, y, z, two_a, ar2, r2, v, cutoff</span>
@@ -1353,22 +1459,28 @@ k=0;
   info = QMCKL_SUCCESS
 
   ! <span style="color: #b22222;">Don't compute exponentials when the result will be almost zero.</span>
+  ! <span style="color: #b22222;">TODO : Use numerical precision here</span>
   cutoff = -dlog(1.d-15)
 
   <span style="color: #a020f0;">do</span> inucl=1,nucl_num
-     <span style="color: #a020f0;">do</span> ishell=nucleus_index(inucl)+1, nucleus_index(inucl)+nucleus_shell_num(inucl)
-        ! <span style="color: #b22222;">C is zero-based, so shift bounds by one</span>
 
-        <span style="color: #a020f0;">do</span> iwalk = 1, walk_num
-           <span style="color: #a020f0;">do</span> ielec = 1, elec_num
+     <span style="color: #a020f0;">do</span> iwalk = 1, walk_num
+        <span style="color: #a020f0;">do</span> ielec = 1, elec_num
 
-              shell_vgl(ielec, iwalk, 1:5, ishell) = 0.d0
+           x = elec_coord(ielec,1,iwalk) - nucl_coord(inucl,1)
+           y = elec_coord(ielec,2,iwalk) - nucl_coord(inucl,2)
+           z = elec_coord(ielec,3,iwalk) - nucl_coord(inucl,3)
 
-              x = elec_coord(ielec,1,iwalk) - nucl_coord(inucl,1) 
-              y = elec_coord(ielec,2,iwalk) - nucl_coord(inucl,2) 
-              z = elec_coord(ielec,3,iwalk) - nucl_coord(inucl,3) 
+           r2 = x*x + y*y + z*z
 
-              r2 = x*x + y*y + z*z
+           <span style="color: #a020f0;">do</span> ishell=nucleus_index(inucl)+1, nucleus_index(inucl)+nucleus_shell_num(inucl)
+              ! <span style="color: #b22222;">C is zero-based, so shift bounds by one</span>
+
+              shell_vgl(ishell, ielec, iwalk, 1) = 0.d0
+              shell_vgl(ishell, ielec, iwalk, 2) = 0.d0
+              shell_vgl(ishell, ielec, iwalk, 3) = 0.d0
+              shell_vgl(ishell, ielec, iwalk, 4) = 0.d0
+              shell_vgl(ishell, ielec, iwalk, 5) = 0.d0
 
               <span style="color: #a020f0;">do</span> iprim = shell_prim_index(ishell)+1, shell_prim_index(ishell)+shell_prim_num(ishell)
 
@@ -1377,23 +1489,23 @@ k=0;
                     <span style="color: #a020f0;">cycle</span>
                  <span style="color: #a020f0;">end if</span>
 
-                 v = coef(iprim) * dexp(-ar2)
+                 v = coef_normalized(iprim) * dexp(-ar2)
                  two_a = -2.d0 * expo(iprim) * v
 
-                 shell_vgl(ielec, iwalk, 1, ishell) = <span style="color: #a020f0;">&amp;</span>
-                      shell_vgl(ielec, iwalk, 1, ishell) + v
+                 shell_vgl(ishell, ielec, iwalk, 1) = <span style="color: #a020f0;">&amp;</span>
+                      shell_vgl(ishell, ielec, iwalk, 1) + v
 
-                 shell_vgl(ielec, iwalk, 2, ishell) = <span style="color: #a020f0;">&amp;</span>
-                      shell_vgl(ielec, iwalk, 2, ishell) + two_a * x 
+                 shell_vgl(ishell, ielec, iwalk, 2) = <span style="color: #a020f0;">&amp;</span>
+                      shell_vgl(ishell, ielec, iwalk, 2) + two_a * x
 
-                 shell_vgl(ielec, iwalk, 3, ishell) = <span style="color: #a020f0;">&amp;</span>
-                      shell_vgl(ielec, iwalk, 3, ishell) + two_a * y 
+                 shell_vgl(ishell, ielec, iwalk, 3) = <span style="color: #a020f0;">&amp;</span>
+                      shell_vgl(ishell, ielec, iwalk, 3) + two_a * y
 
-                 shell_vgl(ielec, iwalk, 4, ishell) = <span style="color: #a020f0;">&amp;</span>
-                      shell_vgl(ielec, iwalk, 4, ishell) + two_a * z 
+                 shell_vgl(ishell, ielec, iwalk, 4) = <span style="color: #a020f0;">&amp;</span>
+                      shell_vgl(ishell, ielec, iwalk, 4) + two_a * z
 
-                 shell_vgl(ielec, iwalk, 5, ishell) = <span style="color: #a020f0;">&amp;</span>
-                      shell_vgl(ielec, iwalk, 5, ishell) + two_a * (3.d0 - 2.d0*ar2)
+                 shell_vgl(ishell, ielec, iwalk, 5) = <span style="color: #a020f0;">&amp;</span>
+                      shell_vgl(ishell, ielec, iwalk, 5) + two_a * (3.d0 - 2.d0*ar2)
 
               <span style="color: #a020f0;">end do</span>
 
@@ -1406,22 +1518,58 @@ k=0;
 <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_compute_ao_basis_shell_gaussian_vgl_f</span>
 </pre>
 </div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_basis_shell_gaussian_vgl</span> (
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">prim_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">elec_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">walk_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_index</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">elec_coord</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">expo</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coef_normalized</span>,
+      <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_vgl</span> );
+</pre>
+</div>
 </div>
 </div>
 
-
-<div id="outline-container-org25c3c3b" class="outline-4">
-<h4 id="org25c3c3b"><span class="section-number-4">2.5.4</span> Test</h4>
+<div id="outline-container-orgf616c9b" class="outline-4">
+<h4 id="orgf616c9b"><span class="section-number-4">2.6.4</span> Test</h4>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org975ed4c" class="outline-2">
-<h2 id="org975ed4c"><span class="section-number-2">3</span> Polynomial part</h2>
+<div id="outline-container-org9234d15" class="outline-2">
+<h2 id="org9234d15"><span class="section-number-2">3</span> Polynomial part</h2>
 <div class="outline-text-2" id="text-3">
+<p>
+Going from the atomic basis set to AOs implies a systematic
+construction of all the angular functions of each shell.  We
+consider two cases for the angular functions: the real-valued
+spherical harmonics, and the polynomials in Cartesian coordinates.
+In the case of spherical harmonics, the AOs are ordered in
+increasing magnetic quantum number (\(-l \le m \le l\)), and in the
+case of polynomials we choose the canonical ordering, i.e
+</p>
+
+\begin{eqnarray}
+p & : & p_x, p_y, p_z \nonumber \\
+d & : & d_{xx}, d_{xy}, d_{xz}, d_{yy}, d_{yz}, d_{zz} \nonumber \\
+f & : & f_{xxx}, f_{xxy}, f_{xxz}, f_{xyy}, f_{xyz}, f_{xzz}, f_{yyy}, f_{yyz}, f_{yzz}, f_{zzz} \nonumber \\
+{\rm etc.} \nonumber
+\end{eqnarray}
 </div>
-<div id="outline-container-orgdaf24fa" class="outline-3">
-<h3 id="orgdaf24fa"><span class="section-number-3">3.1</span> General functions for Powers of \(x-X_i\)</h3>
+
+<div id="outline-container-org080b51d" class="outline-3">
+<h3 id="org080b51d"><span class="section-number-3">3.1</span> General functions for Powers of \(x-X_i\)</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 The <code>qmckl_ao_power</code> function computes all the powers of the <code>n</code>
@@ -1433,7 +1581,7 @@ the \(n\) points:
 \[ P_{ik} = X_i^k \]
 </p>
 
-<table id="orgc49af49" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org0792038" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1491,8 +1639,8 @@ the \(n\) points:
 </table>
 </div>
 
-<div id="outline-container-orgbd46014" class="outline-4">
-<h4 id="orgbd46014"><span class="section-number-4">3.1.1</span> Requirements</h4>
+<div id="outline-container-orga875962" class="outline-4">
+<h4 id="orga875962"><span class="section-number-4">3.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
@@ -1505,12 +1653,12 @@ the \(n\) points:
 </div>
 </div>
 
-<div id="outline-container-orgf4f8f8a" class="outline-4">
-<h4 id="orgf4f8f8a"><span class="section-number-4">3.1.2</span> C Header</h4>
+<div id="outline-container-orga0c24a9" class="outline-4">
+<h4 id="orga0c24a9"><span class="section-number-4">3.1.2</span> C Header</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_ao_power</span> (
-              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>,
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">X</span>,
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">LMAX</span>,
@@ -1521,8 +1669,8 @@ the \(n\) points:
 </div>
 </div>
 
-<div id="outline-container-org78f713f" class="outline-4">
-<h4 id="org78f713f"><span class="section-number-4">3.1.3</span> Source</h4>
+<div id="outline-container-org7152907" class="outline-4">
+<h4 id="org7152907"><span class="section-number-4">3.1.3</span> Source</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer </span><span style="color: #a020f0;">function</span><span style="color: #a0522d;"> </span><span style="color: #0000ff;">qmckl_ao_power_f</span><span style="color: #000000; background-color: #ffffff;">(context, n, X, LMAX, P, ldp) result(info)</span>
@@ -1573,20 +1721,25 @@ the \(n\) points:
 </div>
 </div>
 
-<div id="outline-container-org8069888" class="outline-4">
-<h4 id="org8069888"><span class="section-number-4">3.1.4</span> C interface</h4>
+<div id="outline-container-org4919eef" class="outline-4">
+<h4 id="org4919eef"><span class="section-number-4">3.1.4</span> C interface</h4>
 </div>
-<div id="outline-container-org0ccd90f" class="outline-4">
-<h4 id="org0ccd90f"><span class="section-number-4">3.1.5</span> Fortran interface</h4>
+<div id="outline-container-org743cc79" class="outline-4">
+<h4 id="org743cc79"><span class="section-number-4">3.1.5</span> Fortran interface</h4>
 </div>
 
-<div id="outline-container-orgff8b36a" class="outline-4">
-<h4 id="orgff8b36a"><span class="section-number-4">3.1.6</span> Test</h4>
+<div id="outline-container-orga2b8eb6" class="outline-4">
+<h4 id="orga2b8eb6"><span class="section-number-4">3.1.6</span> Test</h4>
 <div class="outline-text-4" id="text-3-1-6">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>) <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">test_qmckl_ao_power</span>(context) <span style="color: #a020f0;">bind</span>(C)
+
   <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl</span>
+  <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl_probes_f</span>
+
   <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+
+  <span style="color: #228b22;">logical</span>(<span style="color: #008b8b;">C_BOOL</span>) ::<span style="color: #a0522d;"> vfc_err</span>
 
   <span style="color: #228b22;">integer</span>(qmckl_context), <span style="color: #a020f0;">intent</span>(in), <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
 
@@ -1609,6 +1762,10 @@ the \(n\) points:
   <span style="color: #a020f0;">end do</span>
 
   test_qmckl_ao_power = qmckl_ao_power(context, n, X, LMAX, P, LDP)
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"power_2_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(P(2,2)))
+
   <span style="color: #a020f0;">if</span> (test_qmckl_ao_power /= QMCKL_SUCCESS) <span style="color: #a020f0;">return</span>
 
   test_qmckl_ao_power = QMCKL_FAILURE
@@ -1632,8 +1789,8 @@ the \(n\) points:
 </div>
 </div>
 
-<div id="outline-container-org8fa5cf0" class="outline-3">
-<h3 id="org8fa5cf0"><span class="section-number-3">3.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
+<div id="outline-container-orga21ce0d" class="outline-3">
+<h3 id="orga21ce0d"><span class="section-number-3">3.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 A polynomial is centered on a nucleus \(\mathbf{R}_i\)
@@ -1678,7 +1835,7 @@ Laplacians at a given point in space, of all polynomials with an
 angular momentum up to <code>lmax</code>.
 </p>
 
-<table id="orgfa0a59d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org2d7dfdd" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1757,8 +1914,8 @@ angular momentum up to <code>lmax</code>.
 </table>
 </div>
 
-<div id="outline-container-org4787db6" class="outline-4">
-<h4 id="org4787db6"><span class="section-number-4">3.2.1</span> Requirements</h4>
+<div id="outline-container-org3b8d433" class="outline-4">
+<h4 id="org3b8d433"><span class="section-number-4">3.2.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
@@ -1783,12 +1940,12 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-org73d3e12" class="outline-4">
-<h4 id="org73d3e12"><span class="section-number-4">3.2.2</span> C Header</h4>
+<div id="outline-container-org3f9ac93" class="outline-4">
+<h4 id="org3f9ac93"><span class="section-number-4">3.2.2</span> C Header</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_ao_polynomial_vgl</span> (
-              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl</span> (
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">X</span>,
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">R</span>,
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span> <span style="color: #a0522d;">lmax</span>,
@@ -1802,8 +1959,8 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-org7af979d" class="outline-4">
-<h4 id="org7af979d"><span class="section-number-4">3.2.3</span> Source</h4>
+<div id="outline-container-orgf7986f5" class="outline-4">
+<h4 id="orgf7986f5"><span class="section-number-4">3.2.3</span> Source</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer </span><span style="color: #a020f0;">function</span><span style="color: #a0522d;"> </span><span style="color: #0000ff;">qmckl_ao_polynomial_vgl_f</span><span style="color: #000000; background-color: #ffffff;">(context, X, R, lmax, n, L, ldl, VGL, ldv) result(info)</span>
@@ -1823,7 +1980,6 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
   <span style="color: #228b22;">real</span>*8            ::<span style="color: #a0522d;"> Y(3)</span>
   <span style="color: #228b22;">integer</span>           ::<span style="color: #a0522d;"> lmax_array(3)</span>
   <span style="color: #228b22;">real</span>*8            ::<span style="color: #a0522d;"> pows(-2:lmax,3)</span>
-  <span style="color: #228b22;">integer</span>, <span style="color: #a020f0;">external</span> ::<span style="color: #a0522d;"> qmckl_ao_power_f</span>
   <span style="color: #228b22;">double precision</span>  ::<span style="color: #a0522d;"> xy, yz, xz</span>
   <span style="color: #228b22;">double precision</span>  ::<span style="color: #a0522d;"> da, db, dc, dd</span>
 
@@ -1938,23 +2094,26 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-org4ff8f76" class="outline-4">
-<h4 id="org4ff8f76"><span class="section-number-4">3.2.4</span> C interface</h4>
+<div id="outline-container-org073c4ba" class="outline-4">
+<h4 id="org073c4ba"><span class="section-number-4">3.2.4</span> C interface</h4>
 </div>
 
-<div id="outline-container-org1f99233" class="outline-4">
-<h4 id="org1f99233"><span class="section-number-4">3.2.5</span> Fortran interface</h4>
+<div id="outline-container-org0229bf0" class="outline-4">
+<h4 id="org0229bf0"><span class="section-number-4">3.2.5</span> Fortran interface</h4>
 </div>
 
-<div id="outline-container-org912e628" class="outline-4">
-<h4 id="org912e628"><span class="section-number-4">3.2.6</span> Test</h4>
+<div id="outline-container-org63d2c54" class="outline-4">
+<h4 id="org63d2c54"><span class="section-number-4">3.2.6</span> Test</h4>
 <div class="outline-text-4" id="text-3-2-6">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>) <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">test_qmckl_ao_polynomial_vgl</span>(context) <span style="color: #a020f0;">bind</span>(C)
   <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl</span>
+  <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl_probes_f</span>
+
   <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
 
   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int64_t</span>), <span style="color: #a020f0;">intent</span>(in), <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+  <span style="color: #228b22;">logical</span>(<span style="color: #008b8b;">C_BOOL</span>) ::<span style="color: #a0522d;"> vfc_err</span>
 
   <span style="color: #228b22;">integer</span>                       ::<span style="color: #a0522d;"> lmax, d, i</span>
   <span style="color: #228b22;">integer</span>, <span style="color: #a020f0;">allocatable</span>          ::<span style="color: #a0522d;"> L(:,:)</span>
@@ -1981,9 +2140,25 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
   test_qmckl_ao_polynomial_vgl = <span style="color: #a020f0;">&amp;</span>
        qmckl_ao_polynomial_vgl(context, X, R, lmax, n, L, ldl, VGL, ldv)
 
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"polynomial_vgl_1_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(1,2)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"polynomial_vgl_2_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(2,2)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"polynomial_vgl_3_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(3,2)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"polynomial_vgl_4_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(4,2)))
+
+  vfc_err = qmckl_probe(<span style="color: #8b2252;">"ao"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #8b2252;">"polynomial_vgl_5_2"</span>//<span style="color: #008b8b;">C_NULL_CHAR</span>, <span style="color: #a020f0;">&amp;</span>
+    <span style="color: #a020f0;">DBLE</span>(VGL(5,2)))
+
   <span style="color: #a020f0;">if</span> (test_qmckl_ao_polynomial_vgl /= QMCKL_SUCCESS) <span style="color: #a020f0;">return</span>
   <span style="color: #a020f0;">if</span> (n /= d) <span style="color: #a020f0;">return</span>
 
+<span style="color: #483d8b;">#ifdef</span> VFC_CI
   <span style="color: #a020f0;">do</span> j=1,n
      test_qmckl_ao_polynomial_vgl = QMCKL_FAILURE
      <span style="color: #a020f0;">do</span> i=1,3
@@ -2034,6 +2209,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
      <span style="color: #a020f0;">end if</span>
      <span style="color: #a020f0;">if</span> (dabs(1.d0 - VGL(5,j) / w) &gt; epsilon ) <span style="color: #a020f0;">return</span>
   <span style="color: #a020f0;">end do</span>
+<span style="color: #483d8b;">#endif</span>
 
   test_qmckl_ao_polynomial_vgl = QMCKL_SUCCESS
 
@@ -2052,13 +2228,311 @@ assert(0 == test_qmckl_ao_polynomial_vgl(context));
 </div>
 </div>
 
-<div id="outline-container-org4a577ae" class="outline-2">
-<h2 id="org4a577ae"><span class="section-number-2">4</span> Combining radial and polynomial parts</h2>
+<div id="outline-container-org3b5734a" class="outline-2">
+<h2 id="org3b5734a"><span class="section-number-2">4</span> Combining radial and polynomial parts</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org7d5622c" class="outline-4">
+<h4 id="org7d5622c"><span class="section-number-4">4.0.1</span> Get</h4>
+<div class="outline-text-4" id="text-4-0-1">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_ao_vgl</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span>);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org792575c" class="outline-4">
+<h4 id="org792575c"><span class="section-number-4">4.0.2</span> Provide</h4>
+</div>
+
+<div id="outline-container-org18848cd" class="outline-4">
+<h4 id="org18848cd"><span class="section-number-4">4.0.3</span> Compute</h4>
+<div class="outline-text-4" id="text-4-0-3">
+<table id="orgfc0ff05" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>qmckl_context</code></td>
+<td class="org-left"><code>context</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Global state</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>ao_num</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Number of AOs</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>shell_num</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Number of shells</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>elec_num</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Number of electrons</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>nucl_num</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Number of nuclei</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>walk_num</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Number of walkers</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>double</code></td>
+<td class="org-left"><code>elec_coord[walk_num][3][elec_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Electron coordinates</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>double</code></td>
+<td class="org-left"><code>nucl_coord[3][nucl_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Nuclear  coordinates</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>nucleus_index[nucl_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Index of the 1st shell of each nucleus</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int64_t</code></td>
+<td class="org-left"><code>nucleus_shell_num[nucl_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Number of shells per nucleus</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>double</code></td>
+<td class="org-left"><code>nucleus_range[nucl_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Range beyond which all is zero</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int32_t</code></td>
+<td class="org-left"><code>nucleus_max_ang_mom[nucl_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Maximum angular momentum per nucleus</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int32_t</code></td>
+<td class="org-left"><code>shell_ang_mom[shell_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Angular momentum of each shell</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>double</code></td>
+<td class="org-left"><code>ao_factor[ao_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Normalization factor of the AOs</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>double</code></td>
+<td class="org-left"><code>shell_vgl[5][walk_num][elec_num][shell_num]</code></td>
+<td class="org-left">in</td>
+<td class="org-left">Value, gradients and Laplacian of the shells</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>double</code></td>
+<td class="org-left"><code>ao_vgl[5][walk_num][elec_num][ao_num]</code></td>
+<td class="org-left">out</td>
+<td class="org-left">Value, gradients and Laplacian of the AOs</td>
+</tr>
+</tbody>
+</table>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #228b22;">integer</span><span style="color: #a0522d;"> function qmckl_compute_ao_vgl_f(context, </span><span style="color: #a020f0;">&amp;</span>
+     ao_num, shell_num, elec_num, nucl_num, walk_num, <span style="color: #a020f0;">&amp;</span>
+     elec_coord, nucl_coord, nucleus_index, nucleus_shell_num, <span style="color: #a020f0;">&amp;</span>
+     nucleus_range, nucleus_max_ang_mom, shell_ang_mom, <span style="color: #a020f0;">&amp;</span>
+     ao_factor, shell_vgl, ao_vgl) <span style="color: #a020f0;">&amp;</span>
+     <span style="color: #a020f0;">result</span>(info)
+  <span style="color: #a020f0;">use</span> <span style="color: #0000ff;">qmckl</span>
+  <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+  <span style="color: #228b22;">integer</span>(qmckl_context), <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> context</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> ao_num</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> shell_num</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> elec_num</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucl_num</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> walk_num</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> elec_coord(elec_num,3,walk_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucl_coord(nucl_num,3)</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucleus_index(nucl_num)</span>
+  <span style="color: #228b22;">integer</span>*8             , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucleus_shell_num(nucl_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucleus_range(nucl_num)</span>
+  <span style="color: #228b22;">integer</span>               , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> nucleus_max_ang_mom(nucl_num)</span>
+  <span style="color: #228b22;">integer</span>               , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> shell_ang_mom(shell_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> ao_factor(ao_num)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(in)  ::<span style="color: #a0522d;"> shell_vgl(shell_num,elec_num,walk_num,5)</span>
+  <span style="color: #228b22;">double precision</span>      , <span style="color: #a020f0;">intent</span>(out) ::<span style="color: #a0522d;"> ao_vgl(ao_num,elec_num,walk_num,5)</span>
+
+  <span style="color: #228b22;">double precision</span>  ::<span style="color: #a0522d;"> e_coord(3), n_coord(3)</span>
+  <span style="color: #228b22;">integer</span>*8         ::<span style="color: #a0522d;"> n_poly</span>
+  <span style="color: #228b22;">integer</span>           ::<span style="color: #a0522d;"> l, il, k</span>
+  <span style="color: #228b22;">integer</span>*8         ::<span style="color: #a0522d;"> ielec, inucl, ishell, iwalk</span>
+  <span style="color: #228b22;">integer</span>           ::<span style="color: #a0522d;"> lstart(0:20)</span>
+  <span style="color: #228b22;">double precision</span>  ::<span style="color: #a0522d;"> x, y, z, r2</span>
+  <span style="color: #228b22;">double precision</span>  ::<span style="color: #a0522d;"> cutoff</span>
+  <span style="color: #228b22;">integer</span>, <span style="color: #a020f0;">external</span> ::<span style="color: #a0522d;"> qmckl_ao_polynomial_vgl_f</span>
+
+  <span style="color: #228b22;">double precision</span>, <span style="color: #a020f0;">allocatable</span>  ::<span style="color: #a0522d;"> poly_vgl(:,:)</span>
+  <span style="color: #228b22;">integer</span>         , <span style="color: #a020f0;">allocatable</span>  ::<span style="color: #a0522d;"> powers(:,:)</span>
+
+  <span style="color: #a020f0;">allocate</span>(poly_vgl(5,ao_num), powers(3,ao_num))
+
+  ! <span style="color: #b22222;">Pre-computed data</span>
+  <span style="color: #a020f0;">do</span> l=0,20
+     lstart(l) = l*(l+1)*(l+2)/6 +1
+  <span style="color: #a020f0;">end do</span>
+
+  info = QMCKL_SUCCESS
+
+  ! <span style="color: #b22222;">Don't compute polynomials when the radial part is zero.</span>
+  ! <span style="color: #b22222;">TODO : Use numerical precision here</span>
+  cutoff = -dlog(1.d-15)
+
+  <span style="color: #a020f0;">do</span> iwalk = 1,walk_num
+     <span style="color: #a020f0;">do</span> ielec = 1, elec_num
+        e_coord(1) = elec_coord(ielec,1,iwalk)
+        e_coord(2) = elec_coord(ielec,2,iwalk)
+        e_coord(3) = elec_coord(ielec,3,iwalk)
+        k=1
+        <span style="color: #a020f0;">do</span> inucl=1,nucl_num
+           n_coord(1) = nucl_coord(inucl,1)
+           n_coord(2) = nucl_coord(inucl,2)
+           n_coord(3) = nucl_coord(inucl,3)
+
+           ! <span style="color: #b22222;">Test if the electron is in the range of the nucleus</span>
+           x = e_coord(1) - n_coord(1)
+           y = e_coord(2) - n_coord(2)
+           z = e_coord(3) - n_coord(3)
+
+           r2 = x*x + z*z + z*z
+
+           <span style="color: #a020f0;">if</span> (r2 &gt; cutoff*nucleus_range(inucl)) <span style="color: #a020f0;">then</span>
+              <span style="color: #a020f0;">cycle</span>
+           <span style="color: #a020f0;">end if</span>
+
+           ! <span style="color: #b22222;">Compute polynomials</span>
+           info = qmckl_ao_polynomial_vgl_f(context, e_coord, n_coord, <span style="color: #a020f0;">&amp;</span>
+                nucleus_max_ang_mom(inucl), n_poly, powers, 3_8, <span style="color: #a020f0;">&amp;</span>
+                poly_vgl, 5_8)
+
+           ! <span style="color: #b22222;">Loop over shells</span>
+           <span style="color: #a020f0;">do</span> ishell = nucleus_index(inucl)+1, nucleus_index(inucl)+nucleus_shell_num(inucl)
+              l = shell_ang_mom(ishell)
+              <span style="color: #a020f0;">do</span> il = lstart(l), lstart(l+1)-1
+                 ! <span style="color: #b22222;">Value</span>
+                 ao_vgl(k,ielec,iwalk,1) = <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(1,il) * shell_vgl(ishell,ielec,iwalk,1) * ao_factor(k)
+
+                 ! <span style="color: #b22222;">Grad_x</span>
+                 ao_vgl(k,ielec,iwalk,2) = ( <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(2,il) * shell_vgl(ishell,ielec,iwalk,1) + <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(1,il) * shell_vgl(ishell,ielec,iwalk,2) <span style="color: #a020f0;">&amp;</span>
+                      ) * ao_factor(k)
+
+                 ! <span style="color: #b22222;">Grad_y</span>
+                 ao_vgl(k,ielec,iwalk,3) = ( <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(3,il) * shell_vgl(ishell,ielec,iwalk,1) + <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(1,il) * shell_vgl(ishell,ielec,iwalk,3) <span style="color: #a020f0;">&amp;</span>
+                      ) * ao_factor(k)
+
+                 ! <span style="color: #b22222;">Grad_z</span>
+                 ao_vgl(k,ielec,iwalk,4) = ( <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(4,il) * shell_vgl(ishell,ielec,iwalk,1) + <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(1,il) * shell_vgl(ishell,ielec,iwalk,4) <span style="color: #a020f0;">&amp;</span>
+                      ) * ao_factor(k)
+
+                 ! <span style="color: #b22222;">Lapl_z</span>
+                 ao_vgl(k,ielec,iwalk,5) = ( <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(5,il) * shell_vgl(ishell,ielec,iwalk,1) + <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(1,il) * shell_vgl(ishell,ielec,iwalk,5) + <span style="color: #a020f0;">&amp;</span>
+                      2.d0 * ( <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(2,il) * shell_vgl(ishell,ielec,iwalk,2) + <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(3,il) * shell_vgl(ishell,ielec,iwalk,3) + <span style="color: #a020f0;">&amp;</span>
+                      poly_vgl(4,il) * shell_vgl(ishell,ielec,iwalk,4) ) <span style="color: #a020f0;">&amp;</span>
+                      ) * ao_factor(k)
+
+                 k = k+1
+              <span style="color: #a020f0;">end do</span>
+           <span style="color: #a020f0;">end do</span>
+        <span style="color: #a020f0;">end do</span>
+     <span style="color: #a020f0;">end do</span>
+  <span style="color: #a020f0;">end do</span>
+
+  <span style="color: #a020f0;">deallocate</span>(poly_vgl, powers)
+<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_f</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl</span> (
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">elec_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">walk_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">elec_coord</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_vgl</span>,
+      <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org65253c3" class="outline-4">
+<h4 id="org65253c3"><span class="section-number-4">4.0.4</span> Test</h4>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2021-06-23 Wed 07:11</p>
+<p class="date">Created: 2021-07-26 Mon 05:45</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
