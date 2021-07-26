@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-07-26 Mon 05:45 -->
+<!-- 2021-07-26 Mon 06:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Error handling</title>
@@ -311,17 +311,17 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc7aefac">1. Decoding errors</a></li>
-<li><a href="#org134b8fc">2. Data structure in context</a></li>
-<li><a href="#orgb362acc">3. Updating errors in the context</a></li>
-<li><a href="#org5196d7a">4. Get the error</a></li>
-<li><a href="#org74df625">5. Failing</a></li>
+<li><a href="#org0b3c171">1. Decoding errors</a></li>
+<li><a href="#orga7dcd0a">2. Data structure in context</a></li>
+<li><a href="#orga2020f4">3. Updating errors in the context</a></li>
+<li><a href="#orge95b789">4. Get the error</a></li>
+<li><a href="#org6cafe99">5. Failing</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc7aefac" class="outline-2">
-<h2 id="orgc7aefac"><span class="section-number-2">1</span> Decoding errors</h2>
+<div id="outline-container-org0b3c171" class="outline-2">
+<h2 id="org0b3c171"><span class="section-number-2">1</span> Decoding errors</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To decode the error messages, <code>qmckl_string_of_error</code> converts an
@@ -451,8 +451,8 @@ The text strings are extracted from the previous table.
 </div>
 </div>
 
-<div id="outline-container-org134b8fc" class="outline-2">
-<h2 id="org134b8fc"><span class="section-number-2">2</span> Data structure in context</h2>
+<div id="outline-container-orga7dcd0a" class="outline-2">
+<h2 id="orga7dcd0a"><span class="section-number-2">2</span> Data structure in context</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The strings are declared with a maximum fixed size to avoid
@@ -475,8 +475,8 @@ dynamic memory allocation.
 </div>
 </div>
 
-<div id="outline-container-orgb362acc" class="outline-2">
-<h2 id="orgb362acc"><span class="section-number-2">3</span> Updating errors in the context</h2>
+<div id="outline-container-orga2020f4" class="outline-2">
+<h2 id="orga2020f4"><span class="section-number-2">3</span> Updating errors in the context</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The error is updated in the context using <code>qmckl_set_error</code>.
@@ -522,8 +522,8 @@ explaining the error. The exit code can't be <code>QMCKL_SUCCESS</code>.
 </div>
 </div>
 
-<div id="outline-container-org5196d7a" class="outline-2">
-<h2 id="org5196d7a"><span class="section-number-2">4</span> Get the error</h2>
+<div id="outline-container-orge95b789" class="outline-2">
+<h2 id="orge95b789"><span class="section-number-2">4</span> Get the error</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Upon error, the error type and message can be obtained from the
@@ -564,8 +564,8 @@ function name and message is mandatory.
 </div>
 </div>
 
-<div id="outline-container-org74df625" class="outline-2">
-<h2 id="org74df625"><span class="section-number-2">5</span> Failing</h2>
+<div id="outline-container-org6cafe99" class="outline-2">
+<h2 id="org6cafe99"><span class="section-number-2">5</span> Failing</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 To make a function fail, the <code>qmckl_failwith</code> function should be
@@ -628,7 +628,7 @@ For example, this function can be used as
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2021-07-26 Mon 05:45</p>
+<p class="date">Created: 2021-07-26 Mon 06:19</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
