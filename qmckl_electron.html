@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-07-27 Tue 10:04 -->
+<!-- 2021-07-27 Tue 10:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Electrons</title>
@@ -333,63 +333,63 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org09425f4">1. Context</a>
+<li><a href="#orgeb16907">1. Context</a>
 <ul>
-<li><a href="#org3034201">1.1. Data structure</a></li>
-<li><a href="#orga8e7d0f">1.2. Access functions</a>
+<li><a href="#orgc695772">1.1. Data structure</a></li>
+<li><a href="#org7f61985">1.2. Access functions</a>
 <ul>
-<li><a href="#orgb0dda65">1.2.1. Number of electrons</a></li>
-<li><a href="#org6e01818">1.2.2. Number of walkers</a></li>
-<li><a href="#org9a1ec81">1.2.3. Scaling factors Kappa</a></li>
-<li><a href="#orgc52cc9e">1.2.4. Electron coordinates</a></li>
+<li><a href="#org1dd7e7a">1.2.1. Number of electrons</a></li>
+<li><a href="#org2d51f96">1.2.2. Number of walkers</a></li>
+<li><a href="#orgb814762">1.2.3. Scaling factors Kappa</a></li>
+<li><a href="#org7afcb28">1.2.4. Electron coordinates</a></li>
 </ul>
 </li>
-<li><a href="#org16bec58">1.3. Initialization functions</a></li>
-<li><a href="#orgdef4c68">1.4. Test</a></li>
+<li><a href="#org0a5ac83">1.3. Initialization functions</a></li>
+<li><a href="#org42dfe98">1.4. Test</a></li>
 </ul>
 </li>
-<li><a href="#org22603c1">2. Computation</a>
+<li><a href="#org94962a4">2. Computation</a>
 <ul>
-<li><a href="#org71f9c6d">2.1. Electron-electron distances</a>
+<li><a href="#org1bdf1cd">2.1. Electron-electron distances</a>
 <ul>
-<li><a href="#org60219a8">2.1.1. Get</a></li>
-<li><a href="#org3288bc9">2.1.2. Compute</a></li>
-<li><a href="#orgac7cacc">2.1.3. Test</a></li>
+<li><a href="#orgd8a39cf">2.1.1. Get</a></li>
+<li><a href="#org5085a9e">2.1.2. Compute</a></li>
+<li><a href="#org64f9ce2">2.1.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org6904026">2.2. Electron-electron rescaled distances</a>
+<li><a href="#org027b883">2.2. Electron-electron rescaled distances</a>
 <ul>
-<li><a href="#orgdf06822">2.2.1. Get</a></li>
-<li><a href="#orgb907cf1">2.2.2. Compute</a></li>
-<li><a href="#org6a07111">2.2.3. Test</a></li>
+<li><a href="#org7d3db9a">2.2.1. Get</a></li>
+<li><a href="#orge0181d9">2.2.2. Compute</a></li>
+<li><a href="#org0525c8d">2.2.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orga5ea0f9">2.3. Electron-electron rescaled distance gradients and laplacian with respect to electron coords</a>
+<li><a href="#orgf48f03b">2.3. Electron-electron rescaled distance gradients and laplacian with respect to electron coords</a>
 <ul>
-<li><a href="#orga8a7f55">2.3.1. Get</a></li>
-<li><a href="#org4f57bdf">2.3.2. Compute</a></li>
-<li><a href="#org3801208">2.3.3. Test</a></li>
+<li><a href="#org9c3c649">2.3.1. Get</a></li>
+<li><a href="#orgd9a1643">2.3.2. Compute</a></li>
+<li><a href="#orgcc1836d">2.3.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orga78286f">2.4. Electron-nucleus distances</a>
+<li><a href="#org935ee3b">2.4. Electron-nucleus distances</a>
 <ul>
-<li><a href="#org338f73c">2.4.1. Get</a></li>
-<li><a href="#org9aaf45b">2.4.2. Compute</a></li>
-<li><a href="#orgacd39ba">2.4.3. Test</a></li>
+<li><a href="#orgca10d6f">2.4.1. Get</a></li>
+<li><a href="#org7f5f2ed">2.4.2. Compute</a></li>
+<li><a href="#orgecdc49c">2.4.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orga286d7f">2.5. Electron-nucleus rescaled distances</a>
+<li><a href="#orgc146d54">2.5. Electron-nucleus rescaled distances</a>
 <ul>
-<li><a href="#orgce9b9ad">2.5.1. Get</a></li>
-<li><a href="#org2a88d9c">2.5.2. Compute</a></li>
-<li><a href="#org50a1cf7">2.5.3. Test</a></li>
+<li><a href="#org97d3173">2.5.1. Get</a></li>
+<li><a href="#orga908e72">2.5.2. Compute</a></li>
+<li><a href="#org434406a">2.5.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org45881f9">2.6. Electron-nucleus rescaled distance gradients and laplacian with respect to electron coords</a>
+<li><a href="#orged1817a">2.6. Electron-nucleus rescaled distance gradients and laplacian with respect to electron coords</a>
 <ul>
-<li><a href="#orga5b890c">2.6.1. Get</a></li>
-<li><a href="#orged20885">2.6.2. Compute</a></li>
-<li><a href="#orgb8320eb">2.6.3. Test</a></li>
+<li><a href="#orgddc7743">2.6.1. Get</a></li>
+<li><a href="#orgfe5c6c9">2.6.2. Compute</a></li>
+<li><a href="#org46d9c14">2.6.3. Test</a></li>
 </ul>
 </li>
 </ul>
@@ -398,8 +398,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org09425f4" class="outline-2">
-<h2 id="org09425f4"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-orgeb16907" class="outline-2">
+<h2 id="orgeb16907"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following data stored in the context:
@@ -557,8 +557,8 @@ The following data stored in the context:
 </table>
 </div>
 
-<div id="outline-container-org3034201" class="outline-3">
-<h3 id="org3034201"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-orgc695772" class="outline-3">
+<h3 id="orgc695772"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_electron_struct</span> {
@@ -633,8 +633,8 @@ this mechanism.
 </div>
 </div>
 
-<div id="outline-container-orga8e7d0f" class="outline-3">
-<h3 id="orga8e7d0f"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-org7f61985" class="outline-3">
+<h3 id="org7f61985"><span class="section-number-3">1.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Access functions return <code>QMCKL_SUCCESS</code> when the data has been
@@ -646,12 +646,12 @@ contains the requested data. Otherwise, this variable is untouched.
 </p>
 </div>
 
-<div id="outline-container-orgb0dda65" class="outline-4">
-<h4 id="orgb0dda65"><span class="section-number-4">1.2.1</span> Number of electrons</h4>
+<div id="outline-container-org1dd7e7a" class="outline-4">
+<h4 id="org1dd7e7a"><span class="section-number-4">1.2.1</span> Number of electrons</h4>
 </div>
 
-<div id="outline-container-org6e01818" class="outline-4">
-<h4 id="org6e01818"><span class="section-number-4">1.2.2</span> Number of walkers</h4>
+<div id="outline-container-org2d51f96" class="outline-4">
+<h4 id="org2d51f96"><span class="section-number-4">1.2.2</span> Number of walkers</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
 A walker is a set of electron coordinates that are arguments of
@@ -660,12 +660,12 @@ the wave function. <code>walk_num</code> is the number of walkers.
 </div>
 </div>
 
-<div id="outline-container-org9a1ec81" class="outline-4">
-<h4 id="org9a1ec81"><span class="section-number-4">1.2.3</span> Scaling factors Kappa</h4>
+<div id="outline-container-orgb814762" class="outline-4">
+<h4 id="orgb814762"><span class="section-number-4">1.2.3</span> Scaling factors Kappa</h4>
 </div>
 
-<div id="outline-container-orgc52cc9e" class="outline-4">
-<h4 id="orgc52cc9e"><span class="section-number-4">1.2.4</span> Electron coordinates</h4>
+<div id="outline-container-org7afcb28" class="outline-4">
+<h4 id="org7afcb28"><span class="section-number-4">1.2.4</span> Electron coordinates</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <p>
 Returns the current electron coordinates. The pointer is assumed
@@ -709,8 +709,8 @@ The order of the indices is:
 </div>
 
 
-<div id="outline-container-org16bec58" class="outline-3">
-<h3 id="org16bec58"><span class="section-number-3">1.3</span> Initialization functions</h3>
+<div id="outline-container-org0a5ac83" class="outline-3">
+<h3 id="org0a5ac83"><span class="section-number-3">1.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 To set the data relative to the electrons in the context, the
@@ -797,8 +797,8 @@ in the context.
 </div>
 </div>
 
-<div id="outline-container-orgdef4c68" class="outline-3">
-<h3 id="orgdef4c68"><span class="section-number-3">1.4</span> Test</h3>
+<div id="outline-container-org42dfe98" class="outline-3">
+<h3 id="org42dfe98"><span class="section-number-3">1.4</span> Test</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -904,8 +904,8 @@ rc = qmckl_get_electron_coord (context, <span style="color: #8b2252;">'N'</span>
 </div>
 </div>
 
-<div id="outline-container-org22603c1" class="outline-2">
-<h2 id="org22603c1"><span class="section-number-2">2</span> Computation</h2>
+<div id="outline-container-org94962a4" class="outline-2">
+<h2 id="org94962a4"><span class="section-number-2">2</span> Computation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The computed data is stored in the context so that it can be reused
@@ -918,12 +918,12 @@ current date is stored.
 </p>
 </div>
 
-<div id="outline-container-org71f9c6d" class="outline-3">
-<h3 id="org71f9c6d"><span class="section-number-3">2.1</span> Electron-electron distances</h3>
+<div id="outline-container-org1bdf1cd" class="outline-3">
+<h3 id="org1bdf1cd"><span class="section-number-3">2.1</span> Electron-electron distances</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-org60219a8" class="outline-4">
-<h4 id="org60219a8"><span class="section-number-4">2.1.1</span> Get</h4>
+<div id="outline-container-orgd8a39cf" class="outline-4">
+<h4 id="orgd8a39cf"><span class="section-number-4">2.1.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_electron_ee_distance</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">distance</span>);
@@ -932,10 +932,10 @@ current date is stored.
 </div>
 </div>
 
-<div id="outline-container-org3288bc9" class="outline-4">
-<h4 id="org3288bc9"><span class="section-number-4">2.1.2</span> Compute</h4>
+<div id="outline-container-org5085a9e" class="outline-4">
+<h4 id="org5085a9e"><span class="section-number-4">2.1.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-1-2">
-<table id="orgf073a45" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org5ceaf53" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1031,8 +1031,8 @@ current date is stored.
 </div>
 </div>
 
-<div id="outline-container-orgac7cacc" class="outline-4">
-<h4 id="orgac7cacc"><span class="section-number-4">2.1.3</span> Test</h4>
+<div id="outline-container-org64f9ce2" class="outline-4">
+<h4 id="org64f9ce2"><span class="section-number-4">2.1.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -1066,8 +1066,8 @@ rc = qmckl_get_electron_ee_distance(context, ee_distance);
 </div>
 </div>
 
-<div id="outline-container-org6904026" class="outline-3">
-<h3 id="org6904026"><span class="section-number-3">2.2</span> Electron-electron rescaled distances</h3>
+<div id="outline-container-org027b883" class="outline-3">
+<h3 id="org027b883"><span class="section-number-3">2.2</span> Electron-electron rescaled distances</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 <code>ee_distance_rescaled</code> stores the matrix of the rescaled distances between all
@@ -1085,8 +1085,8 @@ where \(C_{ij}\) is the matrix of electron-electron distances.
 </p>
 </div>
 
-<div id="outline-container-orgdf06822" class="outline-4">
-<h4 id="orgdf06822"><span class="section-number-4">2.2.1</span> Get</h4>
+<div id="outline-container-org7d3db9a" class="outline-4">
+<h4 id="org7d3db9a"><span class="section-number-4">2.2.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_electron_ee_distance_rescaled</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">distance_rescaled</span>);
@@ -1095,10 +1095,10 @@ where \(C_{ij}\) is the matrix of electron-electron distances.
 </div>
 </div>
 
-<div id="outline-container-orgb907cf1" class="outline-4">
-<h4 id="orgb907cf1"><span class="section-number-4">2.2.2</span> Compute</h4>
+<div id="outline-container-orge0181d9" class="outline-4">
+<h4 id="orge0181d9"><span class="section-number-4">2.2.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-2-2">
-<table id="org0b4fedf" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org51727b0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1203,8 +1203,8 @@ where \(C_{ij}\) is the matrix of electron-electron distances.
 </div>
 </div>
 
-<div id="outline-container-org6a07111" class="outline-4">
-<h4 id="org6a07111"><span class="section-number-4">2.2.3</span> Test</h4>
+<div id="outline-container-org0525c8d" class="outline-4">
+<h4 id="org0525c8d"><span class="section-number-4">2.2.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -1238,8 +1238,8 @@ rc = qmckl_get_electron_ee_distance_rescaled(context, ee_distance_rescaled);
 </div>
 </div>
 
-<div id="outline-container-orga5ea0f9" class="outline-3">
-<h3 id="orga5ea0f9"><span class="section-number-3">2.3</span> Electron-electron rescaled distance gradients and laplacian with respect to electron coords</h3>
+<div id="outline-container-orgf48f03b" class="outline-3">
+<h3 id="orgf48f03b"><span class="section-number-3">2.3</span> Electron-electron rescaled distance gradients and laplacian with respect to electron coords</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 The rescaled distances which is given as \(R = (1 - \exp{-\kappa r})/\kappa\) 
@@ -1251,8 +1251,8 @@ gives the Laplacian \(\partial x^2 + \partial y^2 + \partial z^2\).
 </p>
 </div>
 
-<div id="outline-container-orga8a7f55" class="outline-4">
-<h4 id="orga8a7f55"><span class="section-number-4">2.3.1</span> Get</h4>
+<div id="outline-container-org9c3c649" class="outline-4">
+<h4 id="org9c3c649"><span class="section-number-4">2.3.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_electron_ee_distance_rescaled_deriv_e</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">distance_rescaled_deriv_e</span>);
@@ -1261,10 +1261,10 @@ gives the Laplacian \(\partial x^2 + \partial y^2 + \partial z^2\).
 </div>
 </div>
 
-<div id="outline-container-org4f57bdf" class="outline-4">
-<h4 id="org4f57bdf"><span class="section-number-4">2.3.2</span> Compute</h4>
+<div id="outline-container-orgd9a1643" class="outline-4">
+<h4 id="orgd9a1643"><span class="section-number-4">2.3.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-3-2">
-<table id="org1d1478f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgc320aab" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1369,8 +1369,8 @@ gives the Laplacian \(\partial x^2 + \partial y^2 + \partial z^2\).
 </div>
 </div>
 
-<div id="outline-container-org3801208" class="outline-4">
-<h4 id="org3801208"><span class="section-number-4">2.3.3</span> Test</h4>
+<div id="outline-container-orgcc1836d" class="outline-4">
+<h4 id="orgcc1836d"><span class="section-number-4">2.3.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -1405,12 +1405,12 @@ rc = qmckl_get_electron_ee_distance_rescaled_deriv_e(context, ee_distance_rescal
 </div>
 </div>
 
-<div id="outline-container-orga78286f" class="outline-3">
-<h3 id="orga78286f"><span class="section-number-3">2.4</span> Electron-nucleus distances</h3>
+<div id="outline-container-org935ee3b" class="outline-3">
+<h3 id="org935ee3b"><span class="section-number-3">2.4</span> Electron-nucleus distances</h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
-<div id="outline-container-org338f73c" class="outline-4">
-<h4 id="org338f73c"><span class="section-number-4">2.4.1</span> Get</h4>
+<div id="outline-container-orgca10d6f" class="outline-4">
+<h4 id="orgca10d6f"><span class="section-number-4">2.4.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_electron_en_distance</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">distance</span>);
@@ -1419,10 +1419,10 @@ rc = qmckl_get_electron_ee_distance_rescaled_deriv_e(context, ee_distance_rescal
 </div>
 </div>
 
-<div id="outline-container-org9aaf45b" class="outline-4">
-<h4 id="org9aaf45b"><span class="section-number-4">2.4.2</span> Compute</h4>
+<div id="outline-container-org7f5f2ed" class="outline-4">
+<h4 id="org7f5f2ed"><span class="section-number-4">2.4.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-4-2">
-<table id="org49cc1c7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3a7cea3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1539,8 +1539,8 @@ rc = qmckl_get_electron_ee_distance_rescaled_deriv_e(context, ee_distance_rescal
 </div>
 </div>
 
-<div id="outline-container-orgacd39ba" class="outline-4">
-<h4 id="orgacd39ba"><span class="section-number-4">2.4.3</span> Test</h4>
+<div id="outline-container-orgecdc49c" class="outline-4">
+<h4 id="orgecdc49c"><span class="section-number-4">2.4.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-4-3">
 <div class="org-src-container">
 <pre class="src src-c">
@@ -1588,8 +1588,8 @@ rc = qmckl_get_electron_en_distance(context, &amp;(en_distance[0][0][0]));
 </div>
 </div>
 
-<div id="outline-container-orga286d7f" class="outline-3">
-<h3 id="orga286d7f"><span class="section-number-3">2.5</span> Electron-nucleus rescaled distances</h3>
+<div id="outline-container-orgc146d54" class="outline-3">
+<h3 id="orgc146d54"><span class="section-number-3">2.5</span> Electron-nucleus rescaled distances</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 <code>en_distance_rescaled</code> stores the matrix of the rescaled distances between 
@@ -1607,8 +1607,8 @@ where \(C_{ij}\) is the matrix of electron-nucleus distances.
 </p>
 </div>
 
-<div id="outline-container-orgce9b9ad" class="outline-4">
-<h4 id="orgce9b9ad"><span class="section-number-4">2.5.1</span> Get</h4>
+<div id="outline-container-org97d3173" class="outline-4">
+<h4 id="org97d3173"><span class="section-number-4">2.5.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-5-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_electron_en_distance_rescaled</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">distance_rescaled</span>);
@@ -1617,10 +1617,10 @@ where \(C_{ij}\) is the matrix of electron-nucleus distances.
 </div>
 </div>
 
-<div id="outline-container-org2a88d9c" class="outline-4">
-<h4 id="org2a88d9c"><span class="section-number-4">2.5.2</span> Compute</h4>
+<div id="outline-container-orga908e72" class="outline-4">
+<h4 id="orga908e72"><span class="section-number-4">2.5.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-5-2">
-<table id="org11867a0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org7667e6e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1752,8 +1752,8 @@ where \(C_{ij}\) is the matrix of electron-nucleus distances.
 </div>
 </div>
 
-<div id="outline-container-org50a1cf7" class="outline-4">
-<h4 id="org50a1cf7"><span class="section-number-4">2.5.3</span> Test</h4>
+<div id="outline-container-org434406a" class="outline-4">
+<h4 id="org434406a"><span class="section-number-4">2.5.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-5-3">
 <div class="org-src-container">
 <pre class="src src-c">
@@ -1801,8 +1801,8 @@ rc = qmckl_get_electron_en_distance_rescaled(context, &amp;(en_distance_rescaled
 </div>
 </div>
 
-<div id="outline-container-org45881f9" class="outline-3">
-<h3 id="org45881f9"><span class="section-number-3">2.6</span> Electron-nucleus rescaled distance gradients and laplacian with respect to electron coords</h3>
+<div id="outline-container-orged1817a" class="outline-3">
+<h3 id="orged1817a"><span class="section-number-3">2.6</span> Electron-nucleus rescaled distance gradients and laplacian with respect to electron coords</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 The rescaled distances which is given as \(R = (1 - \exp{-\kappa r})/\kappa\) 
@@ -1814,8 +1814,8 @@ gives the Laplacian \(\partial x^2 + \partial y^2 + \partial z^2\).
 </p>
 </div>
 
-<div id="outline-container-orga5b890c" class="outline-4">
-<h4 id="orga5b890c"><span class="section-number-4">2.6.1</span> Get</h4>
+<div id="outline-container-orgddc7743" class="outline-4">
+<h4 id="orgddc7743"><span class="section-number-4">2.6.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-6-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_electron_en_distance_rescaled_deriv_e</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">distance_rescaled_deriv_e</span>);
@@ -1824,10 +1824,10 @@ gives the Laplacian \(\partial x^2 + \partial y^2 + \partial z^2\).
 </div>
 </div>
 
-<div id="outline-container-orged20885" class="outline-4">
-<h4 id="orged20885"><span class="section-number-4">2.6.2</span> Compute</h4>
+<div id="outline-container-orgfe5c6c9" class="outline-4">
+<h4 id="orgfe5c6c9"><span class="section-number-4">2.6.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-6-2">
-<table id="org279d8a8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org6cb4e08" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1960,8 +1960,8 @@ gives the Laplacian \(\partial x^2 + \partial y^2 + \partial z^2\).
 </div>
 </div>
 
-<div id="outline-container-orgb8320eb" class="outline-4">
-<h4 id="orgb8320eb"><span class="section-number-4">2.6.3</span> Test</h4>
+<div id="outline-container-org46d9c14" class="outline-4">
+<h4 id="org46d9c14"><span class="section-number-4">2.6.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-6-3">
 <div class="org-src-container">
 <pre class="src src-c">
@@ -2016,7 +2016,7 @@ rc = qmckl_get_electron_en_distance_rescaled_deriv_e(context, &amp;(en_distance_
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2021-07-27 Tue 10:04</p>
+<p class="date">Created: 2021-07-27 Tue 10:28</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
