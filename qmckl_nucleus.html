@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-08-19 Thu 10:50 -->
+<!-- 2021-08-20 Fri 15:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nucleus</title>
@@ -333,35 +333,35 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3a335ff">1. Context</a>
+<li><a href="#orgcfcac43">1. Context</a>
 <ul>
-<li><a href="#orgb442f28">1.1. Data structure</a></li>
-<li><a href="#org9a8aaad">1.2. Access functions</a></li>
-<li><a href="#org037d9c6">1.3. Initialization functions</a></li>
-<li><a href="#org693c1de">1.4. Test</a></li>
+<li><a href="#org3555ba8">1.1. Data structure</a></li>
+<li><a href="#org215078b">1.2. Access functions</a></li>
+<li><a href="#org97d2655">1.3. Initialization functions</a></li>
+<li><a href="#org2bd3e2e">1.4. Test</a></li>
 </ul>
 </li>
-<li><a href="#org3bdac84">2. Computation</a>
+<li><a href="#orge5d46f0">2. Computation</a>
 <ul>
-<li><a href="#orge0267a9">2.1. Nucleus-nucleus distances</a>
+<li><a href="#orgad9f077">2.1. Nucleus-nucleus distances</a>
 <ul>
-<li><a href="#org50705f9">2.1.1. Get</a></li>
-<li><a href="#org27a9754">2.1.2. Compute</a></li>
-<li><a href="#orgdc92cf5">2.1.3. Test</a></li>
+<li><a href="#orgfd5c1b0">2.1.1. Get</a></li>
+<li><a href="#orgd3756c9">2.1.2. Compute</a></li>
+<li><a href="#org41d28c7">2.1.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org7c40be0">2.2. Nucleus-nucleus rescaled distances</a>
+<li><a href="#orgc986994">2.2. Nucleus-nucleus rescaled distances</a>
 <ul>
-<li><a href="#org57662a2">2.2.1. Get</a></li>
-<li><a href="#orgdad1bc8">2.2.2. Compute</a></li>
-<li><a href="#org2e72c11">2.2.3. Test</a></li>
+<li><a href="#orgd2860a8">2.2.1. Get</a></li>
+<li><a href="#org6fa3d07">2.2.2. Compute</a></li>
+<li><a href="#org73af349">2.2.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orgae79d58">2.3. Nuclear repulsion energy</a>
+<li><a href="#orgfb8b64c">2.3. Nuclear repulsion energy</a>
 <ul>
-<li><a href="#org9d79b3f">2.3.1. Get</a></li>
-<li><a href="#orgf414fc0">2.3.2. Compute</a></li>
-<li><a href="#orgfa4f5cb">2.3.3. Test</a></li>
+<li><a href="#orga8ac5d9">2.3.1. Get</a></li>
+<li><a href="#org63fb207">2.3.2. Compute</a></li>
+<li><a href="#orgb1e9fee">2.3.3. Test</a></li>
 </ul>
 </li>
 </ul>
@@ -370,8 +370,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org3a335ff" class="outline-2">
-<h2 id="org3a335ff"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-orgcfcac43" class="outline-2">
+<h2 id="orgcfcac43"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following data stored in the context:
@@ -463,8 +463,8 @@ The following data stored in the context:
 </table>
 </div>
 
-<div id="outline-container-orgb442f28" class="outline-3">
-<h3 id="orgb442f28"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-org3555ba8" class="outline-3">
+<h3 id="org3555ba8"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_nucleus_struct</span> {
@@ -523,8 +523,8 @@ this mechanism.
 
 
 
-<div id="outline-container-org9a8aaad" class="outline-3">
-<h3 id="org9a8aaad"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-org215078b" class="outline-3">
+<h3 id="org215078b"><span class="section-number-3">1.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 When all the data relative to nuclei have been set, the following
@@ -538,8 +538,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org037d9c6" class="outline-3">
-<h3 id="org037d9c6"><span class="section-number-3">1.3</span> Initialization functions</h3>
+<div id="outline-container-org97d2655" class="outline-3">
+<h3 id="org97d2655"><span class="section-number-3">1.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 To set the data relative to the nuclei in the context, the
@@ -574,8 +574,8 @@ atoms. The coordinates should be given in atomic units.
 </div>
 </div>
 
-<div id="outline-container-org693c1de" class="outline-3">
-<h3 id="org693c1de"><span class="section-number-3">1.4</span> Test</h3>
+<div id="outline-container-org2bd3e2e" class="outline-3">
+<h3 id="org2bd3e2e"><span class="section-number-3">1.4</span> Test</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">nucl_num</span>      = chbrclf_nucl_num;
@@ -659,8 +659,8 @@ rc = qmckl_get_nucleus_charge(context, nucl_charge2);
 </div>
 </div>
 
-<div id="outline-container-org3bdac84" class="outline-2">
-<h2 id="org3bdac84"><span class="section-number-2">2</span> Computation</h2>
+<div id="outline-container-orge5d46f0" class="outline-2">
+<h2 id="orge5d46f0"><span class="section-number-2">2</span> Computation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The computed data is stored in the context so that it can be reused
@@ -673,12 +673,12 @@ current date is stored.
 </p>
 </div>
 
-<div id="outline-container-orge0267a9" class="outline-3">
-<h3 id="orge0267a9"><span class="section-number-3">2.1</span> Nucleus-nucleus distances</h3>
+<div id="outline-container-orgad9f077" class="outline-3">
+<h3 id="orgad9f077"><span class="section-number-3">2.1</span> Nucleus-nucleus distances</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-org50705f9" class="outline-4">
-<h4 id="org50705f9"><span class="section-number-4">2.1.1</span> Get</h4>
+<div id="outline-container-orgfd5c1b0" class="outline-4">
+<h4 id="orgfd5c1b0"><span class="section-number-4">2.1.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_nucleus_nn_distance</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">distance</span>);
@@ -687,10 +687,10 @@ current date is stored.
 </div>
 </div>
 
-<div id="outline-container-org27a9754" class="outline-4">
-<h4 id="org27a9754"><span class="section-number-4">2.1.2</span> Compute</h4>
+<div id="outline-container-orgd3756c9" class="outline-4">
+<h4 id="orgd3756c9"><span class="section-number-4">2.1.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-1-2">
-<table id="org9665fe5" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org5e6f8f6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -768,8 +768,8 @@ current date is stored.
 </div>
 </div>
 
-<div id="outline-container-orgdc92cf5" class="outline-4">
-<h4 id="orgdc92cf5"><span class="section-number-4">2.1.3</span> Test</h4>
+<div id="outline-container-org41d28c7" class="outline-4">
+<h4 id="org41d28c7"><span class="section-number-4">2.1.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -789,12 +789,12 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </div>
 
 
-<div id="outline-container-org7c40be0" class="outline-3">
-<h3 id="org7c40be0"><span class="section-number-3">2.2</span> Nucleus-nucleus rescaled distances</h3>
+<div id="outline-container-orgc986994" class="outline-3">
+<h3 id="orgc986994"><span class="section-number-3">2.2</span> Nucleus-nucleus rescaled distances</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-org57662a2" class="outline-4">
-<h4 id="org57662a2"><span class="section-number-4">2.2.1</span> Get</h4>
+<div id="outline-container-orgd2860a8" class="outline-4">
+<h4 id="orgd2860a8"><span class="section-number-4">2.2.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_nucleus_nn_distance_rescaled</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">distance_rescaled</span>);
@@ -803,10 +803,10 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </div>
 </div>
 
-<div id="outline-container-orgdad1bc8" class="outline-4">
-<h4 id="orgdad1bc8"><span class="section-number-4">2.2.2</span> Compute</h4>
+<div id="outline-container-org6fa3d07" class="outline-4">
+<h4 id="org6fa3d07"><span class="section-number-4">2.2.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-2-2">
-<table id="org579ea82" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org2de6598" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -885,8 +885,8 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </div>
 </div>
 
-<div id="outline-container-org2e72c11" class="outline-4">
-<h4 id="org2e72c11"><span class="section-number-4">2.2.3</span> Test</h4>
+<div id="outline-container-org73af349" class="outline-4">
+<h4 id="org73af349"><span class="section-number-4">2.2.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -906,8 +906,8 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </div>
 </div>
 
-<div id="outline-container-orgae79d58" class="outline-3">
-<h3 id="orgae79d58"><span class="section-number-3">2.3</span> Nuclear repulsion energy</h3>
+<div id="outline-container-orgfb8b64c" class="outline-3">
+<h3 id="orgfb8b64c"><span class="section-number-3">2.3</span> Nuclear repulsion energy</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 \[
@@ -916,8 +916,8 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </p>
 </div>
 
-<div id="outline-container-org9d79b3f" class="outline-4">
-<h4 id="org9d79b3f"><span class="section-number-4">2.3.1</span> Get</h4>
+<div id="outline-container-orga8ac5d9" class="outline-4">
+<h4 id="orga8ac5d9"><span class="section-number-4">2.3.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_nucleus_repulsion</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">energy</span>);
@@ -926,10 +926,10 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </div>
 </div>
 
-<div id="outline-container-orgf414fc0" class="outline-4">
-<h4 id="orgf414fc0"><span class="section-number-4">2.3.2</span> Compute</h4>
+<div id="outline-container-org63fb207" class="outline-4">
+<h4 id="org63fb207"><span class="section-number-4">2.3.2</span> Compute</h4>
 <div class="outline-text-4" id="text-2-3-2">
-<table id="org154b933" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgc85f1f3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1017,8 +1017,8 @@ rc = qmckl_get_nucleus_nn_distance(context, distance);
 </div>
 </div>
 
-<div id="outline-container-orgfa4f5cb" class="outline-4">
-<h4 id="orgfa4f5cb"><span class="section-number-4">2.3.3</span> Test</h4>
+<div id="outline-container-orgb1e9fee" class="outline-4">
+<h4 id="orgb1e9fee"><span class="section-number-4">2.3.3</span> Test</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -1038,7 +1038,7 @@ rc = qmckl_get_nucleus_repulsion(context, &amp;rep);
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2021-08-19 Thu 10:50</p>
+<p class="date">Created: 2021-08-20 Fri 15:14</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
