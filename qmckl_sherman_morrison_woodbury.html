@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-10-13 Wed 13:02 -->
+<!-- 2022-03-21 Mon 14:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sherman-Morrison-Woodbury</title>
@@ -333,86 +333,86 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7e91302">1. Headers</a></li>
-<li><a href="#org39f29dd">2. Naïve Sherman-Morrison</a>
+<li><a href="#orgef08181">1. Headers</a></li>
+<li><a href="#org61da813">2. Naïve Sherman-Morrison</a>
 <ul>
-<li><a href="#org2223572">2.1. <code>qmckl_sherman_morrison</code></a>
+<li><a href="#org646bdb4">2.1. <code>qmckl_sherman_morrison</code></a>
 <ul>
-<li><a href="#orgbca9138">2.1.1. Requirements</a></li>
-<li><a href="#orgc97ecc8">2.1.2. C header</a></li>
-<li><a href="#org9ab446c">2.1.3. C source</a></li>
-<li><a href="#orge0be0ad">2.1.4. Performance</a></li>
+<li><a href="#org842abd3">2.1.1. Requirements</a></li>
+<li><a href="#org7263272">2.1.2. C header</a></li>
+<li><a href="#org32ba658">2.1.3. C source</a></li>
+<li><a href="#orgdb87ebf">2.1.4. Performance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org369baac">3. Woodbury 2x2</a>
+<li><a href="#org0568b5f">3. Woodbury 2x2</a>
 <ul>
-<li><a href="#org1b4972c">3.1. <code>qmckl_woodbury_2</code></a>
+<li><a href="#orgbed166b">3.1. <code>qmckl_woodbury_2</code></a>
 <ul>
-<li><a href="#org6c117bc">3.1.1. Requirements</a></li>
-<li><a href="#org77661b0">3.1.2. C header</a></li>
-<li><a href="#org8c728e6">3.1.3. C source</a></li>
-<li><a href="#orgc58612b">3.1.4. Performance</a></li>
+<li><a href="#org802a26b">3.1.1. Requirements</a></li>
+<li><a href="#org438f6c1">3.1.2. C header</a></li>
+<li><a href="#orgf8f39ee">3.1.3. C source</a></li>
+<li><a href="#org40e8489">3.1.4. Performance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org4f26bff">4. Woodbury 3x3</a>
+<li><a href="#orgab4aa97">4. Woodbury 3x3</a>
 <ul>
-<li><a href="#org608e1ee">4.1. <code>qmckl_woodbury_3</code></a>
+<li><a href="#orgc54a0ef">4.1. <code>qmckl_woodbury_3</code></a>
 <ul>
-<li><a href="#org6af88dd">4.1.1. Requirements</a></li>
-<li><a href="#org4291554">4.1.2. C header</a></li>
-<li><a href="#orgeb5abfd">4.1.3. C source</a></li>
-<li><a href="#orgcbb2402">4.1.4. Performance&#x2026;</a></li>
+<li><a href="#org924473e">4.1.1. Requirements</a></li>
+<li><a href="#org401c159">4.1.2. C header</a></li>
+<li><a href="#org09e5f86">4.1.3. C source</a></li>
+<li><a href="#orgef74400">4.1.4. Performance&#x2026;</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org39300e3">5. Sherman-Morrison with update splitting</a>
+<li><a href="#orgae14e84">5. Sherman-Morrison with update splitting</a>
 <ul>
-<li><a href="#org37048fa">5.1. <code>qmckl_sherman_morrison_splitting</code></a>
+<li><a href="#orge4f8497">5.1. <code>qmckl_sherman_morrison_splitting</code></a>
 <ul>
-<li><a href="#org88c0c5f">5.1.1. Requirements</a></li>
-<li><a href="#orgbf6e964">5.1.2. C header</a></li>
-<li><a href="#org277a637">5.1.3. C source</a></li>
-<li><a href="#org7932bca">5.1.4. Performance&#x2026;</a></li>
+<li><a href="#orgcc1c814">5.1.1. Requirements</a></li>
+<li><a href="#org8c5d657">5.1.2. C header</a></li>
+<li><a href="#org1b7a666">5.1.3. C source</a></li>
+<li><a href="#orgfb7bdcf">5.1.4. Performance&#x2026;</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org6afc91c">6. Woodbury 3x3 and 2x2 with Sherman-Morrison and update splitting</a>
+<li><a href="#orgaaba685">6. Woodbury 3x3 and 2x2 with Sherman-Morrison and update splitting</a>
 <ul>
-<li><a href="#orga14fa09">6.1. <code>qmckl_sherman_morrison_smw32s</code></a>
+<li><a href="#org3e4902e">6.1. <code>qmckl_sherman_morrison_smw32s</code></a>
 <ul>
-<li><a href="#org7782021">6.1.1. Requirements</a></li>
-<li><a href="#orgaa93c6b">6.1.2. C header</a></li>
-<li><a href="#org314e855">6.1.3. C source</a></li>
-<li><a href="#org4e6e0a4">6.1.4. Performance&#x2026;</a></li>
+<li><a href="#org900abfc">6.1.1. Requirements</a></li>
+<li><a href="#orgc3b446f">6.1.2. C header</a></li>
+<li><a href="#orgab34f6e">6.1.3. C source</a></li>
+<li><a href="#org19fd699">6.1.4. Performance&#x2026;</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org228c935">7. Helper Functions</a>
+<li><a href="#orge3a2609">7. Helper Functions</a>
 <ul>
-<li><a href="#org23c398a">7.1. <code>qmckl_slagel_splitting</code></a>
+<li><a href="#org8a9457e">7.1. <code>qmckl_slagel_splitting</code></a>
 <ul>
-<li><a href="#org00eeb15">7.1.1. Requirements</a></li>
-<li><a href="#orgc272a33">7.1.2. C header</a></li>
-<li><a href="#org39e9a48">7.1.3. C source</a></li>
-<li><a href="#orgacdee0d">7.1.4. Performance</a></li>
+<li><a href="#org25adc38">7.1.1. Requirements</a></li>
+<li><a href="#org71bfbf0">7.1.2. C header</a></li>
+<li><a href="#org462150f">7.1.3. C source</a></li>
+<li><a href="#org7496b9f">7.1.4. Performance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgb3297b0">8. End of files</a></li>
+<li><a href="#org82a47ac">8. End of files</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org7e91302" class="outline-2">
-<h2 id="org7e91302"><span class="section-number-2">1</span> Headers</h2>
+<div id="outline-container-orgef08181" class="outline-2">
+<h2 id="orgef08181"><span class="section-number-2">1</span> Headers</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
@@ -431,12 +431,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org39f29dd" class="outline-2">
-<h2 id="org39f29dd"><span class="section-number-2">2</span> Naïve Sherman-Morrison</h2>
+<div id="outline-container-org61da813" class="outline-2">
+<h2 id="org61da813"><span class="section-number-2">2</span> Naïve Sherman-Morrison</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org2223572" class="outline-3">
-<h3 id="org2223572"><span class="section-number-3">2.1</span> <code>qmckl_sherman_morrison</code></h3>
+<div id="outline-container-org646bdb4" class="outline-3">
+<h3 id="org646bdb4"><span class="section-number-3">2.1</span> <code>qmckl_sherman_morrison</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 This is the simplest of the available Sherman-Morrison-Woodbury kernels. It applies rank-1 updates one by one in
@@ -478,7 +478,7 @@ If the determinant of the Slater-matrix is passed, it will be updated to the det
 from applying the updates to the original matrix.
 </p>
 
-<table id="org801a35b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3c8b7f0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -500,9 +500,16 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">uint64<sub>t</sub></td>
-<td class="org-left">Dim</td>
+<td class="org-left">LDS</td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of Slater<sub>inv</sub></td>
+</tr>
+
+<tr>
+<td class="org-left">uint64<sub>t</sub></td>
+<td class="org-left">Dim</td>
+<td class="org-left">in</td>
+<td class="org-left">Dimension of Slater<sub>inv</sub></td>
 </tr>
 
 <tr>
@@ -535,7 +542,7 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">Slater<sub>inv</sub>[Dim*Dim]</td>
+<td class="org-left">Slater<sub>inv</sub>[LDS*Dim]</td>
 <td class="org-left">inout</td>
 <td class="org-left">Array containing the inverse of a Slater-matrix</td>
 </tr>
@@ -550,11 +557,12 @@ from applying the updates to the original matrix.
 </table>
 </div>
 
-<div id="outline-container-orgbca9138" class="outline-4">
-<h4 id="orgbca9138"><span class="section-number-4">2.1.1</span> Requirements</h4>
+<div id="outline-container-org842abd3" class="outline-4">
+<h4 id="org842abd3"><span class="section-number-4">2.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
+<li><code>LDS &gt;= 2</code></li>
 <li><code>Dim &gt;= 2</code></li>
 <li><code>N_updates &gt;= 1</code></li>
 <li><code>Updates</code> is allocated with \(N_updates \times Dim\) elements</li>
@@ -565,26 +573,27 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgc97ecc8" class="outline-4">
-<h4 id="orgc97ecc8"><span class="section-number-4">2.1.2</span> C header</h4>
+<div id="outline-container-org7263272" class="outline-4">
+<h4 id="org7263272"><span class="section-number-4">2.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_sherman_morrison</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">breakdown</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Slater_inv</span>,
-      <span style="color: #228b22;">double</span>** <span style="color: #a0522d;">determinant</span> ); 
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">context</span> <span style="color: #a0522d;">qmckl_context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">LDS</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Dim</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">N_updates</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">breakdown</span> <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">Slater_inv</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">determinant</span>* <span style="color: #228b22;">double</span>* ); 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org9ab446c" class="outline-4">
-<h4 id="org9ab446c"><span class="section-number-4">2.1.3</span> C source</h4>
+<div id="outline-container-org32ba658" class="outline-4">
+<h4 id="org32ba658"><span class="section-number-4">2.1.3</span> C source</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdbool.h&gt;</span>
@@ -592,6 +601,7 @@ from applying the updates to the original matrix.
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_sherman_morrison</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">LDS</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
@@ -614,7 +624,7 @@ from applying the updates to the original matrix.
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; Dim; i++) {
       C[i] = 0;
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-        C[i] += Slater_inv[i * Dim + j] * Updates[l * Dim + j];
+        C[i] += Slater_inv[i * LDS + j] * Updates[l * Dim + j];
       }
     }
 
@@ -632,14 +642,14 @@ from applying the updates to the original matrix.
 
     // <span style="color: #b22222;">D = v^T x A^{-1}</span>
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-      D[j] = Slater_inv[(Updates_index[l] - 1) * Dim + j];
+      D[j] = Slater_inv[(Updates_index[l] - 1) * LDS + j];
     }
 
     // <span style="color: #b22222;">A^{-1} = A^{-1} - C x D / den</span>
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; Dim; i++) {
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
         <span style="color: #228b22;">double</span> <span style="color: #a0522d;">update</span> = C[i] * D[j] * iden;
-        Slater_inv[i * Dim + j] -= update;
+        Slater_inv[i * LDS + j] -= update;
       }
     }
 
@@ -653,8 +663,8 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orge0be0ad" class="outline-4">
-<h4 id="orge0be0ad"><span class="section-number-4">2.1.4</span> Performance</h4>
+<div id="outline-container-orgdb87ebf" class="outline-4">
+<h4 id="orgdb87ebf"><span class="section-number-4">2.1.4</span> Performance</h4>
 <div class="outline-text-4" id="text-2-1-4">
 <p>
 This function performs best when there is only 1 rank-1 update in the update cycle. It is not useful to
@@ -666,12 +676,12 @@ where applying the update causes singular behaviour.
 </div>
 </div>
 
-<div id="outline-container-org369baac" class="outline-2">
-<h2 id="org369baac"><span class="section-number-2">3</span> Woodbury 2x2</h2>
+<div id="outline-container-org0568b5f" class="outline-2">
+<h2 id="org0568b5f"><span class="section-number-2">3</span> Woodbury 2x2</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org1b4972c" class="outline-3">
-<h3 id="org1b4972c"><span class="section-number-3">3.1</span> <code>qmckl_woodbury_2</code></h3>
+<div id="outline-container-orgbed166b" class="outline-3">
+<h3 id="orgbed166b"><span class="section-number-3">3.1</span> <code>qmckl_woodbury_2</code></h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 The Woodbury 2x2 kernel. It is used to apply two rank-1 updates at once. The formula used in
@@ -695,7 +705,7 @@ from applying the updates to the original matrix.
 
 
 
-<table id="orgd52cb73" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org96ab47d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -717,9 +727,16 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">uint64<sub>t</sub></td>
-<td class="org-left">Dim</td>
+<td class="org-left">LDS</td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of Slater<sub>inv</sub></td>
+</tr>
+
+<tr>
+<td class="org-left">uint64<sub>t</sub></td>
+<td class="org-left">Dim</td>
+<td class="org-left">in</td>
+<td class="org-left">Dimension of Slater<sub>inv</sub></td>
 </tr>
 
 <tr>
@@ -745,7 +762,7 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">Slater<sub>inv</sub>[Dim*Dim]</td>
+<td class="org-left">Slater<sub>inv</sub>[LDS*Dim]</td>
 <td class="org-left">inout</td>
 <td class="org-left">Array containing the inverse of a Slater-matrix</td>
 </tr>
@@ -760,11 +777,12 @@ from applying the updates to the original matrix.
 </table>
 </div>
 
-<div id="outline-container-org6c117bc" class="outline-4">
-<h4 id="org6c117bc"><span class="section-number-4">3.1.1</span> Requirements</h4>
+<div id="outline-container-org802a26b" class="outline-4">
+<h4 id="org802a26b"><span class="section-number-4">3.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>qmckl_null_context</code></li>
+<li><code>LDS &gt;= 2</code></li>
 <li><code>Dim &gt;= 2</code></li>
 <li><code>Updates</code> is allocated with \(2 \times Dim\) elements</li>
 <li><code>Updates_index</code> is allocated with \(2\) elements</li>
@@ -774,25 +792,26 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-org77661b0" class="outline-4">
-<h4 id="org77661b0"><span class="section-number-4">3.1.2</span> C header</h4>
+<div id="outline-container-org438f6c1" class="outline-4">
+<h4 id="org438f6c1"><span class="section-number-4">3.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_woodbury_2</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">breakdown</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Slater_inv</span>,
-      <span style="color: #228b22;">double</span>** <span style="color: #a0522d;">determinant</span> ); 
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">context</span> <span style="color: #a0522d;">qmckl_context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">LDS</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Dim</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">breakdown</span> <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">Slater_inv</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">determinant</span>* <span style="color: #228b22;">double</span>* ); 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org8c728e6" class="outline-4">
-<h4 id="org8c728e6"><span class="section-number-4">3.1.3</span> C source</h4>
+<div id="outline-container-orgf8f39ee" class="outline-4">
+<h4 id="orgf8f39ee"><span class="section-number-4">3.1.3</span> C source</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdbool.h&gt;</span>
@@ -800,6 +819,7 @@ from applying the updates to the original matrix.
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_woodbury_2</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">LDS</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
@@ -826,7 +846,7 @@ from applying the updates to the original matrix.
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; 2; j++) {
       C[i * 2 + j] = 0;
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">k</span> = 0; k &lt; Dim; k++) {
-        C[i * 2 + j] += Slater_inv[i * Dim + k] * Updates[Dim * j + k];
+        C[i * 2 + j] += Slater_inv[i * LDS + k] * Updates[Dim * j + k];
       }
     }
   }
@@ -858,16 +878,16 @@ from applying the updates to the original matrix.
   <span style="color: #228b22;">double</span> <span style="color: #a0522d;">tmp</span>[2 * Dim];
   <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; 2; i++) {
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-      tmp[i * Dim + j] = Binv[i * 2] * Slater_inv[row1 * Dim + j];
-      tmp[i * Dim + j] += Binv[i * 2 + 1] * Slater_inv[row2 * Dim + j];
+      tmp[i * Dim + j] = Binv[i * 2] * Slater_inv[row1 * LDS + j];
+      tmp[i * Dim + j] += Binv[i * 2 + 1] * Slater_inv[row2 * LDS + j];
     }
   }
 
   // <span style="color: #b22222;">Compute (S + U V)^{-1} = S^{-1} - C x tmp</span>
   <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; Dim; i++) {
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-      Slater_inv[i * Dim + j] -= C[i * 2] * tmp[j];
-      Slater_inv[i * Dim + j] -= C[i * 2 + 1] * tmp[Dim + j];
+      Slater_inv[i * LDS + j] -= C[i * 2] * tmp[j];
+      Slater_inv[i * LDS + j] -= C[i * 2 + 1] * tmp[Dim + j];
     }
   }
 
@@ -878,8 +898,8 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgc58612b" class="outline-4">
-<h4 id="orgc58612b"><span class="section-number-4">3.1.4</span> Performance</h4>
+<div id="outline-container-org40e8489" class="outline-4">
+<h4 id="org40e8489"><span class="section-number-4">3.1.4</span> Performance</h4>
 <div class="outline-text-4" id="text-3-1-4">
 <p>
 This function is most efficient when used in cases where there are only 2 rank-1 updates and
@@ -890,12 +910,12 @@ it is sure they will not result in a singular matrix.
 </div>
 </div>
 
-<div id="outline-container-org4f26bff" class="outline-2">
-<h2 id="org4f26bff"><span class="section-number-2">4</span> Woodbury 3x3</h2>
+<div id="outline-container-orgab4aa97" class="outline-2">
+<h2 id="orgab4aa97"><span class="section-number-2">4</span> Woodbury 3x3</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org608e1ee" class="outline-3">
-<h3 id="org608e1ee"><span class="section-number-3">4.1</span> <code>qmckl_woodbury_3</code></h3>
+<div id="outline-container-orgc54a0ef" class="outline-3">
+<h3 id="orgc54a0ef"><span class="section-number-3">4.1</span> <code>qmckl_woodbury_3</code></h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 The 3x3 version of the Woodbury 2x2 kernel. It is used to apply three
@@ -916,7 +936,7 @@ from applying the updates to the original matrix.
 
 
 
-<table id="orgf2e3217" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org8280fa4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -938,9 +958,16 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">uint64<sub>t</sub></td>
-<td class="org-left">Dim</td>
+<td class="org-left">LDS</td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of Slater<sub>inv</sub></td>
+</tr>
+
+<tr>
+<td class="org-left">uint64<sub>t</sub></td>
+<td class="org-left">Dim</td>
+<td class="org-left">in</td>
+<td class="org-left">Dimension of Slater<sub>inv</sub></td>
 </tr>
 
 <tr>
@@ -966,7 +993,7 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">Slater<sub>inv</sub>[Dim*Dim]</td>
+<td class="org-left">Slater<sub>inv</sub>[LDS*Dim]</td>
 <td class="org-left">inout</td>
 <td class="org-left">Array containing the inverse of a Slater-matrix</td>
 </tr>
@@ -981,11 +1008,12 @@ from applying the updates to the original matrix.
 </table>
 </div>
 
-<div id="outline-container-org6af88dd" class="outline-4">
-<h4 id="org6af88dd"><span class="section-number-4">4.1.1</span> Requirements</h4>
+<div id="outline-container-org924473e" class="outline-4">
+<h4 id="org924473e"><span class="section-number-4">4.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>qmckl_null_context</code></li>
+<li><code>LDS &gt;= 2</code></li>
 <li><code>Dim &gt;= 2</code></li>
 <li><code>Updates</code> is allocated with \(3 \times Dim\) elements</li>
 <li><code>Updates_index</code> is allocated with \(3\) elements</li>
@@ -995,25 +1023,26 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-org4291554" class="outline-4">
-<h4 id="org4291554"><span class="section-number-4">4.1.2</span> C header</h4>
+<div id="outline-container-org401c159" class="outline-4">
+<h4 id="org401c159"><span class="section-number-4">4.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_woodbury_3</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">breakdown</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Slater_inv</span>,
-      <span style="color: #228b22;">double</span>** <span style="color: #a0522d;">determinant</span> ); 
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">context</span> <span style="color: #a0522d;">qmckl_context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">LDS</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Dim</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">breakdown</span> <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">Slater_inv</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">determinant</span>* <span style="color: #228b22;">double</span>* ); 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgeb5abfd" class="outline-4">
-<h4 id="orgeb5abfd"><span class="section-number-4">4.1.3</span> C source</h4>
+<div id="outline-container-org09e5f86" class="outline-4">
+<h4 id="org09e5f86"><span class="section-number-4">4.1.3</span> C source</h4>
 <div class="outline-text-4" id="text-4-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdbool.h&gt;</span>
@@ -1021,6 +1050,7 @@ from applying the updates to the original matrix.
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_woodbury_3</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">LDS</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
@@ -1048,7 +1078,7 @@ from applying the updates to the original matrix.
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; 3; j++) {
       C[i * 3 + j] = 0;
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">k</span> = 0; k &lt; Dim; k++) {
-        C[i * 3 + j] += Slater_inv[i * Dim + k] * Updates[Dim * j + k];
+        C[i * 3 + j] += Slater_inv[i * LDS + k] * Updates[Dim * j + k];
       }
     }
   }
@@ -1092,18 +1122,18 @@ from applying the updates to the original matrix.
   <span style="color: #228b22;">double</span> <span style="color: #a0522d;">tmp</span>[3 * Dim];
   <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; 3; i++) {
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-      tmp[i * Dim + j] = Binv[i * 3] * Slater_inv[row1 * Dim + j];
-      tmp[i * Dim + j] += Binv[i * 3 + 1] * Slater_inv[row2 * Dim + j];
-      tmp[i * Dim + j] += Binv[i * 3 + 2] * Slater_inv[row3 * Dim + j];
+      tmp[i * Dim + j] = Binv[i * 3] * Slater_inv[row1 * LDS + j];
+      tmp[i * Dim + j] += Binv[i * 3 + 1] * Slater_inv[row2 * LDS + j];
+      tmp[i * Dim + j] += Binv[i * 3 + 2] * Slater_inv[row3 * LDS + j];
     }
   }
 
   // <span style="color: #b22222;">Compute (S + U V)^{-1} = S^{-1} - C x tmp</span>
   <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; Dim; i++) {
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-      Slater_inv[i * Dim + j] -= C[i * 3] * tmp[j];
-      Slater_inv[i * Dim + j] -= C[i * 3 + 1] * tmp[Dim + j];
-      Slater_inv[i * Dim + j] -= C[i * 3 + 2] * tmp[2 * Dim + j];
+      Slater_inv[i * LDS + j] -= C[i * 3] * tmp[j];
+      Slater_inv[i * LDS + j] -= C[i * 3 + 1] * tmp[Dim + j];
+      Slater_inv[i * LDS + j] -= C[i * 3 + 2] * tmp[2 * Dim + j];
     }
   }
 
@@ -1114,8 +1144,8 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgcbb2402" class="outline-4">
-<h4 id="orgcbb2402"><span class="section-number-4">4.1.4</span> Performance&#x2026;</h4>
+<div id="outline-container-orgef74400" class="outline-4">
+<h4 id="orgef74400"><span class="section-number-4">4.1.4</span> Performance&#x2026;</h4>
 <div class="outline-text-4" id="text-4-1-4">
 <p>
 This function is most efficient when used in cases where there are only 3 rank-1 updates and
@@ -1126,12 +1156,12 @@ it is sure they will not result in a singular matrix.
 </div>
 </div>
 
-<div id="outline-container-org39300e3" class="outline-2">
-<h2 id="org39300e3"><span class="section-number-2">5</span> Sherman-Morrison with update splitting</h2>
+<div id="outline-container-orgae14e84" class="outline-2">
+<h2 id="orgae14e84"><span class="section-number-2">5</span> Sherman-Morrison with update splitting</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org37048fa" class="outline-3">
-<h3 id="org37048fa"><span class="section-number-3">5.1</span> <code>qmckl_sherman_morrison_splitting</code></h3>
+<div id="outline-container-orge4f8497" class="outline-3">
+<h3 id="orge4f8497"><span class="section-number-3">5.1</span> <code>qmckl_sherman_morrison_splitting</code></h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 This is a variation on the 'Naive' Sherman-Morrison kernel. Whenever the denominator \(1+v_j^T S^{-1} u_j\) in
@@ -1153,7 +1183,7 @@ If the determinant of the Slater-matrix is passed, it will be updated to the det
 from applying the updates to the original matrix.
 </p>
 
-<table id="org4c88f94" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org920556f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1175,9 +1205,16 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">uint64<sub>t</sub></td>
-<td class="org-left">Dim</td>
+<td class="org-left">LDS</td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of Slater<sub>inv</sub></td>
+</tr>
+
+<tr>
+<td class="org-left">uint64<sub>t</sub></td>
+<td class="org-left">Dim</td>
+<td class="org-left">in</td>
+<td class="org-left">Dimension of Slater<sub>inv</sub></td>
 </tr>
 
 <tr>
@@ -1210,7 +1247,7 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">Slater<sub>inv</sub>[Dim*Dim]</td>
+<td class="org-left">Slater<sub>inv</sub>[LDS*Dim]</td>
 <td class="org-left">inout</td>
 <td class="org-left">Array containing the inverse of a Slater-matrix</td>
 </tr>
@@ -1230,11 +1267,12 @@ from applying the updates to the original matrix.
 </div>
 
 
-<div id="outline-container-org88c0c5f" class="outline-4">
-<h4 id="org88c0c5f"><span class="section-number-4">5.1.1</span> Requirements</h4>
+<div id="outline-container-orgcc1c814" class="outline-4">
+<h4 id="orgcc1c814"><span class="section-number-4">5.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
+<li><code>LDS &gt;= 2</code></li>
 <li><code>Dim &gt;= 2</code></li>
 <li><code>N_updates &gt;= 1</code></li>
 <li><code>Updates</code> is allocated with \(N_updates \times Dim\) elements</li>
@@ -1245,32 +1283,34 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgbf6e964" class="outline-4">
-<h4 id="orgbf6e964"><span class="section-number-4">5.1.2</span> C header</h4>
+<div id="outline-container-org8c5d657" class="outline-4">
+<h4 id="org8c5d657"><span class="section-number-4">5.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_sherman_morrison_splitting</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">breakdown</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Slater_inv</span>,
-      <span style="color: #228b22;">double</span>** <span style="color: #a0522d;">determinant</span> ); 
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">context</span> <span style="color: #a0522d;">qmckl_context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">LDS</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Dim</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">N_updates</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">breakdown</span> <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">Slater_inv</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">determinant</span>* <span style="color: #228b22;">double</span>* ); 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org277a637" class="outline-4">
-<h4 id="org277a637"><span class="section-number-4">5.1.3</span> C source</h4>
+<div id="outline-container-org1b7a666" class="outline-4">
+<h4 id="org1b7a666"><span class="section-number-4">5.1.3</span> C source</h4>
 <div class="outline-text-4" id="text-5-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdbool.h&gt;</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_sherman_morrison_splitting</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">LDS</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
@@ -1287,11 +1327,11 @@ from applying the updates to the original matrix.
   <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">later_index</span>[N_updates];
   <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">later</span> = 0;
 
-  (<span style="color: #228b22;">void</span>) qmckl_slagel_splitting(Dim, N_updates, Updates, Updates_index,
+  (<span style="color: #228b22;">void</span>) qmckl_slagel_splitting(LDS, Dim, N_updates, Updates, Updates_index,
                             breakdown, Slater_inv, later_updates, later_index, &amp;later, determinant);
 
   <span style="color: #a020f0;">if</span> (later &gt; 0) {
-    (<span style="color: #228b22;">void</span>) qmckl_sherman_morrison_splitting(context, Dim, later,
+    (<span style="color: #228b22;">void</span>) qmckl_sherman_morrison_splitting(context, LDS, Dim, later,
                             later_updates, later_index, breakdown, Slater_inv, determinant);
   }
 
@@ -1303,8 +1343,8 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-org7932bca" class="outline-4">
-<h4 id="org7932bca"><span class="section-number-4">5.1.4</span> Performance&#x2026;</h4>
+<div id="outline-container-orgfb7bdcf" class="outline-4">
+<h4 id="orgfb7bdcf"><span class="section-number-4">5.1.4</span> Performance&#x2026;</h4>
 <div class="outline-text-4" id="text-5-1-4">
 <p>
 This kernel performs best when there are 2 or more rank-1 update cycles and fail-rate is high.
@@ -1314,12 +1354,12 @@ This kernel performs best when there are 2 or more rank-1 update cycles and fail
 </div>
 </div>
 
-<div id="outline-container-org6afc91c" class="outline-2">
-<h2 id="org6afc91c"><span class="section-number-2">6</span> Woodbury 3x3 and 2x2 with Sherman-Morrison and update splitting</h2>
+<div id="outline-container-orgaaba685" class="outline-2">
+<h2 id="orgaaba685"><span class="section-number-2">6</span> Woodbury 3x3 and 2x2 with Sherman-Morrison and update splitting</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orga14fa09" class="outline-3">
-<h3 id="orga14fa09"><span class="section-number-3">6.1</span> <code>qmckl_sherman_morrison_smw32s</code></h3>
+<div id="outline-container-org3e4902e" class="outline-3">
+<h3 id="org3e4902e"><span class="section-number-3">6.1</span> <code>qmckl_sherman_morrison_smw32s</code></h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 The Woodbury 3x3 and 2x2 kernel with Sherman-Morrison and update splitting combines the low-level Woodbury 3x3 kernel,
@@ -1334,7 +1374,7 @@ If the determinant of the Slater-matrix is passed, it will be updated to the det
 from applying the updates to the original matrix.
 </p>
 
-<table id="orgf50af87" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org8fbe70c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1356,9 +1396,16 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">uint64<sub>t</sub></td>
-<td class="org-left">Dim</td>
+<td class="org-left">LDS</td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of Slater<sub>inv</sub></td>
+</tr>
+
+<tr>
+<td class="org-left">uint64<sub>t</sub></td>
+<td class="org-left">Dim</td>
+<td class="org-left">in</td>
+<td class="org-left">Dimension of Slater<sub>inv</sub></td>
 </tr>
 
 <tr>
@@ -1391,7 +1438,7 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">Slater<sub>inv</sub>[Dim*Dim]</td>
+<td class="org-left">Slater<sub>inv</sub>[LDS*Dim]</td>
 <td class="org-left">inout</td>
 <td class="org-left">Array containing the inverse of a Slater-matrix</td>
 </tr>
@@ -1407,11 +1454,12 @@ from applying the updates to the original matrix.
 </div>
 
 
-<div id="outline-container-org7782021" class="outline-4">
-<h4 id="org7782021"><span class="section-number-4">6.1.1</span> Requirements</h4>
+<div id="outline-container-org900abfc" class="outline-4">
+<h4 id="org900abfc"><span class="section-number-4">6.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-6-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
+<li><code>LDS &gt;= 2</code></li>
 <li><code>Dim &gt;= 2</code></li>
 <li><code>N_updates &gt;= 1</code></li>
 <li><code>Updates</code> is allocated with \(N_updates \times Dim\) elements</li>
@@ -1422,32 +1470,34 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgaa93c6b" class="outline-4">
-<h4 id="orgaa93c6b"><span class="section-number-4">6.1.2</span> C header</h4>
+<div id="outline-container-orgc3b446f" class="outline-4">
+<h4 id="orgc3b446f"><span class="section-number-4">6.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-6-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_sherman_morrison_smw32s</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">breakdown</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Slater_inv</span>,
-      <span style="color: #228b22;">double</span>** <span style="color: #a0522d;">determinant</span> ); 
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">context</span> <span style="color: #a0522d;">qmckl_context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">LDS</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Dim</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">N_updates</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">breakdown</span> <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">Slater_inv</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">determinant</span>* <span style="color: #228b22;">double</span>* ); 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org314e855" class="outline-4">
-<h4 id="org314e855"><span class="section-number-4">6.1.3</span> C source</h4>
+<div id="outline-container-orgab34f6e" class="outline-4">
+<h4 id="orgab34f6e"><span class="section-number-4">6.1.3</span> C source</h4>
 <div class="outline-text-4" id="text-6-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdbool.h&gt;</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_sherman_morrison_smw32s</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">LDS</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
@@ -1475,10 +1525,10 @@ from applying the updates to the original matrix.
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; n_of_3blocks; i++) {
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> *<span style="color: #a0522d;">Updates_3block</span> = &amp;Updates[i * length_3block];
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> *<span style="color: #a0522d;">Updates_index_3block</span> = &amp;Updates_index[i * 3];
-      rc = qmckl_woodbury_3(context, Dim, Updates_3block, Updates_index_3block, breakdown, Slater_inv, determinant);
+      rc = qmckl_woodbury_3(context, LDS, Dim, Updates_3block, Updates_index_3block, breakdown, Slater_inv, determinant);
       <span style="color: #a020f0;">if</span> (rc != 0) { // <span style="color: #b22222;">Send the entire block to slagel_splitting</span>
         <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">l</span> = 0;
-        rc = qmckl_slagel_splitting(Dim, 3, Updates_3block, Updates_index_3block,
+        rc = qmckl_slagel_splitting(LDS, Dim, 3, Updates_3block, Updates_index_3block,
                 breakdown, Slater_inv, later_updates + (Dim * later), later_index + later, &amp;l, determinant);
         later = later + l;
       }
@@ -1489,10 +1539,10 @@ from applying the updates to the original matrix.
   <span style="color: #a020f0;">if</span> (remainder == 2) {
     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> *<span style="color: #a0522d;">Updates_2block</span> = &amp;Updates[n_of_3blocks * length_3block];
     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> *<span style="color: #a0522d;">Updates_index_2block</span> = &amp;Updates_index[3 * n_of_3blocks];
-    rc = qmckl_woodbury_2(context, Dim, Updates_2block, Updates_index_2block, breakdown, Slater_inv, determinant);
+    rc = qmckl_woodbury_2(context, LDS, Dim, Updates_2block, Updates_index_2block, breakdown, Slater_inv, determinant);
     <span style="color: #a020f0;">if</span> (rc != 0) { // <span style="color: #b22222;">Send the entire block to slagel_splitting</span>
       <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">l</span> = 0;
-      (<span style="color: #228b22;">void</span>) qmckl_slagel_splitting(Dim, 2, Updates_2block, Updates_index_2block,
+      (<span style="color: #228b22;">void</span>) qmckl_slagel_splitting(LDS, Dim, 2, Updates_2block, Updates_index_2block,
               breakdown, Slater_inv, later_updates + (Dim * later), later_index + later, &amp;l, determinant);
       later = later + l;
     }
@@ -1502,13 +1552,13 @@ from applying the updates to the original matrix.
     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> *<span style="color: #a0522d;">Updates_1block</span> = &amp;Updates[n_of_3blocks * length_3block];
     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> *<span style="color: #a0522d;">Updates_index_1block</span> = &amp;Updates_index[3 * n_of_3blocks];
     <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">l</span> = 0;
-    (<span style="color: #228b22;">void</span>) qmckl_slagel_splitting(Dim, 1, Updates_1block, Updates_index_1block,
+    (<span style="color: #228b22;">void</span>) qmckl_slagel_splitting(LDS, Dim, 1, Updates_1block, Updates_index_1block,
             breakdown, Slater_inv, later_updates + (Dim * later), later_index + later, &amp;l, determinant);
     later = later + l;
   }
 
   <span style="color: #a020f0;">if</span> (later &gt; 0) {
-    (<span style="color: #228b22;">void</span>) qmckl_sherman_morrison_splitting(context, Dim, later, later_updates, later_index, breakdown, Slater_inv, determinant);
+    (<span style="color: #228b22;">void</span>) qmckl_sherman_morrison_splitting(context, LDS, Dim, later, later_updates, later_index, breakdown, Slater_inv, determinant);
   }
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
 }
@@ -1518,8 +1568,8 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-org4e6e0a4" class="outline-4">
-<h4 id="org4e6e0a4"><span class="section-number-4">6.1.4</span> Performance&#x2026;</h4>
+<div id="outline-container-org19fd699" class="outline-4">
+<h4 id="org19fd699"><span class="section-number-4">6.1.4</span> Performance&#x2026;</h4>
 <div class="outline-text-4" id="text-6-1-4">
 <p>
 This kernel performs best for update cycles with 2 or more rank-1 updates and the fail-rate is low.
@@ -1529,8 +1579,8 @@ This kernel performs best for update cycles with 2 or more rank-1 updates and th
 </div>
 </div>
 
-<div id="outline-container-org228c935" class="outline-2">
-<h2 id="org228c935"><span class="section-number-2">7</span> Helper Functions</h2>
+<div id="outline-container-orge3a2609" class="outline-2">
+<h2 id="orge3a2609"><span class="section-number-2">7</span> Helper Functions</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 Private helper-functions that are used by the Sherman-Morrison-Woodbury kernels.
@@ -1538,8 +1588,8 @@ These functions can only be used internally by the kernels in this module.
 </p>
 </div>
 
-<div id="outline-container-org23c398a" class="outline-3">
-<h3 id="org23c398a"><span class="section-number-3">7.1</span> <code>qmckl_slagel_splitting</code></h3>
+<div id="outline-container-org8a9457e" class="outline-3">
+<h3 id="org8a9457e"><span class="section-number-3">7.1</span> <code>qmckl_slagel_splitting</code></h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 <code>qmckl_slagel_splitting</code> is the non-recursive, inner part of the 'Sherman-Morrison with update splitting'-kernel.
@@ -1559,7 +1609,7 @@ If the determinant of the Slater-matrix is passed, it will be updated to the det
 from applying the updates to the original matrix.
 </p>
 
-<table id="org36b480c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org6092070" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1574,9 +1624,16 @@ from applying the updates to the original matrix.
 <tbody>
 <tr>
 <td class="org-left">uint64<sub>t</sub></td>
-<td class="org-left">Dim</td>
+<td class="org-left">LDS</td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of Slater<sub>inv</sub></td>
+</tr>
+
+<tr>
+<td class="org-left">uint64<sub>t</sub></td>
+<td class="org-left">Dim</td>
+<td class="org-left">in</td>
+<td class="org-left">Dimension of Slater<sub>inv</sub></td>
 </tr>
 
 <tr>
@@ -1609,7 +1666,7 @@ from applying the updates to the original matrix.
 
 <tr>
 <td class="org-left">double</td>
-<td class="org-left">Slater<sub>inv</sub>[Dim*Dim]</td>
+<td class="org-left">Slater<sub>inv</sub>[LDS*Dim]</td>
 <td class="org-left">inout</td>
 <td class="org-left">Array containing the inverse Slater-matrix</td>
 </tr>
@@ -1646,10 +1703,11 @@ from applying the updates to the original matrix.
 </div>
 
 
-<div id="outline-container-org00eeb15" class="outline-4">
-<h4 id="org00eeb15"><span class="section-number-4">7.1.1</span> Requirements</h4>
+<div id="outline-container-org25adc38" class="outline-4">
+<h4 id="org25adc38"><span class="section-number-4">7.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-7-1-1">
 <ul class="org-ul">
+<li><code>LDS &gt;= 2</code></li>
 <li><code>Dim &gt;= 2</code></li>
 <li><code>N_updates &gt;= 1</code></li>
 <li><code>Updates</code> is allocated with \(N_updates \times Dim\) elements</li>
@@ -1663,35 +1721,37 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgc272a33" class="outline-4">
-<h4 id="orgc272a33"><span class="section-number-4">7.1.2</span> C header</h4>
+<div id="outline-container-org71bfbf0" class="outline-4">
+<h4 id="org71bfbf0"><span class="section-number-4">7.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-7-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">double</span> <span style="color: #0000ff;">qmckl_slagel_splitting</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Updates</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">Updates_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">breakdown</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">Slater_inv</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">later_updates</span>,
-      <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">later_index</span>,
-      <span style="color: #228b22;">uint64_t</span>* <span style="color: #a0522d;">later</span>,
-      <span style="color: #228b22;">double</span>** <span style="color: #a0522d;">determinant</span> ); 
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">LDS</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Dim</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">N_updates</span> <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">Updates_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">breakdown</span> <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">Slater_inv</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">later_updates</span>* <span style="color: #228b22;">double</span>,
+      <span style="color: #228b22;">later_index</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #228b22;">later</span>* <span style="color: #a0522d;">uint64_t</span>,
+      <span style="color: #228b22;">determinant</span>* <span style="color: #228b22;">double</span>* ); 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org39e9a48" class="outline-4">
-<h4 id="org39e9a48"><span class="section-number-4">7.1.3</span> C source</h4>
+<div id="outline-container-org462150f" class="outline-4">
+<h4 id="org462150f"><span class="section-number-4">7.1.3</span> C source</h4>
 <div class="outline-text-4" id="text-7-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;stdbool.h&gt;</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">&lt;math.h&gt;</span>
 <span style="color: #483d8b;">#include</span> <span style="color: #8b2252;">"qmckl.h"</span>
 
-<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_slagel_splitting</span>(<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
+<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_slagel_splitting</span>(<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">LDS</span>,
+                                              <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">Dim</span>,
                                               <span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">N_updates</span>,
                                               <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> *<span style="color: #a0522d;">Updates</span>,
                                               <span style="color: #a020f0;">const</span> <span style="color: #228b22;">uint64_t</span> *<span style="color: #a0522d;">Updates_index</span>,
@@ -1715,7 +1775,7 @@ from applying the updates to the original matrix.
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; Dim; i++) {
       C[i] = 0;
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-        C[i] += Slater_inv[i * Dim + j] * Updates[l * Dim + j];
+        C[i] += Slater_inv[i * LDS + j] * Updates[l * Dim + j];
       }
     }
 
@@ -1740,14 +1800,14 @@ from applying the updates to the original matrix.
 
     // <span style="color: #b22222;">D = v^T x S^{-1}</span>
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
-      D[j] = Slater_inv[(Updates_index[l] - 1) * Dim + j];
+      D[j] = Slater_inv[(Updates_index[l] - 1) * LDS + j];
     }
 
     // <span style="color: #b22222;">S^{-1} = S^{-1} - C x D / den</span>
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">i</span> = 0; i &lt; Dim; i++) {
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">uint64_t</span> <span style="color: #a0522d;">j</span> = 0; j &lt; Dim; j++) {
         <span style="color: #228b22;">double</span> <span style="color: #a0522d;">update</span> = C[i] * D[j] * iden;
-        Slater_inv[i * Dim + j] -= update;
+        Slater_inv[i * LDS + j] -= update;
       }
     }
     l += 1;
@@ -1761,8 +1821,8 @@ from applying the updates to the original matrix.
 </div>
 </div>
 
-<div id="outline-container-orgacdee0d" class="outline-4">
-<h4 id="orgacdee0d"><span class="section-number-4">7.1.4</span> Performance</h4>
+<div id="outline-container-org7496b9f" class="outline-4">
+<h4 id="org7496b9f"><span class="section-number-4">7.1.4</span> Performance</h4>
 <div class="outline-text-4" id="text-7-1-4">
 <p>
 This function cannot be used by itself and is used in Sherman-Morrison with update splitting and Woodbury 3x3 and 2x2
@@ -1773,8 +1833,8 @@ with Sherman-Morrison and update splitting. Please look at the performance recco
 </div>
 </div>
 
-<div id="outline-container-orgb3297b0" class="outline-2">
-<h2 id="orgb3297b0"><span class="section-number-2">8</span> End of files</h2>
+<div id="outline-container-org82a47ac" class="outline-2">
+<h2 id="org82a47ac"><span class="section-number-2">8</span> End of files</h2>
 <div class="outline-text-2" id="text-8">
 <div class="org-src-container">
 <pre class="src src-c">  <span style="color: #0000ff;">assert</span> (<span style="color: #228b22;">qmckl_context_destroy</span>(<span style="color: #a0522d;">context</span>) == QMCKL_SUCCESS);
@@ -1788,7 +1848,7 @@ with Sherman-Morrison and update splitting. Please look at the performance recco
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2021-10-13 Wed 13:02</p>
+<p class="date">Created: 2022-03-21 Mon 14:06</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

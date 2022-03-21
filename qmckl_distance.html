@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-10-13 Wed 13:02 -->
+<!-- 2022-03-21 Mon 14:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Inter-particle distances</title>
@@ -333,64 +333,54 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd832967">1. Squared distance</a>
+<li><a href="#orgbb59e68">1. Squared distance</a>
 <ul>
-<li><a href="#org329941d">1.1. <code>qmckl_distance_sq</code></a>
+<li><a href="#orgcf06513">1.1. <code>qmckl_distance_sq</code></a>
 <ul>
-<li><a href="#orgc80efab">1.1.1. Requirements</a></li>
-<li><a href="#orgcd557d4">1.1.2. C header</a></li>
-<li><a href="#org2dcdd3b">1.1.3. Source</a></li>
-<li><a href="#org92cbc8f">1.1.4. Performance</a></li>
+<li><a href="#org24b8e84">1.1.1. Performance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org5edc3d2">2. Distance</a>
+<li><a href="#org0e805fe">2. Distance</a>
 <ul>
-<li><a href="#org18f7040">2.1. <code>qmckl_distance</code></a>
+<li><a href="#org51c9cd5">2.1. <code>qmckl_distance</code></a>
 <ul>
-<li><a href="#orgcc4aa69">2.1.1. Requirements</a></li>
-<li><a href="#orgc39d3e4">2.1.2. C header</a></li>
-<li><a href="#org952e34d">2.1.3. Source</a></li>
-<li><a href="#org420eb5e">2.1.4. Performance</a></li>
+<li><a href="#orgf1bf546">2.1.1. Requirements</a></li>
+<li><a href="#org59e809e">2.1.2. C header</a></li>
+<li><a href="#orgc707255">2.1.3. Source</a></li>
+<li><a href="#orgc9d6d94">2.1.4. Performance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgba9d064">3. Rescaled Distance</a>
+<li><a href="#org3913b98">3. Rescaled Distance</a>
 <ul>
-<li><a href="#orgd374884">3.1. <code>qmckl_distance_rescaled</code></a>
+<li><a href="#orgee38d04">3.1. <code>qmckl_distance_rescaled</code></a>
 <ul>
-<li><a href="#orgaf00dae">3.1.1. Requirements</a></li>
-<li><a href="#orgf80b8ed">3.1.2. C header</a></li>
-<li><a href="#orgfb81ed1">3.1.3. Source</a></li>
-<li><a href="#orgc70a57c">3.1.4. Performance</a></li>
+<li><a href="#orga890fdb">3.1.1. Requirements</a></li>
+<li><a href="#org05cef98">3.1.2. C header</a></li>
+<li><a href="#orgb52d4a3">3.1.3. Source</a></li>
+<li><a href="#org82f19b0">3.1.4. Performance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgc78bb04">4. Rescaled Distance Derivatives</a>
+<li><a href="#org35f2b55">4. Rescaled Distance Derivatives</a>
 <ul>
-<li><a href="#org824798c">4.1. <code>qmckl_distance_rescaled_deriv_e</code></a>
-<ul>
-<li><a href="#org3784f3b">4.1.1. Requirements</a></li>
-<li><a href="#org1187d38">4.1.2. C header</a></li>
-<li><a href="#org6dbdf5d">4.1.3. Source</a></li>
-<li><a href="#org30b9fd5">4.1.4. Performance</a></li>
-</ul>
-</li>
+<li><a href="#orgd0c5cf5">4.1. <code>qmckl_distance_rescaled_deriv_e</code></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd832967" class="outline-2">
-<h2 id="orgd832967"><span class="section-number-2">1</span> Squared distance</h2>
+<div id="outline-container-orgbb59e68" class="outline-2">
+<h2 id="orgbb59e68"><span class="section-number-2">1</span> Squared distance</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org329941d" class="outline-3">
-<h3 id="org329941d"><span class="section-number-3">1.1</span> <code>qmckl_distance_sq</code></h3>
+<div id="outline-container-orgcf06513" class="outline-3">
+<h3 id="orgcf06513"><span class="section-number-3">1.1</span> <code>qmckl_distance_sq</code></h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 <code>qmckl_distance_sq</code> computes the matrix of the squared distances
@@ -403,7 +393,7 @@ between all pairs of points in two sets, one point within each set:
    \]
 </p>
 
-<table id="org57fcf2b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org4c2437e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -415,90 +405,98 @@ between all pairs of points in two sets, one point within each set:
 
 <col  class="org-left" />
 </colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">In/Out</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="org-left">qmckl<sub>context</sub></td>
-<td class="org-left">context</td>
+<td class="org-left"><code>context</code></td>
+<td class="org-left"><code>qmckl_context</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Global state</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transa</td>
+<td class="org-left"><code>transa</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>A</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transb</td>
+<td class="org-left"><code>transb</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>B</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">m</td>
+<td class="org-left"><code>m</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the first set</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">n</td>
+<td class="org-left"><code>n</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the second set</td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">A[][lda]</td>
+<td class="org-left"><code>A</code></td>
+<td class="org-left"><code>double[][lda]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(m \times 3\) matrix \(A\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">lda</td>
+<td class="org-left"><code>lda</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>A</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">B[][ldb]</td>
+<td class="org-left"><code>B</code></td>
+<td class="org-left"><code>double[][ldb]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(n \times 3\) matrix \(B\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldb</td>
+<td class="org-left"><code>ldb</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>B</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">C[n][ldc]</td>
+<td class="org-left"><code>C</code></td>
+<td class="org-left"><code>double[n][ldc]</code></td>
 <td class="org-left">out</td>
 <td class="org-left">Array containing the \(m \times n\) matrix \(C\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldc</td>
+<td class="org-left"><code>ldc</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>C</code></td>
 </tr>
 </tbody>
 </table>
-</div>
 
-<div id="outline-container-orgc80efab" class="outline-4">
-<h4 id="orgc80efab"><span class="section-number-4">1.1.1</span> Requirements</h4>
-<div class="outline-text-4" id="text-1-1-1">
+<p>
+Requirements:
+</p>
+
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
 <li><code>m &gt; 0</code></li>
@@ -512,12 +510,7 @@ between all pairs of points in two sets, one point within each set:
 <li><code>B</code> is allocated with at least \(3 \times n \times 8\) bytes</li>
 <li><code>C</code> is allocated with at least \(m \times n \times 8\) bytes</li>
 </ul>
-</div>
-</div>
 
-<div id="outline-container-orgcd557d4" class="outline-4">
-<h4 id="orgcd557d4"><span class="section-number-4">1.1.2</span> C header</h4>
-<div class="outline-text-4" id="text-1-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_distance_sq</span> (
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -533,12 +526,7 @@ between all pairs of points in two sets, one point within each set:
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ldc</span> ); 
 </pre>
 </div>
-</div>
-</div>
 
-<div id="outline-container-org2dcdd3b" class="outline-4">
-<h4 id="org2dcdd3b"><span class="section-number-4">1.1.3</span> Source</h4>
-<div class="outline-text-4" id="text-1-1-3">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span><span style="color: #a0522d;"> function qmckl_distance_sq_f(context, transa, transb, m, n, </span><span style="color: #a020f0;">&amp;</span>
      A, LDA, B, LDB, C, LDC) <span style="color: #a020f0;">&amp;</span>
@@ -670,11 +658,10 @@ between all pairs of points in two sets, one point within each set:
 </pre>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org92cbc8f" class="outline-4">
-<h4 id="org92cbc8f"><span class="section-number-4">1.1.4</span> Performance</h4>
-<div class="outline-text-4" id="text-1-1-4">
+<div id="outline-container-org24b8e84" class="outline-4">
+<h4 id="org24b8e84"><span class="section-number-4">1.1.1</span> Performance</h4>
+<div class="outline-text-4" id="text-1-1-1">
 <p>
 This function is more efficient when <code>A</code> and <code>B</code> are
 transposed.
@@ -683,12 +670,12 @@ transposed.
 </div>
 </div>
 </div>
-<div id="outline-container-org5edc3d2" class="outline-2">
-<h2 id="org5edc3d2"><span class="section-number-2">2</span> Distance</h2>
+<div id="outline-container-org0e805fe" class="outline-2">
+<h2 id="org0e805fe"><span class="section-number-2">2</span> Distance</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org18f7040" class="outline-3">
-<h3 id="org18f7040"><span class="section-number-3">2.1</span> <code>qmckl_distance</code></h3>
+<div id="outline-container-org51c9cd5" class="outline-3">
+<h3 id="org51c9cd5"><span class="section-number-3">2.1</span> <code>qmckl_distance</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 <code>qmckl_distance</code> computes the matrix of the distances between all
@@ -706,7 +693,7 @@ If the input array is normal (<code>'N'</code>), the xyz coordinates are in
 the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortran.
 </p>
 
-<table id="org77800ed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org21f020c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -718,80 +705,88 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 
 <col  class="org-left" />
 </colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">In/Out</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="org-left">qmckl<sub>context</sub></td>
-<td class="org-left">context</td>
+<td class="org-left"><code>context</code></td>
+<td class="org-left"><code>qmckl_context</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Global state</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transa</td>
+<td class="org-left"><code>transa</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>A</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transb</td>
+<td class="org-left"><code>transb</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>B</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">m</td>
+<td class="org-left"><code>m</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the first set</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">n</td>
+<td class="org-left"><code>n</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the second set</td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">A[][lda]</td>
+<td class="org-left"><code>A</code></td>
+<td class="org-left"><code>double[][lda]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(m \times 3\) matrix \(A\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">lda</td>
+<td class="org-left"><code>lda</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>A</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">B[][ldb]</td>
+<td class="org-left"><code>B</code></td>
+<td class="org-left"><code>double[][ldb]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(n \times 3\) matrix \(B\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldb</td>
+<td class="org-left"><code>ldb</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>B</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">C[n][ldc]</td>
+<td class="org-left"><code>C</code></td>
+<td class="org-left"><code>double[n][ldc]</code></td>
 <td class="org-left">out</td>
 <td class="org-left">Array containing the \(m \times n\) matrix \(C\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldc</td>
+<td class="org-left"><code>ldc</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>C</code></td>
 </tr>
@@ -799,8 +794,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </table>
 </div>
 
-<div id="outline-container-orgcc4aa69" class="outline-4">
-<h4 id="orgcc4aa69"><span class="section-number-4">2.1.1</span> Requirements</h4>
+<div id="outline-container-orgf1bf546" class="outline-4">
+<h4 id="orgf1bf546"><span class="section-number-4">2.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
@@ -818,8 +813,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </div>
 </div>
 
-<div id="outline-container-orgc39d3e4" class="outline-4">
-<h4 id="orgc39d3e4"><span class="section-number-4">2.1.2</span> C header</h4>
+<div id="outline-container-org59e809e" class="outline-4">
+<h4 id="org59e809e"><span class="section-number-4">2.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_distance</span> (
@@ -839,8 +834,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </div>
 </div>
 
-<div id="outline-container-org952e34d" class="outline-4">
-<h4 id="org952e34d"><span class="section-number-4">2.1.3</span> Source</h4>
+<div id="outline-container-orgc707255" class="outline-4">
+<h4 id="orgc707255"><span class="section-number-4">2.1.3</span> Source</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span><span style="color: #a0522d;"> function qmckl_distance_f(context, transa, transb, m, n, </span><span style="color: #a020f0;">&amp;</span>
@@ -1007,8 +1002,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </div>
 </div>
 
-<div id="outline-container-org420eb5e" class="outline-4">
-<h4 id="org420eb5e"><span class="section-number-4">2.1.4</span> Performance</h4>
+<div id="outline-container-orgc9d6d94" class="outline-4">
+<h4 id="orgc9d6d94"><span class="section-number-4">2.1.4</span> Performance</h4>
 <div class="outline-text-4" id="text-2-1-4">
 <p>
 This function is more efficient when <code>A</code> and <code>B</code> are transposed.
@@ -1018,12 +1013,12 @@ This function is more efficient when <code>A</code> and <code>B</code> are trans
 </div>
 </div>
 
-<div id="outline-container-orgba9d064" class="outline-2">
-<h2 id="orgba9d064"><span class="section-number-2">3</span> Rescaled Distance</h2>
+<div id="outline-container-org3913b98" class="outline-2">
+<h2 id="org3913b98"><span class="section-number-2">3</span> Rescaled Distance</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgd374884" class="outline-3">
-<h3 id="orgd374884"><span class="section-number-3">3.1</span> <code>qmckl_distance_rescaled</code></h3>
+<div id="outline-container-orgee38d04" class="outline-3">
+<h3 id="orgee38d04"><span class="section-number-3">3.1</span> <code>qmckl_distance_rescaled</code></h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <code>qmckl_distance_rescaled</code> computes the matrix of the rescaled distances between all
@@ -1032,7 +1027,7 @@ pairs of points in two sets, one point within each set:
 
 <p>
 \[
-   C_{ij} = \left( 1 - \exp{-\kappa C_{ij}}\right)/\kappa
+   C_{ij} = \left( 1 - \exp \left(-\kappa C_{ij} \right) \right)/\kappa
    \]
 </p>
 
@@ -1041,7 +1036,7 @@ If the input array is normal (<code>'N'</code>), the xyz coordinates are in
 the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortran.
 </p>
 
-<table id="orgd90ebe3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgfe27089" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1053,87 +1048,95 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 
 <col  class="org-left" />
 </colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">In/Out</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="org-left">qmckl<sub>context</sub></td>
-<td class="org-left">context</td>
+<td class="org-left"><code>context</code></td>
+<td class="org-left"><code>qmckl_context</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Global state</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transa</td>
+<td class="org-left"><code>transa</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>A</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transb</td>
+<td class="org-left"><code>transb</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>B</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">m</td>
+<td class="org-left"><code>m</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the first set</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">n</td>
+<td class="org-left"><code>n</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the second set</td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">A[][lda]</td>
+<td class="org-left"><code>A</code></td>
+<td class="org-left"><code>double[][lda]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(m \times 3\) matrix \(A\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">lda</td>
+<td class="org-left"><code>lda</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>A</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">B[][ldb]</td>
+<td class="org-left"><code>B</code></td>
+<td class="org-left"><code>double[][ldb]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(n \times 3\) matrix \(B\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldb</td>
+<td class="org-left"><code>ldb</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>B</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">C[n][ldc]</td>
+<td class="org-left"><code>C</code></td>
+<td class="org-left"><code>double[n][ldc]</code></td>
 <td class="org-left">out</td>
 <td class="org-left">Array containing the \(m \times n\) matrix \(C\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldc</td>
+<td class="org-left"><code>ldc</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>C</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">rescale<sub>factor</sub><sub>kappa</sub></td>
+<td class="org-left"><code>rescale_factor_kappa</code></td>
+<td class="org-left"><code>double</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Factor for calculating rescaled distances</td>
 </tr>
@@ -1141,8 +1144,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </table>
 </div>
 
-<div id="outline-container-orgaf00dae" class="outline-4">
-<h4 id="orgaf00dae"><span class="section-number-4">3.1.1</span> Requirements</h4>
+<div id="outline-container-orga890fdb" class="outline-4">
+<h4 id="orga890fdb"><span class="section-number-4">3.1.1</span> Requirements</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
@@ -1160,8 +1163,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </div>
 </div>
 
-<div id="outline-container-orgf80b8ed" class="outline-4">
-<h4 id="orgf80b8ed"><span class="section-number-4">3.1.2</span> C header</h4>
+<div id="outline-container-org05cef98" class="outline-4">
+<h4 id="org05cef98"><span class="section-number-4">3.1.2</span> C header</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_distance_rescaled</span> (
@@ -1182,8 +1185,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </div>
 </div>
 
-<div id="outline-container-orgfb81ed1" class="outline-4">
-<h4 id="orgfb81ed1"><span class="section-number-4">3.1.3</span> Source</h4>
+<div id="outline-container-orgb52d4a3" class="outline-4">
+<h4 id="orgb52d4a3"><span class="section-number-4">3.1.3</span> Source</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span><span style="color: #a0522d;"> function qmckl_distance_rescaled_f(context, transa, transb, m, n, </span><span style="color: #a020f0;">&amp;</span>
@@ -1353,8 +1356,8 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 </div>
 </div>
 
-<div id="outline-container-orgc70a57c" class="outline-4">
-<h4 id="orgc70a57c"><span class="section-number-4">3.1.4</span> Performance</h4>
+<div id="outline-container-org82f19b0" class="outline-4">
+<h4 id="org82f19b0"><span class="section-number-4">3.1.4</span> Performance</h4>
 <div class="outline-text-4" id="text-3-1-4">
 <p>
 This function is more efficient when <code>A</code> and <code>B</code> are transposed.
@@ -1363,12 +1366,12 @@ This function is more efficient when <code>A</code> and <code>B</code> are trans
 </div>
 </div>
 </div>
-<div id="outline-container-orgc78bb04" class="outline-2">
-<h2 id="orgc78bb04"><span class="section-number-2">4</span> Rescaled Distance Derivatives</h2>
+<div id="outline-container-org35f2b55" class="outline-2">
+<h2 id="org35f2b55"><span class="section-number-2">4</span> Rescaled Distance Derivatives</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org824798c" class="outline-3">
-<h3 id="org824798c"><span class="section-number-3">4.1</span> <code>qmckl_distance_rescaled_deriv_e</code></h3>
+<div id="outline-container-orgd0c5cf5" class="outline-3">
+<h3 id="orgd0c5cf5"><span class="section-number-3">4.1</span> <code>qmckl_distance_rescaled_deriv_e</code></h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 <code>qmckl_distance_rescaled_deriv_e</code> computes the matrix of the gradient and laplacian of the
@@ -1435,7 +1438,7 @@ If the input array is normal (<code>'N'</code>), the xyz coordinates are in
 the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortran.
 </p>
 
-<table id="orgfa44efc" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org5b6b5e2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1447,97 +1450,105 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 
 <col  class="org-left" />
 </colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">In/Out</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<td class="org-left">qmckl<sub>context</sub></td>
-<td class="org-left">context</td>
+<td class="org-left"><code>context</code></td>
+<td class="org-left"><code>qmckl_context</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Global state</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transa</td>
+<td class="org-left"><code>transa</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>A</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">char</td>
-<td class="org-left">transb</td>
+<td class="org-left"><code>transb</code></td>
+<td class="org-left"><code>char</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array <code>B</code> is <code>'N'</code>: Normal, <code>'T'</code>: Transposed</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">m</td>
+<td class="org-left"><code>m</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the first set</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">n</td>
+<td class="org-left"><code>n</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Number of points in the second set</td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">A[][lda]</td>
+<td class="org-left"><code>A</code></td>
+<td class="org-left"><code>double[][lda]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(m \times 3\) matrix \(A\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">lda</td>
+<td class="org-left"><code>lda</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>A</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">B[][ldb]</td>
+<td class="org-left"><code>B</code></td>
+<td class="org-left"><code>double[][ldb]</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Array containing the \(n \times 3\) matrix \(B\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldb</td>
+<td class="org-left"><code>ldb</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>B</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">C[4][n][ldc]</td>
+<td class="org-left"><code>C</code></td>
+<td class="org-left"><code>double[4][n][ldc]</code></td>
 <td class="org-left">out</td>
 <td class="org-left">Array containing the \(4 \times m \times n\) matrix \(C\)</td>
 </tr>
 
 <tr>
-<td class="org-left">int64<sub>t</sub></td>
-<td class="org-left">ldc</td>
+<td class="org-left"><code>ldc</code></td>
+<td class="org-left"><code>int64_t</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Leading dimension of array <code>C</code></td>
 </tr>
 
 <tr>
-<td class="org-left">double</td>
-<td class="org-left">rescale<sub>factor</sub><sub>kappa</sub></td>
+<td class="org-left"><code>rescale_factor_kappa</code></td>
+<td class="org-left"><code>double</code></td>
 <td class="org-left">in</td>
 <td class="org-left">Factor for calculating rescaled distances derivatives</td>
 </tr>
 </tbody>
 </table>
-</div>
 
-<div id="outline-container-org3784f3b" class="outline-4">
-<h4 id="org3784f3b"><span class="section-number-4">4.1.1</span> Requirements</h4>
-<div class="outline-text-4" id="text-4-1-1">
+<p>
+Requirements:
+</p>
+
 <ul class="org-ul">
 <li><code>context</code> is not <code>QMCKL_NULL_CONTEXT</code></li>
 <li><code>m &gt; 0</code></li>
@@ -1551,12 +1562,7 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 <li><code>B</code> is allocated with at least \(3 \times n \times 8\) bytes</li>
 <li><code>C</code> is allocated with at least \(4 \times m \times n \times 8\) bytes</li>
 </ul>
-</div>
-</div>
 
-<div id="outline-container-org1187d38" class="outline-4">
-<h4 id="org1187d38"><span class="section-number-4">4.1.2</span> C header</h4>
-<div class="outline-text-4" id="text-4-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_distance_rescaled_deriv_e</span> (
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -1573,12 +1579,7 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">rescale_factor_kappa</span> ); 
 </pre>
 </div>
-</div>
-</div>
 
-<div id="outline-container-org6dbdf5d" class="outline-4">
-<h4 id="org6dbdf5d"><span class="section-number-4">4.1.3</span> Source</h4>
-<div class="outline-text-4" id="text-4-1-3">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #228b22;">integer</span><span style="color: #a0522d;"> function qmckl_distance_rescaled_deriv_e_f(context, transa, transb, m, n, </span><span style="color: #a020f0;">&amp;</span>
      A, LDA, B, LDB, C, LDC, rescale_factor_kappa) <span style="color: #a020f0;">&amp;</span>
@@ -1765,12 +1766,7 @@ the leading dimension: <code>[n][3]</code> in C and <code>(3,n)</code> in Fortra
 <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_distance_rescaled_deriv_e_f</span>
 </pre>
 </div>
-</div>
-</div>
 
-<div id="outline-container-org30b9fd5" class="outline-4">
-<h4 id="org30b9fd5"><span class="section-number-4">4.1.4</span> Performance</h4>
-<div class="outline-text-4" id="text-4-1-4">
 <p>
 This function is more efficient when <code>A</code> and <code>B</code> are transposed.
 </p>
@@ -1778,10 +1774,9 @@ This function is more efficient when <code>A</code> and <code>B</code> are trans
 </div>
 </div>
 </div>
-</div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2021-10-13 Wed 13:02</p>
+<p class="date">Created: 2022-03-21 Mon 14:06</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
