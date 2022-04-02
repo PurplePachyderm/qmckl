@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-04-01 Fri 15:58 -->
+<!-- 2022-04-02 Sat 12:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Atomic Orbitals</title>
@@ -333,60 +333,60 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4cc2218">1. Introduction</a></li>
-<li><a href="#orgd9e3560">2. Context</a>
+<li><a href="#org1a24234">1. Introduction</a></li>
+<li><a href="#orgfc4bdb1">2. Context</a>
 <ul>
-<li><a href="#org8327b1f">2.1. Constant data</a>
+<li><a href="#orgace1936">2.1. Constant data</a>
 <ul>
-<li><a href="#org7e9670d">2.1.1. Initialization functions</a>
+<li><a href="#org67ec47c">2.1.1. Initialization functions</a>
 <ul>
-<li><a href="#orge3d85c0">2.1.1.1. C interface</a></li>
-<li><a href="#org79cb6c3">2.1.1.2. Fortran interface</a></li>
+<li><a href="#org74ebe33">2.1.1.1. C interface</a></li>
+<li><a href="#org4af1f35">2.1.1.2. Fortran interface</a></li>
 </ul>
 </li>
-<li><a href="#org7261c46">2.1.2. Access functions</a>
+<li><a href="#org8e273b4">2.1.2. Access functions</a>
 <ul>
-<li><a href="#orgcecc189">2.1.2.1. C interface</a></li>
-<li><a href="#org04b16fa">2.1.2.2. Fortran interface</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org706ffe6">2.2. Computed data</a>
-<ul>
-<li><a href="#orged6d7b6">2.2.1. After initialization</a></li>
-<li><a href="#org25e42c0">2.2.2. <span class="todo TODO">TODO</span> HPC-specific data structures</a></li>
-<li><a href="#org2639e7e">2.2.3. Access functions</a></li>
+<li><a href="#org558b75f">2.1.2.1. C interface</a></li>
+<li><a href="#org533c7dc">2.1.2.2. Fortran interface</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org0fb9464">3. Radial part</a>
+<li><a href="#org8cd0280">2.2. Computed data</a>
 <ul>
-<li><a href="#orgcd1e64d">3.1. General functions for Gaussian basis functions</a></li>
-<li><a href="#org305cc0d">3.2. Computation of primitives</a></li>
-<li><a href="#org9361f52">3.3. Computation of shells</a></li>
+<li><a href="#orga843030">2.2.1. After initialization</a></li>
+<li><a href="#org180de49">2.2.2. <span class="todo TODO">TODO</span> HPC-specific data structures</a></li>
+<li><a href="#org165d2d1">2.2.3. Access functions</a></li>
 </ul>
 </li>
-<li><a href="#org45da8e0">4. Polynomial part</a>
-<ul>
-<li><a href="#org4f25da8">4.1. General functions for Powers of \(x-X_i\)</a></li>
-<li><a href="#org1dcff89">4.2. General functions for Value, Gradient and Laplacian of a polynomial</a></li>
 </ul>
 </li>
-<li><a href="#orgeecfa79">5. Combining radial and polynomial parts</a>
+<li><a href="#orgc1141bb">3. Radial part</a>
 <ul>
-<li><a href="#orgc19c983">5.1. Unoptimized version</a></li>
-<li><a href="#orgea3ba28">5.2. HPC version</a></li>
-<li><a href="#orgf2730ad">5.3. Interfaces</a></li>
+<li><a href="#orgf2154d9">3.1. General functions for Gaussian basis functions</a></li>
+<li><a href="#org876c4e8">3.2. Computation of primitives</a></li>
+<li><a href="#org78f3567">3.3. Computation of shells</a></li>
+</ul>
+</li>
+<li><a href="#org2b11fed">4. Polynomial part</a>
+<ul>
+<li><a href="#orga543322">4.1. General functions for Powers of \(x-X_i\)</a></li>
+<li><a href="#org2787f01">4.2. General functions for Value, Gradient and Laplacian of a polynomial</a></li>
+</ul>
+</li>
+<li><a href="#org8bdc3d2">5. Combining radial and polynomial parts</a>
+<ul>
+<li><a href="#orge146d76">5.1. Unoptimized version</a></li>
+<li><a href="#org1b8e895">5.2. HPC version</a></li>
+<li><a href="#org09fbab3">5.3. Interfaces</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org4cc2218" class="outline-2">
-<h2 id="org4cc2218"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org1a24234" class="outline-2">
+<h2 id="org1a24234"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The atomic basis set is defined as a list of shells. Each shell \(s\) is
@@ -439,19 +439,19 @@ gradients and Laplacian of the atomic basis functions.
 </div>
 </div>
 
-<div id="outline-container-orgd9e3560" class="outline-2">
-<h2 id="orgd9e3560"><span class="section-number-2">2</span> Context</h2>
+<div id="outline-container-orgfc4bdb1" class="outline-2">
+<h2 id="orgfc4bdb1"><span class="section-number-2">2</span> Context</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org8327b1f" class="outline-3">
-<h3 id="org8327b1f"><span class="section-number-3">2.1</span> Constant data</h3>
+<div id="outline-container-orgace1936" class="outline-3">
+<h3 id="orgace1936"><span class="section-number-3">2.1</span> Constant data</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The following arrays are stored in the context, and need to be set
 when initializing the library:
 </p>
 
-<table id="org1ed4190" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org197e886" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -625,7 +625,7 @@ calling the functions:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org9f16507"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-C" id="orgbe5da29"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                          <span style="color: #a020f0;">const</span> $type_of_V$ $V$);
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_ao_basis_$V$</span> ( <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -662,7 +662,7 @@ For array variables, use the rule:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org4c28d1e"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-C" id="org3b2a09e"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                          <span style="color: #a020f0;">const</span> $type_of_V$ $V$,
                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 
@@ -700,17 +700,17 @@ For array variables, use the rule:
 </div>
 </div>
 
-<div id="outline-container-org7e9670d" class="outline-4">
-<h4 id="org7e9670d"><span class="section-number-4">2.1.1</span> Initialization functions</h4>
+<div id="outline-container-org67ec47c" class="outline-4">
+<h4 id="org67ec47c"><span class="section-number-4">2.1.1</span> Initialization functions</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 <code>size_max</code> is the dimension of the input array, which should be
-equal of larger than the value given in the table of section <a href="#orgd9e3560">2</a>.
+equal of larger than the value given in the table of section <a href="#orgfc4bdb1">2</a>.
 </p>
 </div>
 
-<div id="outline-container-orge3d85c0" class="outline-5">
-<h5 id="orge3d85c0"><span class="section-number-5">2.1.1.1</span> C interface</h5>
+<div id="outline-container-org74ebe33" class="outline-5">
+<h5 id="org74ebe33"><span class="section-number-5">2.1.1.1</span> C interface</h5>
 <div class="outline-text-5" id="text-2-1-1-1">
 <p>
 To set the basis set, all the following functions need to be
@@ -834,8 +834,8 @@ called.
 </div>
 </div>
 
-<div id="outline-container-org79cb6c3" class="outline-5">
-<h5 id="org79cb6c3"><span class="section-number-5">2.1.1.2</span> Fortran interface</h5>
+<div id="outline-container-org4af1f35" class="outline-5">
+<h5 id="org4af1f35"><span class="section-number-5">2.1.1.2</span> Fortran interface</h5>
 <div class="outline-text-5" id="text-2-1-1-2">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #a020f0;">interface</span>
@@ -1018,17 +1018,17 @@ called.
 </div>
 </div>
 
-<div id="outline-container-org7261c46" class="outline-4">
-<h4 id="org7261c46"><span class="section-number-4">2.1.2</span> Access functions</h4>
+<div id="outline-container-org8e273b4" class="outline-4">
+<h4 id="org8e273b4"><span class="section-number-4">2.1.2</span> Access functions</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 <code>size_max</code> is the dimension of the input array, which should be
-equal of larger than the value given in the table of section <a href="#orgd9e3560">2</a>.
+equal of larger than the value given in the table of section <a href="#orgfc4bdb1">2</a>.
 </p>
 </div>
 
-<div id="outline-container-orgcecc189" class="outline-5">
-<h5 id="orgcecc189"><span class="section-number-5">2.1.2.1</span> C interface</h5>
+<div id="outline-container-org558b75f" class="outline-5">
+<h5 id="org558b75f"><span class="section-number-5">2.1.2.1</span> C interface</h5>
 <div class="outline-text-5" id="text-2-1-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1150,8 +1150,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org04b16fa" class="outline-5">
-<h5 id="org04b16fa"><span class="section-number-5">2.1.2.2</span> Fortran interface</h5>
+<div id="outline-container-org533c7dc" class="outline-5">
+<h5 id="org533c7dc"><span class="section-number-5">2.1.2.2</span> Fortran interface</h5>
 <div class="outline-text-5" id="text-2-1-2-2">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #a020f0;">interface</span>
@@ -1335,8 +1335,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org706ffe6" class="outline-3">
-<h3 id="org706ffe6"><span class="section-number-3">2.2</span> Computed data</h3>
+<div id="outline-container-org8cd0280" class="outline-3">
+<h3 id="org8cd0280"><span class="section-number-3">2.2</span> Computed data</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 The following data is computed as described in the next sections:
@@ -1399,8 +1399,8 @@ The following data is computed as described in the next sections:
 </table>
 </div>
 
-<div id="outline-container-orged6d7b6" class="outline-4">
-<h4 id="orged6d7b6"><span class="section-number-4">2.2.1</span> After initialization</h4>
+<div id="outline-container-orga843030" class="outline-4">
+<h4 id="orga843030"><span class="section-number-4">2.2.1</span> After initialization</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 When the basis set is completely entered, extra data structures may be
@@ -1414,8 +1414,8 @@ the context.
 </div>
 </div>
 
-<div id="outline-container-org25e42c0" class="outline-4">
-<h4 id="org25e42c0"><span class="section-number-4">2.2.2</span> <span class="todo TODO">TODO</span> HPC-specific data structures</h4>
+<div id="outline-container-org180de49" class="outline-4">
+<h4 id="org180de49"><span class="section-number-4">2.2.2</span> <span class="todo TODO">TODO</span> HPC-specific data structures</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 For faster access, we provide extra arrays for the shell information as:
@@ -1445,8 +1445,8 @@ which is a matrix-vector product.
 </div>
 </div>
 
-<div id="outline-container-org2639e7e" class="outline-4">
-<h4 id="org2639e7e"><span class="section-number-4">2.2.3</span> Access functions</h4>
+<div id="outline-container-org165d2d1" class="outline-4">
+<h4 id="org165d2d1"><span class="section-number-4">2.2.3</span> Access functions</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1459,7 +1459,7 @@ which is a matrix-vector product.
 <p>
 Returns the array of values, gradients an Laplacian of primitive
 basis functions evaluated at the current coordinates.
-See section <a href="#org305cc0d">3.2</a>.
+See section <a href="#org876c4e8">3.2</a>.
 </p>
 
 <div class="org-src-container">
@@ -1472,7 +1472,7 @@ See section <a href="#org305cc0d">3.2</a>.
 
 <p>
 Returns the array of values, gradients an Laplacian of contracted shells
-evaluated at the current coordinates. See section <a href="#org9361f52">3.3</a>.
+evaluated at the current coordinates. See section <a href="#org78f3567">3.3</a>.
 </p>
 
 <div class="org-src-container">
@@ -1486,7 +1486,7 @@ evaluated at the current coordinates. See section <a href="#org9361f52">3.3</a>.
 <p>
 Returns the array of values, gradients an Laplacian of the atomic orbitals
 evaluated at the current coordinates.
-See section <a href="#orgeecfa79">5</a>.
+See section <a href="#org8bdc3d2">5</a>.
 </p>
 
 <p>
@@ -1505,12 +1505,12 @@ Uses the give array to compute the VGL.
 </div>
 </div>
 
-<div id="outline-container-org0fb9464" class="outline-2">
-<h2 id="org0fb9464"><span class="section-number-2">3</span> Radial part</h2>
+<div id="outline-container-orgc1141bb" class="outline-2">
+<h2 id="orgc1141bb"><span class="section-number-2">3</span> Radial part</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgcd1e64d" class="outline-3">
-<h3 id="orgcd1e64d"><span class="section-number-3">3.1</span> General functions for Gaussian basis functions</h3>
+<div id="outline-container-orgf2154d9" class="outline-3">
+<h3 id="orgf2154d9"><span class="section-number-3">3.1</span> General functions for Gaussian basis functions</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <code>qmckl_ao_gaussian_vgl</code> computes the values, gradients and
@@ -1681,10 +1681,10 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org305cc0d" class="outline-3">
-<h3 id="org305cc0d"><span class="section-number-3">3.2</span> Computation of primitives</h3>
+<div id="outline-container-org876c4e8" class="outline-3">
+<h3 id="org876c4e8"><span class="section-number-3">3.2</span> Computation of primitives</h3>
 <div class="outline-text-3" id="text-3-2">
-<table id="orgecb59f5" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org7a9ef83" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1843,10 +1843,10 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org9361f52" class="outline-3">
-<h3 id="org9361f52"><span class="section-number-3">3.3</span> Computation of shells</h3>
+<div id="outline-container-org78f3567" class="outline-3">
+<h3 id="org78f3567"><span class="section-number-3">3.3</span> Computation of shells</h3>
 <div class="outline-text-3" id="text-3-3">
-<table id="orge37d738" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org5be8a24" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2098,8 +2098,8 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org45da8e0" class="outline-2">
-<h2 id="org45da8e0"><span class="section-number-2">4</span> Polynomial part</h2>
+<div id="outline-container-org2b11fed" class="outline-2">
+<h2 id="org2b11fed"><span class="section-number-2">4</span> Polynomial part</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Going from the atomic basis set to AOs implies a systematic
@@ -2119,8 +2119,8 @@ f & : & f_{xxx}, f_{xxy}, f_{xxz}, f_{xyy}, f_{xyz}, f_{xzz}, f_{yyy}, f_{yyz}, 
 \end{eqnarray}
 </div>
 
-<div id="outline-container-org4f25da8" class="outline-3">
-<h3 id="org4f25da8"><span class="section-number-3">4.1</span> General functions for Powers of \(x-X_i\)</h3>
+<div id="outline-container-orga543322" class="outline-3">
+<h3 id="orga543322"><span class="section-number-3">4.1</span> General functions for Powers of \(x-X_i\)</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 The <code>qmckl_ao_power</code> function computes all the powers of the <code>n</code>
@@ -2132,7 +2132,7 @@ the \(n\) points:
 \[ P_{ik} = X_i^k \]
 </p>
 
-<table id="orgb16f3b7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org533e597" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2270,8 +2270,8 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org1dcff89" class="outline-3">
-<h3 id="org1dcff89"><span class="section-number-3">4.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
+<div id="outline-container-org2787f01" class="outline-3">
+<h3 id="org2787f01"><span class="section-number-3">4.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 A polynomial is centered on a nucleus \(\mathbf{R}_i\)
@@ -2316,7 +2316,7 @@ Laplacians at a given point in space, of all polynomials with an
 angular momentum up to <code>lmax</code>.
 </p>
 
-<table id="org558a671" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgb85ce85" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3080,15 +3080,15 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-orgeecfa79" class="outline-2">
-<h2 id="orgeecfa79"><span class="section-number-2">5</span> Combining radial and polynomial parts</h2>
+<div id="outline-container-org8bdc3d2" class="outline-2">
+<h2 id="org8bdc3d2"><span class="section-number-2">5</span> Combining radial and polynomial parts</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 
-<div id="outline-container-orgc19c983" class="outline-3">
-<h3 id="orgc19c983"><span class="section-number-3">5.1</span> Unoptimized version</h3>
+<div id="outline-container-orge146d76" class="outline-3">
+<h3 id="orge146d76"><span class="section-number-3">5.1</span> Unoptimized version</h3>
 <div class="outline-text-3" id="text-5-1">
-<table id="org9d4142b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org12da1ef" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3353,10 +3353,10 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-orgea3ba28" class="outline-3">
-<h3 id="orgea3ba28"><span class="section-number-3">5.2</span> HPC version</h3>
+<div id="outline-container-org1b8e895" class="outline-3">
+<h3 id="org1b8e895"><span class="section-number-3">5.2</span> HPC version</h3>
 <div class="outline-text-3" id="text-5-2">
-<table id="org44b7cc0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orge531c8c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3515,8 +3515,8 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 
 
-<div id="outline-container-orgf2730ad" class="outline-3">
-<h3 id="orgf2730ad"><span class="section-number-3">5.3</span> Interfaces</h3>
+<div id="outline-container-org09fbab3" class="outline-3">
+<h3 id="org09fbab3"><span class="section-number-3">5.3</span> Interfaces</h3>
 <div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_doc</span> (
@@ -3566,7 +3566,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-04-01 Fri 15:58</p>
+<p class="date">Created: 2022-04-02 Sat 12:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
