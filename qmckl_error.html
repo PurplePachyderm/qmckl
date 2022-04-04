@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-04-03 Sun 10:26 -->
+<!-- 2022-04-04 Mon 09:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Error handling</title>
@@ -311,19 +311,19 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2433aa3">-</a></li>
-<li><a href="#orgffe6d2b">1. Decoding errors</a></li>
-<li><a href="#org9abb1b1">2. Data structure in context</a></li>
-<li><a href="#org61f1388">3. Updating errors in the context</a></li>
-<li><a href="#org55a0f8a">4. Get the error</a></li>
-<li><a href="#orge603191">5. Failing</a></li>
+<li><a href="#orga7ae547">-</a></li>
+<li><a href="#orgc73c4e6">1. Decoding errors</a></li>
+<li><a href="#org2516aed">2. Data structure in context</a></li>
+<li><a href="#org143b65f">3. Updating errors in the context</a></li>
+<li><a href="#org084ec45">4. Get the error</a></li>
+<li><a href="#org5df07bb">5. Failing</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org2433aa3" class="outline-2">
-<h2 id="org2433aa3">-</h2>
-<div class="outline-text-2" id="text-org2433aa3">
+<div id="outline-container-orga7ae547" class="outline-2">
+<h2 id="orga7ae547">-</h2>
+<div class="outline-text-2" id="text-orga7ae547">
 <p>
 The library should never make the calling programs abort, nor
 perform any input/output operations. This decision has to be taken
@@ -334,7 +334,7 @@ by the developer of the code calling the library.
 All the functions return with an exit code, defined as
 </p>
 <div class="org-src-container">
-<pre class="src src-c" id="org37e6db4"><span style="color: #a020f0;">typedef</span> <span style="color: #228b22;">int32_t</span> <span style="color: #228b22;">qmckl_exit_code</span>;
+<pre class="src src-c" id="org4e33a1a"><span style="color: #a020f0;">typedef</span> <span style="color: #228b22;">int32_t</span> <span style="color: #228b22;">qmckl_exit_code</span>;
 </pre>
 </div>
 
@@ -351,7 +351,7 @@ error code is returned to the program.
 Here is the complete list of exit codes.
 </p>
 
-<table id="orgdfc463b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org35afbbf" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -553,8 +553,8 @@ string is assumed to be large enough to contain the error message
 </div>
 </div>
 
-<div id="outline-container-orgffe6d2b" class="outline-2">
-<h2 id="orgffe6d2b"><span class="section-number-2">1</span> Decoding errors</h2>
+<div id="outline-container-orgc73c4e6" class="outline-2">
+<h2 id="orgc73c4e6"><span class="section-number-2">1</span> Decoding errors</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 To decode the error messages, <code>qmckl_string_of_error</code> converts an
@@ -572,8 +572,8 @@ The text strings are extracted from the previous table.
 </p>
 </div>
 </div>
-<div id="outline-container-org9abb1b1" class="outline-2">
-<h2 id="org9abb1b1"><span class="section-number-2">2</span> Data structure in context</h2>
+<div id="outline-container-org2516aed" class="outline-2">
+<h2 id="org2516aed"><span class="section-number-2">2</span> Data structure in context</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The strings are declared internally with a maximum fixed size to avoid
@@ -596,8 +596,8 @@ dynamic memory allocation.
 </div>
 </div>
 
-<div id="outline-container-org61f1388" class="outline-2">
-<h2 id="org61f1388"><span class="section-number-2">3</span> Updating errors in the context</h2>
+<div id="outline-container-org143b65f" class="outline-2">
+<h2 id="org143b65f"><span class="section-number-2">3</span> Updating errors in the context</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The error is updated in the context using <code>qmckl_set_error</code>.
@@ -616,8 +616,8 @@ explaining the error. The exit code can't be <code>QMCKL_SUCCESS</code>.
 </div>
 </div>
 </div>
-<div id="outline-container-org55a0f8a" class="outline-2">
-<h2 id="org55a0f8a"><span class="section-number-2">4</span> Get the error</h2>
+<div id="outline-container-org084ec45" class="outline-2">
+<h2 id="org084ec45"><span class="section-number-2">4</span> Get the error</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Upon error, the error type and message can be obtained from the
@@ -636,8 +636,8 @@ function name and message is mandatory.
 </div>
 </div>
 </div>
-<div id="outline-container-orge603191" class="outline-2">
-<h2 id="orge603191"><span class="section-number-2">5</span> Failing</h2>
+<div id="outline-container-org5df07bb" class="outline-2">
+<h2 id="org5df07bb"><span class="section-number-2">5</span> Failing</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 To make a function fail, the <code>qmckl_failwith</code> function should be
@@ -676,7 +676,7 @@ For example, this function can be used as
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-04-03 Sun 10:26</p>
+<p class="date">Created: 2022-04-04 Mon 09:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
