@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-04-04 Mon 10:13 -->
+<!-- 2022-04-05 Tue 08:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BLAS functions</title>
@@ -333,53 +333,53 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org69fa88f">-</a></li>
-<li><a href="#org6043678">1. Data types</a>
+<li><a href="#org520a61e">-</a></li>
+<li><a href="#org6d3fd82">1. Data types</a>
 <ul>
-<li><a href="#org5fbfcae">1.1. Vector</a></li>
-<li><a href="#orgda76621">1.2. Matrix</a></li>
-<li><a href="#org430cb62">1.3. Tensor</a></li>
-<li><a href="#org6be4c5d">1.4. Reshaping</a>
+<li><a href="#orgbe841d5">1.1. Vector</a></li>
+<li><a href="#org2901abd">1.2. Matrix</a></li>
+<li><a href="#org3b3cd64">1.3. Tensor</a></li>
+<li><a href="#org2a8d04e">1.4. Reshaping</a>
 <ul>
-<li><a href="#orgb5eda30">1.4.1. Vector -&gt; Matrix</a></li>
-<li><a href="#org17854d3">1.4.2. Vector -&gt; Tensor</a></li>
-<li><a href="#org7868c3f">1.4.3. Matrix -&gt; Vector</a></li>
-<li><a href="#org5226a8f">1.4.4. Matrix -&gt; Tensor</a></li>
-<li><a href="#org32bb03c">1.4.5. Tensor -&gt; Vector</a></li>
-<li><a href="#orgae6d50a">1.4.6. Tensor -&gt; Matrix</a></li>
+<li><a href="#org9eb1203">1.4.1. Vector -&gt; Matrix</a></li>
+<li><a href="#org73d5a2c">1.4.2. Vector -&gt; Tensor</a></li>
+<li><a href="#orgd43e9d2">1.4.3. Matrix -&gt; Vector</a></li>
+<li><a href="#org34cbc10">1.4.4. Matrix -&gt; Tensor</a></li>
+<li><a href="#orgd0fcca8">1.4.5. Tensor -&gt; Vector</a></li>
+<li><a href="#org644c69f">1.4.6. Tensor -&gt; Matrix</a></li>
 </ul>
 </li>
-<li><a href="#org20b056d">1.5. Access macros</a></li>
-<li><a href="#org5b506c6">1.6. Set all elements</a>
+<li><a href="#org813b15e">1.5. Access macros</a></li>
+<li><a href="#org886e48e">1.6. Set all elements</a>
 <ul>
-<li><a href="#org8836e71">1.6.1. Vector</a></li>
-<li><a href="#org2c0fb7a">1.6.2. Matrix</a></li>
-<li><a href="#org54053d6">1.6.3. Tensor</a></li>
+<li><a href="#org9d76280">1.6.1. Vector</a></li>
+<li><a href="#org019b690">1.6.2. Matrix</a></li>
+<li><a href="#org3656da4">1.6.3. Tensor</a></li>
 </ul>
 </li>
-<li><a href="#org6977da8">1.7. Copy to/from to <code>double*</code></a></li>
+<li><a href="#org416ea14">1.7. Copy to/from to <code>double*</code></a></li>
 </ul>
 </li>
-<li><a href="#orgb509465">2. Matrix operations</a>
+<li><a href="#org0c79a04">2. Matrix operations</a>
 <ul>
-<li><a href="#org5487af3">2.1. <code>qmckl_dgemm</code></a></li>
-<li><a href="#org6682c67">2.2. <code>qmckl_matmul</code></a></li>
-<li><a href="#org714f1c1">2.3. <code>qmckl_adjugate</code></a></li>
-<li><a href="#org2ed6b8c">2.4. <code>qmckl_transpose</code></a></li>
+<li><a href="#org073eefd">2.1. <code>qmckl_dgemm</code></a></li>
+<li><a href="#orgb8c411e">2.2. <code>qmckl_matmul</code></a></li>
+<li><a href="#orge857141">2.3. <code>qmckl_adjugate</code></a></li>
+<li><a href="#orga7223c6">2.4. <code>qmckl_transpose</code></a></li>
 </ul>
 </li>
-<li><a href="#org6d8547b">3. cuBLAS interface (optional)</a>
+<li><a href="#orge33317f">3. cuBLAS interface (optional)</a>
 <ul>
-<li><a href="#org41a3619">3.1. DGEMM</a></li>
+<li><a href="#org22b3023">3.1. DGEMM</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org69fa88f" class="outline-2">
-<h2 id="org69fa88f">-</h2>
-<div class="outline-text-2" id="text-org69fa88f">
+<div id="outline-container-org520a61e" class="outline-2">
+<h2 id="org520a61e">-</h2>
+<div class="outline-text-2" id="text-org520a61e">
 <p>
 Basic linear algebra data types and operations are described in this file.
 The data types are private, so that HPC implementations can use
@@ -393,12 +393,12 @@ are not intended to be passed to external codes.
 </div>
 </div>
 
-<div id="outline-container-org6043678" class="outline-2">
-<h2 id="org6043678"><span class="section-number-2">1</span> Data types</h2>
+<div id="outline-container-org6d3fd82" class="outline-2">
+<h2 id="org6d3fd82"><span class="section-number-2">1</span> Data types</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org5fbfcae" class="outline-3">
-<h3 id="org5fbfcae"><span class="section-number-3">1.1</span> Vector</h3>
+<div id="outline-container-orgbe841d5" class="outline-3">
+<h3 id="orgbe841d5"><span class="section-number-3">1.1</span> Vector</h3>
 <div class="outline-text-3" id="text-1-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -452,8 +452,8 @@ Allocates a new vector. If the allocation failed the size is zero.
 </div>
 </div>
 
-<div id="outline-container-orgda76621" class="outline-3">
-<h3 id="orgda76621"><span class="section-number-3">1.2</span> Matrix</h3>
+<div id="outline-container-org2901abd" class="outline-3">
+<h3 id="org2901abd"><span class="section-number-3">1.2</span> Matrix</h3>
 <div class="outline-text-3" id="text-1-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -513,8 +513,8 @@ Allocates a new matrix. If the allocation failed the sizes are zero.
 </div>
 </div>
 
-<div id="outline-container-org430cb62" class="outline-3">
-<h3 id="org430cb62"><span class="section-number-3">1.3</span> Tensor</h3>
+<div id="outline-container-org3b3cd64" class="outline-3">
+<h3 id="org3b3cd64"><span class="section-number-3">1.3</span> Tensor</h3>
 <div class="outline-text-3" id="text-1-3">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -581,16 +581,16 @@ is zero.
 </div>
 </div>
 
-<div id="outline-container-org6be4c5d" class="outline-3">
-<h3 id="org6be4c5d"><span class="section-number-3">1.4</span> Reshaping</h3>
+<div id="outline-container-org2a8d04e" class="outline-3">
+<h3 id="org2a8d04e"><span class="section-number-3">1.4</span> Reshaping</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Reshaping occurs in-place and the pointer to the data is copied.
 </p>
 </div>
 
-<div id="outline-container-orgb5eda30" class="outline-4">
-<h4 id="orgb5eda30"><span class="section-number-4">1.4.1</span> Vector -&gt; Matrix</h4>
+<div id="outline-container-org9eb1203" class="outline-4">
+<h4 id="org9eb1203"><span class="section-number-4">1.4.1</span> Vector -&gt; Matrix</h4>
 <div class="outline-text-4" id="text-1-4-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_matrix</span>
@@ -606,8 +606,8 @@ Reshapes a vector into a matrix.
 </div>
 </div>
 
-<div id="outline-container-org17854d3" class="outline-4">
-<h4 id="org17854d3"><span class="section-number-4">1.4.2</span> Vector -&gt; Tensor</h4>
+<div id="outline-container-org73d5a2c" class="outline-4">
+<h4 id="org73d5a2c"><span class="section-number-4">1.4.2</span> Vector -&gt; Tensor</h4>
 <div class="outline-text-4" id="text-1-4-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_tensor</span>
@@ -623,8 +623,8 @@ Reshapes a vector into a tensor.
 </div>
 </div>
 
-<div id="outline-container-org7868c3f" class="outline-4">
-<h4 id="org7868c3f"><span class="section-number-4">1.4.3</span> Matrix -&gt; Vector</h4>
+<div id="outline-container-orgd43e9d2" class="outline-4">
+<h4 id="orgd43e9d2"><span class="section-number-4">1.4.3</span> Matrix -&gt; Vector</h4>
 <div class="outline-text-4" id="text-1-4-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_vector</span>
@@ -638,8 +638,8 @@ Reshapes a matrix into a vector.
 </div>
 </div>
 
-<div id="outline-container-org5226a8f" class="outline-4">
-<h4 id="org5226a8f"><span class="section-number-4">1.4.4</span> Matrix -&gt; Tensor</h4>
+<div id="outline-container-org34cbc10" class="outline-4">
+<h4 id="org34cbc10"><span class="section-number-4">1.4.4</span> Matrix -&gt; Tensor</h4>
 <div class="outline-text-4" id="text-1-4-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_tensor</span>
@@ -655,8 +655,8 @@ Reshapes a matrix into a tensor.
 </div>
 </div>
 
-<div id="outline-container-org32bb03c" class="outline-4">
-<h4 id="org32bb03c"><span class="section-number-4">1.4.5</span> Tensor -&gt; Vector</h4>
+<div id="outline-container-orgd0fcca8" class="outline-4">
+<h4 id="orgd0fcca8"><span class="section-number-4">1.4.5</span> Tensor -&gt; Vector</h4>
 <div class="outline-text-4" id="text-1-4-5">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_vector</span>
@@ -670,8 +670,8 @@ Reshapes a tensor into a vector.
 </div>
 </div>
 
-<div id="outline-container-orgae6d50a" class="outline-4">
-<h4 id="orgae6d50a"><span class="section-number-4">1.4.6</span> Tensor -&gt; Matrix</h4>
+<div id="outline-container-org644c69f" class="outline-4">
+<h4 id="org644c69f"><span class="section-number-4">1.4.6</span> Tensor -&gt; Matrix</h4>
 <div class="outline-text-4" id="text-1-4-6">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_matrix</span>
@@ -688,8 +688,8 @@ Reshapes a tensor into a vector.
 </div>
 </div>
 
-<div id="outline-container-org20b056d" class="outline-3">
-<h3 id="org20b056d"><span class="section-number-3">1.5</span> Access macros</h3>
+<div id="outline-container-org813b15e" class="outline-3">
+<h3 id="org813b15e"><span class="section-number-3">1.5</span> Access macros</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 Macros are provided to ease the access to vectors, matrices and
@@ -713,12 +713,12 @@ For example:
 </div>
 </div>
 
-<div id="outline-container-org5b506c6" class="outline-3">
-<h3 id="org5b506c6"><span class="section-number-3">1.6</span> Set all elements</h3>
+<div id="outline-container-org886e48e" class="outline-3">
+<h3 id="org886e48e"><span class="section-number-3">1.6</span> Set all elements</h3>
 <div class="outline-text-3" id="text-1-6">
 </div>
-<div id="outline-container-org8836e71" class="outline-4">
-<h4 id="org8836e71"><span class="section-number-4">1.6.1</span> Vector</h4>
+<div id="outline-container-org9d76280" class="outline-4">
+<h4 id="org9d76280"><span class="section-number-4">1.6.1</span> Vector</h4>
 <div class="outline-text-4" id="text-1-6-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_vector</span>
@@ -728,8 +728,8 @@ For example:
 </div>
 </div>
 
-<div id="outline-container-org2c0fb7a" class="outline-4">
-<h4 id="org2c0fb7a"><span class="section-number-4">1.6.2</span> Matrix</h4>
+<div id="outline-container-org019b690" class="outline-4">
+<h4 id="org019b690"><span class="section-number-4">1.6.2</span> Matrix</h4>
 <div class="outline-text-4" id="text-1-6-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_matrix</span>
@@ -739,8 +739,8 @@ For example:
 </div>
 </div>
 
-<div id="outline-container-org54053d6" class="outline-4">
-<h4 id="org54053d6"><span class="section-number-4">1.6.3</span> Tensor</h4>
+<div id="outline-container-org3656da4" class="outline-4">
+<h4 id="org3656da4"><span class="section-number-4">1.6.3</span> Tensor</h4>
 <div class="outline-text-4" id="text-1-6-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_tensor</span>
@@ -751,8 +751,8 @@ For example:
 </div>
 </div>
 
-<div id="outline-container-org6977da8" class="outline-3">
-<h3 id="org6977da8"><span class="section-number-3">1.7</span> Copy to/from to <code>double*</code></h3>
+<div id="outline-container-org416ea14" class="outline-3">
+<h3 id="org416ea14"><span class="section-number-3">1.7</span> Copy to/from to <code>double*</code></h3>
 <div class="outline-text-3" id="text-1-7">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -835,12 +835,12 @@ Converts a <code>double*</code> to a tensor.
 </div>
 </div>
 
-<div id="outline-container-orgb509465" class="outline-2">
-<h2 id="orgb509465"><span class="section-number-2">2</span> Matrix operations</h2>
+<div id="outline-container-org0c79a04" class="outline-2">
+<h2 id="org0c79a04"><span class="section-number-2">2</span> Matrix operations</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org5487af3" class="outline-3">
-<h3 id="org5487af3"><span class="section-number-3">2.1</span> <code>qmckl_dgemm</code></h3>
+<div id="outline-container-org073eefd" class="outline-3">
+<h3 id="org073eefd"><span class="section-number-3">2.1</span> <code>qmckl_dgemm</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Matrix multiplication with a BLAS interface:
@@ -852,7 +852,7 @@ Matrix multiplication with a BLAS interface:
    \]
 </p>
 
-<table id="orgd6562d7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgc738457" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1011,8 +1011,8 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org6682c67" class="outline-3">
-<h3 id="org6682c67"><span class="section-number-3">2.2</span> <code>qmckl_matmul</code></h3>
+<div id="outline-container-orgb8c411e" class="outline-3">
+<h3 id="orgb8c411e"><span class="section-number-3">2.2</span> <code>qmckl_matmul</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Matrix multiplication using the <code>qmckl_matrix</code> data type:
@@ -1024,7 +1024,7 @@ Matrix multiplication using the <code>qmckl_matrix</code> data type:
    \]
 </p>
 
-<table id="org0fab8dc" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgd19c321" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1118,8 +1118,8 @@ Matrix multiplication using the <code>qmckl_matrix</code> data type:
 </div>
 </div>
 
-<div id="outline-container-org714f1c1" class="outline-3">
-<h3 id="org714f1c1"><span class="section-number-3">2.3</span> <code>qmckl_adjugate</code></h3>
+<div id="outline-container-orge857141" class="outline-3">
+<h3 id="orge857141"><span class="section-number-3">2.3</span> <code>qmckl_adjugate</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Given a matrix \(\mathbf{A}\), the adjugate matrix
@@ -1137,7 +1137,7 @@ of \(\mathbf{A}\).
 See also: <a href="https://en.wikipedia.org/wiki/Adjugate_matrix">https://en.wikipedia.org/wiki/Adjugate_matrix</a>
 </p>
 
-<table id="org339b113" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgd2b2dcc" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1333,8 +1333,8 @@ determinant with the inverse:
 </div>
 </div>
 
-<div id="outline-container-org2ed6b8c" class="outline-3">
-<h3 id="org2ed6b8c"><span class="section-number-3">2.4</span> <code>qmckl_transpose</code></h3>
+<div id="outline-container-orga7223c6" class="outline-3">
+<h3 id="orga7223c6"><span class="section-number-3">2.4</span> <code>qmckl_transpose</code></h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Transposes a matrix: \(A^\dagger_{ji} = A_{ij}\).
@@ -1395,8 +1395,8 @@ Transposes a matrix: \(A^\dagger_{ji} = A_{ij}\).
 </div>
 </div>
 
-<div id="outline-container-org6d8547b" class="outline-2">
-<h2 id="org6d8547b"><span class="section-number-2">3</span> cuBLAS interface (optional)</h2>
+<div id="outline-container-orge33317f" class="outline-2">
+<h2 id="orge33317f"><span class="section-number-2">3</span> cuBLAS interface (optional)</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 We propose a cuBLAS version of some QMCkl kernels. However, because cuBLAS is written in C, we need to define a Fortran interface for it. We start by defining functions to manage the cuBLAS handle structure from Fortran, before writing interfaces for the specific cuBLAS functions we are interested in.
@@ -1428,8 +1428,8 @@ TODO These are the C functions that are supposed to be called from Fortran. We s
 </div>
 </div>
 
-<div id="outline-container-org41a3619" class="outline-3">
-<h3 id="org41a3619"><span class="section-number-3">3.1</span> DGEMM</h3>
+<div id="outline-container-org22b3023" class="outline-3">
+<h3 id="org22b3023"><span class="section-number-3">3.1</span> DGEMM</h3>
 <div class="outline-text-3" id="text-3-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_CUBLAS_OFFLOAD
@@ -1452,7 +1452,7 @@ TODO These are the C functions that are supposed to be called from Fortran. We s
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-04-04 Mon 10:13</p>
+<p class="date">Created: 2022-04-05 Tue 08:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
