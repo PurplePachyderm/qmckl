@@ -276,7 +276,7 @@ AS_IF([test "$enable_gpu" = "openmp"], [
   esac]
 )
 
-# OpenMP offloading
+# OpenACC offloading
 HAVE_OPENACC_OFFLOAD="no"
 AS_IF([test "$enable_gpu" = "openacc"], [
   AC_DEFINE([HAVE_OPENACC_OFFLOAD], [1], [If defined, activate OpenACC-offloaded routines])
@@ -307,7 +307,6 @@ AS_IF([test "$enable_gpu" = "openacc"], [
 AC_ARG_WITH(cublas, [AS_HELP_STRING([--with-cublas],[Use cuBLAS-offloaded functions])], HAVE_CUBLAS_OFFLOAD=$withval, HAVE_CUBLAS_OFFLOAD=no)
 AS_IF([test "$HAVE_CUBLAS_OFFLOAD" = "yes"], [
   AC_DEFINE([HAVE_CUBLAS_OFFLOAD], [1], [If defined, activate cuBLAS-offloaded routines])
-  HAVE_OPENACC_OFFLOAD="yes"
   case $CC in
 
     *gcc*)

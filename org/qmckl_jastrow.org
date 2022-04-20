@@ -6165,32 +6165,33 @@ qmckl_compute_tmp_c_omp_offload (const qmckl_context context,
   const int64_t size_e = walk_num*(cord_num+1)*elec_num*elec_num;
   const int64_t size_n = walk_num*(cord_num+1)*nucl_num*elec_num;
 
-
-  // WARNING This implementation seems unomptimized
-  #pragma omp target map(from:tmp_c[0:size_tmp_c]) map(to:een_rescaled_e[0:size_e], een_rescaled_n[0:size_n])
+  double sum = 0.;
+  #pragma omp target data map(from:tmp_c[0:size_tmp_c]) map(to:een_rescaled_e[0:size_e], een_rescaled_n[0:size_n])
   {
-  #pragma omp teams distribute parallel for collapse(5)
-    for (int nw=0; nw < walk_num; ++nw) {
-      for (int i=0; i<cord_num; ++i){
+  #pragma omp target teams distribute parallel for collapse(4)
+  for (int nw=0; nw < walk_num; ++nw) {
+    for (int i=0; i<cord_num; ++i){
 
-        // Replacement for single DGEMM
-        for (int j=0; j<cord_num+1; j++) {
-          for (int k=0; k<nucl_num; k++) {
-            for (int l=0; l<elec_num; l++) {
+      // Replacement for single DGEMM
+      for (int jk=0; jk<nucl_num*(cord_num+1); jk++) {
+        for (int l=0; l<elec_num; l++) {
 
-              // Single reduction
-              tmp_c[l + k*stride_k_c + j*stride_j_c + i*stride_i_c + nw*stride_nw_c] = 0.;
-              for (int m=0; m<elec_num; m++) {
-                tmp_c[l + k*stride_k_c + j*stride_j_c + i*stride_i_c + nw*stride_nw_c] =
-                  tmp_c[l + k*stride_k_c + j*stride_j_c + i*stride_i_c + nw*stride_nw_c] +
-                  een_rescaled_e[l + m*stride_m_e + i*stride_i_e + nw*stride_nw_e] *
-                  een_rescaled_n[m + k*stride_k_n + j*stride_j_n + nw*stride_nw_n];
-              }
-            }
+		  int index_e_base = l + i*stride_i_e + nw*stride_nw_e;
+		  int index_n_base = jk*stride_k_n + nw*stride_nw_n;
+
+          // Single reduction
+		  #pragma omp simd reduction(+:sum)
+          for (int m=0; m<elec_num; m++) {
+            sum +=
+            een_rescaled_e[index_e_base + m*stride_m_e] *
+            een_rescaled_n[index_n_base + m];
           }
+          tmp_c[l + jk*stride_k_c + i*stride_i_c + nw*stride_nw_c] = sum;
+
         }
       }
     }
+  }
   }
 
   return QMCKL_SUCCESS;
@@ -6694,35 +6695,33 @@ qmckl_exit_code qmckl_compute_dtmp_c_omp_offload (
   const int64_t stride_j_n  = stride_k_n * nucl_num;
   const int64_t stride_nw_n = stride_j_n * (cord_num+1);
 
-
   const int64_t size_dtmp_c = walk_num*cord_num*(cord_num+1)*nucl_num*4*elec_num;
   const int64_t size_n = walk_num*(cord_num+1)*nucl_num*elec_num;
   const int64_t size_e = walk_num*(cord_num+1)*elec_num*4*elec_num;
 
-  // WARNING This implementation seems unomptimized
-  #pragma omp target map(from:dtmp_c[0:size_dtmp_c]) map(to:een_rescaled_e_deriv_e[0:size_e], een_rescaled_n[0:size_n])
-  {
 
-  #pragma omp teams distribute parallel for collapse(6)
+  double sum = 0.;
+  #pragma omp target data map(from:dtmp_c[0:size_dtmp_c]) map(to:een_rescaled_e_deriv_e[0:size_e], een_rescaled_n[0:size_n])
+  {
+  #pragma omp target teams distribute parallel for collapse(4) simd
   for (int nw=0; nw < walk_num; nw++) {
     for (int i=0; i < cord_num; i++) {
 
       // Single DGEMM
-      for(int j=0; j<cord_num+1; j++) {
-        for(int k=0; k<nucl_num; k++) {
-          for(int l=0; l<4; l++) {
-            for(int m=0; m<elec_num; m++) {
+      for(int jk=0; jk<nucl_num*(cord_num+1); jk++) {
+        for(int ml=0; ml<4*elec_num; ml++) {
 
-              // Single reduction
-              dtmp_c[m + l * stride_l_d + k * stride_k_d + j * stride_j_d + i * stride_i_d + nw * stride_nw_d] = 0;
-              for(int n=0; n<elec_num; n++){
-                dtmp_c[m + l * stride_l_d + k * stride_k_d + j * stride_j_d + i * stride_i_d + nw * stride_nw_d] =
-                dtmp_c[m + l * stride_l_d + k * stride_k_d + j * stride_j_d + i * stride_i_d + nw * stride_nw_d] +
-                een_rescaled_e_deriv_e[m + l * stride_l_e +  n * stride_n_e + i * stride_i_e + nw * stride_nw_e] *
-                een_rescaled_n[n + k * stride_k_n + j * stride_j_n + nw * stride_nw_n];
-              }
-            }
+          // Single reduction
+		  int index_n_base = jk * stride_k_n  + nw * stride_nw_n;
+		  int index_e_base = ml + i * stride_i_e + nw * stride_nw_e;
+		  #pragma omp simd reduction(+:sum)
+          for(int n=0; n<elec_num; n++){
+            sum +=
+            een_rescaled_e_deriv_e[index_e_base + n * stride_n_e] *
+            een_rescaled_n[index_n_base + n];
           }
+          dtmp_c[ml + jk * stride_k_d + i * stride_i_d + nw * stride_nw_d] = sum;
+
         }
       }
     }
@@ -6811,6 +6810,7 @@ qmckl_compute_dtmp_c_cublas_offload (
   #pragma omp target enter data map(to:een_rescaled_e_deriv_e[0:elec_num*4*elec_num*(cord_num+1)*walk_num], een_rescaled_n[0:elec_num*nucl_num*(cord_num+1)*walk_num], dtmp_c[0:elec_num*4*nucl_num*(cord_num+1)*cord_num*walk_num])
   #pragma omp target data use_device_ptr(een_rescaled_e_deriv_e, een_rescaled_n, dtmp_c)
   {
+  #pragma omp parallel for schedule(static)
   for (int64_t nw=0; nw < walk_num; ++nw) {
     int cublasError = cublasDgemmStridedBatched(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, N, K, &alpha,
                                       &(een_rescaled_e_deriv_e[(nw*(cord_num+1))]),
