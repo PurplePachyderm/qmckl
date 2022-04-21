@@ -4630,9 +4630,6 @@ qmckl_exit_code qmckl_ao_polynomial_transp_vgl_doc (
 
         #+RESULTS:
         #+begin_src c :tangle (eval h_func) :comments org
-#ifdef HAVE_OPENMP_OFFLOAD
-#pragma omp declare target
-#endif
 qmckl_exit_code qmckl_ao_polynomial_transp_vgl_hpc (
                                                     const qmckl_context context,
                                                     const double* X,
@@ -4643,9 +4640,6 @@ qmckl_exit_code qmckl_ao_polynomial_transp_vgl_hpc (
                                                     const int64_t ldl,
                                                     double* const VGL,
                                                     const int64_t ldv );
-#ifdef HAVE_OPENMP_OFFLOAD
-#pragma omp end declare target
-#endif
         #+end_src
 
         #+begin_src c :tangle (eval c) :comments org
@@ -5825,10 +5819,9 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
                                            const qmckl_tensor coef_per_nucleus,
                                            double* restrict const ao_vgl )
 {
-  //int32_t lstart[32];
-  int32_t * lstart = malloc(128); // 32 * 4 bytes
+  int32_t lstart_h[32];
   for (int32_t l=0 ; l<32 ; ++l) {
-    lstart[l] = l*(l+1)*(l+2)/6;
+    lstart_h[l] = l*(l+1)*(l+2)/6;
   }
 
   //int64_t ao_index[shell_num+1];
@@ -5848,8 +5841,8 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
     for(int64_t ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
       const int l = shell_ang_mom[ishell];
       ao_index[ishell] = k;
-      k += lstart[l+1] - lstart[l];
-      size_max = size_max < lstart[l+1] ? lstart[l+1] : size_max;
+      k += lstart_h[l+1] - lstart_h[l];
+      size_max = size_max < lstart_h[l+1] ? lstart_h[l+1] : size_max;
     }
   }
   ao_index[shell_num] = ao_num+1;
@@ -5862,7 +5855,7 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
   //double ar2[prim_max];
   double * ar2 = (double*) malloc(prim_max * sizeof(double));
 
-  //int32_t powers[prim_max];
+  // int32_t powers[prim_max];
   int32_t * powers = (int32_t*) malloc(prim_max * sizeof(int32_t));
 
 
@@ -5896,7 +5889,7 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
 	poly_vgl_l2[49] = 2.;
 
 	//double  poly_vgl[5][size_max];
-	double * poly_vgl = (double*) malloc(5 * size_max * sizeof(double*));
+  double * poly_vgl = (double*) malloc(5 * size_max * sizeof(double*));
 
 	//double exp_mat[prim_max][8];
 	double * exp_mat = (double*) malloc(prim_max * 8 * sizeof(double));
@@ -5914,36 +5907,46 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
     }
   }
 
-  // WARNING This probalby breaks the restrict on expo_per_nucleus.data
+  // WARNING This probably breaks the restrict on expo_per_nucleus.data
   double * expo_per_nucleus_data = expo_per_nucleus.data;
-/*
+  int expo_per_nucleus_size_0 = expo_per_nucleus.size[0];
+  int expo_per_nucleus_size_1 = expo_per_nucleus.size[1];
+
+
   #pragma omp target enter data \
 	map(to:prim_num_per_nucleus[0:nucl_num],         \
-	       coord[0:point_num],					     \
+	       coord[0:3*point_num],					 \
+	       nucl_coord[0:3*nucl_num],		         \
          nucleus_index[0:nucl_num],                \
          nucleus_shell_num[0:nucl_num],            \
          nucleus_range[0:nucl_num],                \
          nucleus_max_ang_mom[0:nucl_num],          \
-         shell_ang_mom[0:nucl_num],                \
+         shell_ang_mom[0:shell_num],               \
          ao_factor[0:ao_num],                      \
-		   expo_per_nucleus_data[0:expo_per_nucleus.size[0]*expo_per_nucleus.size[1]], \
+		   expo_per_nucleus_data[0:expo_per_nucleus_size_0*expo_per_nucleus_size_1], \
 	       coef_mat[0:nucl_num*shell_max*prim_max],\
 	       ao_index[0:shell_num+1],\
 	       poly_vgl_l1[0:16],\
 	       poly_vgl_l2[0:50]\
   )\
-	map(alloc:exp_mat[0:prim_max][0:8],\
+ 	map(alloc:exp_mat[0:prim_max][0:8],\
             ce_mat[0:shell_max*8],\
-	          lstart[0:32],\
 	          ar2[0:prim_max],\
 	          powers[0:prim_max],\
+	          ao_vgl[0:point_num*5*ao_num],\
 	          poly_vgl[0:5*size_max]\
 	)
-	*/
-  {
-	  // Main for
-	  //#pragma omp target teams distribute parallel for
+ {
+	  #pragma omp target teams distribute parallel for simd
     for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
+
+		// NOTE For some reason, allocating + copying this from host to device caused
+		// a segfault when calling this function more than once ?
+      int32_t lstart[32];
+      for (int32_t l=0 ; l<32 ; ++l) {
+        lstart[l] = l*(l+1)*(l+2)/6;
+      }
+
 		// Data init (per iteration) & cutoff
       const double e_coord[3] = { coord[ipoint],
                                   coord[ipoint + point_num],
@@ -5998,26 +6001,24 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
           break;
 
         default:
-			// Function !
+			// BUG Couldn't call this from GPU
+
+			/*
           rc = qmckl_ao_polynomial_transp_vgl_hpc(context, e_coord, n_coord,
                                                   nucleus_max_ang_mom[inucl],
                                                   &n_poly, powers, (int64_t) 3,
-                                                  &(poly_vgl[0]), size_max);
-
+                                                  poly_vgl, size_max);
           assert (rc == QMCKL_SUCCESS);
+          ,*/
+
           break;
         }
 
         /* Compute all exponents */
 
-		  // WARNING Row or column major ?
-        // const double v = qmckl_mat(expo_per_nucleus, iprim, inucl) * r2;
-
-		  // Loop 1_1
         int64_t nidx = 0;
-		  int upper_bound = prim_num_per_nucleus[inucl];
-		  int base_idx  = inucl * expo_per_nucleus.size[0];
-        for (int64_t iprim = 0 ; iprim < upper_bound; ++iprim) {
+		  int base_idx  = inucl * expo_per_nucleus_size_0;
+        for (int64_t iprim = 0 ; iprim < prim_num_per_nucleus[inucl]; ++iprim) {
           const double v = expo_per_nucleus_data[base_idx + iprim] * r2;
           if (v <= cutoff) {
             ar2[iprim] = v;
@@ -6027,12 +6028,10 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
           }
         }
 
-		  // Loop 1_2
         for (int64_t iprim = 0 ; iprim < nidx ; ++iprim) {
           exp_mat[iprim*8] = exp(-ar2[iprim]);
         }
 
-		  // Loop 1_3 : 5.81 %
         for (int64_t iprim = 0 ; iprim < nidx ; ++iprim) {
           double f = expo_per_nucleus_data[base_idx + iprim] * exp_mat[iprim*8];
           f = -f-f;
@@ -6042,7 +6041,6 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
           exp_mat[iprim*8 + 4] = f * (3.0 - 2.0 * ar2[iprim]);
         }
 
-		  // Loop 1_4
         for (int i=0 ; i<nucleus_shell_num[inucl] ; ++i) {
 			// Loop : 14.45%
           for (int j=0 ; j<5 ; ++j) {
@@ -6050,12 +6048,8 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
           }
         }
 
-		  // Loop 1_5
-		  upper_bound = nucleus_shell_num[inucl];
         for (int k=0 ; k<nidx; ++k) {
-			// Loop : 13.34 %
-          for (int i=0 ; i<upper_bound ; ++i) {
-				// Loop : 12.29 %
+          for (int i=0 ; i<nucleus_shell_num[inucl]; ++i) {
               for (int j=0 ; j<5 ; ++j) {
                 ce_mat[i*8 + j] += coef_mat[inucl*shell_max*prim_max + i*prim_max + k] * exp_mat[k*8 + j];
               }
@@ -6063,11 +6057,9 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
         }
 
         const int64_t ishell_start = nucleus_index[inucl];
-        const int64_t ishell_end   = nucleus_index[inucl] + nucleus_shell_num[inucl];
+        const int64_t ishell_end = ishell_start + nucleus_shell_num[inucl];
 
-		  // 2nd nested loop : 16.45 %
-        for (int64_t ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
-
+        for (long ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
           const double s1 = ce_mat[(ishell-ishell_start) * 8];
           if (s1 == 0.0) continue;
           const double s2 = ce_mat[(ishell-ishell_start)*8+1];
@@ -6127,7 +6119,6 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
               ao_vgl_5[0] = s5;
               break;
             case (3):
-				// Loop : 7.91 %
               for (int il=0 ; il<3 ; ++il) {
                 ao_vgl_1[il] =  poly_vgl_1[il] * s1 * f[il];
                 ao_vgl_2[il] = (poly_vgl_2[il] * s1 + poly_vgl_1[il] * s2) * f[il];
@@ -6164,6 +6155,7 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
               }
               break;
             }
+
           } else {
             for (int64_t il=0 ; il<n ; ++il) {
               ao_vgl_1[il] = 0.0;
@@ -6176,12 +6168,11 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
         }
       }
     }
-    //#pragma omp target update from(ao_vgl[0:point_num])
+    #pragma omp target update from(ao_vgl[0:point_num*5*ao_num])
   }
 
 
   // Free all mem
-  free(lstart);
   free(ao_index);
   free(ar2);
   free(powers);
