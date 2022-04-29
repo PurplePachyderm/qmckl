@@ -6703,7 +6703,7 @@ qmckl_exit_code qmckl_compute_dtmp_c_omp_offload (
   double sum = 0.;
   #pragma omp target data map(from:dtmp_c[0:size_dtmp_c]) map(to:een_rescaled_e_deriv_e[0:size_e], een_rescaled_n[0:size_n])
   {
-  #pragma omp target teams distribute parallel for collapse(4) simd
+  #pragma omp target teams distribute parallel for collapse(4)
   for (int nw=0; nw < walk_num; nw++) {
     for (int i=0; i < cord_num; i++) {
 

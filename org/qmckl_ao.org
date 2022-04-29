@@ -4791,9 +4791,6 @@ end function qmckl_ao_polynomial_transp_vgl_doc_f
         #+end_src
 
         #+begin_src c :tangle (eval c) :comments org
-#ifdef HAVE_OPENMP_OFFLOAD
-#pragma omp declare target
-#endif
 qmckl_exit_code
 qmckl_ao_polynomial_transp_vgl_hpc (const qmckl_context context,
                                     const double* restrict X,
@@ -5069,11 +5066,326 @@ qmckl_ao_polynomial_transp_vgl_hpc (const qmckl_context context,
   ,*n = m;
   return QMCKL_SUCCESS;
 }
+        #+end_src
+
+** OpenMP offload version
+        #+begin_src c :tangle (eval c) :comments org
+#ifdef HAVE_OPENMP_OFFLOAD
+#pragma omp declare target
+#endif
+qmckl_exit_code
+qmckl_ao_polynomial_transp_vgl_hpc_omp_offload (const qmckl_context context,
+                                    const double* restrict X,
+                                    const double* restrict R,
+                                    const int32_t lmax,
+                                    int64_t* restrict n,
+                                    int32_t* restrict const L,
+                                    const int64_t ldl,
+                                    double* restrict const VGL,
+                                    const int64_t ldv )
+{
+  const qmckl_context_struct* ctx = (qmckl_context_struct*) context;
+  assert (ctx != NULL && X != NULL && R != NULL && n != NULL && L != NULL && VGL != NULL);
+  if (lmax < 0) return QMCKL_INVALID_ARG_4;
+  if (ldl < 3) return QMCKL_INVALID_ARG_7;
+
+  int32_t m;
+
+  switch (lmax) {
+  case 0:
+    {
+      if (ldv < 1) return QMCKL_INVALID_ARG_9;
+      L[0] = 0; L[1] = 0; L[2] = 0;
+
+      VGL[0         ] = 1.0;
+      VGL[ldv       ] = 0.0;
+      VGL[ldv<<1    ] = 0.0;
+      VGL[(ldv<<1)+ldv] = 0.0;
+      VGL[ldv<<2    ] = 0.0;
+      m=1;
+      break;
+    }
+  case 1:
+    {
+      if (ldv < 4) return QMCKL_INVALID_ARG_9;
+
+      if (ldl == 3) {
+
+        const int32_t ltmp[12] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1};
+        for (int i=0 ; i<12 ; ++i)
+          L[i] = ltmp[i];
+
+      } else {
+
+        int32_t* restrict const l[4] = {L, L+ldl, L+(ldl<<1), L+ldl+(ldl<<1)};
+        l[0][0] = 0; l[0][1] = 0; l[0][2] = 0;
+        l[1][0] = 1; l[1][1] = 0; l[1][2] = 0;
+        l[2][0] = 0; l[2][1] = 1; l[2][2] = 0;
+        l[3][0] = 0; l[3][1] = 0; l[3][2] = 1;
+      }
+
+
+      if (ldv == 4) {
+
+        const double tmp[20] = {1.0, X[0]-R[0], X[1]-R[1], X[2]-R[2],
+                                0.0, 1.0, 0.0, 0.0,
+                                0.0, 0.0, 1.0, 0.0,
+                                0.0, 0.0, 0.0, 1.0,
+                                0.0, 0.0, 0.0, 0.0};
+
+        for (int i=0 ; i<20 ; ++i)
+          VGL[i] = tmp[i];
+
+      } else {
+
+        double* restrict const vgl1 = VGL;
+        double* restrict const vgl2 = VGL + ldv;
+        double* restrict const vgl3 = VGL + (ldv << 1);
+        double* restrict const vgl4 = VGL + ldv + (ldv << 1);
+        double* restrict const vgl5 = VGL + (ldv << 2);
+
+        for (int32_t k=0 ; k<4 ; ++k) {
+          vgl2[k] = 0.0;
+          vgl3[k] = 0.0;
+          vgl4[k] = 0.0;
+          vgl5[k] = 0.0;
+        }
+        vgl1[0] = 1.0;
+        vgl1[1] = X[0]-R[0];
+        vgl1[2] = X[1]-R[1];
+        vgl1[3] = X[2]-R[2];
+        vgl2[1] = 1.0;
+        vgl3[2] = 1.0;
+        vgl4[3] = 1.0;
+      }
+      m=4;
+      break;
+    }
+  case 2:
+    {
+      if (ldv < 10) return QMCKL_INVALID_ARG_9;
+      if (ldl == 3) {
+        const int32_t ltmp[30] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1,
+                                  2, 0, 0, 1, 1, 0, 1, 0, 1, 0, 2, 0,
+                                  0, 1, 1, 0, 0, 2};
+        for (int i=0 ; i<30 ; ++i)
+          L[i] = ltmp[i];
+
+      } else {
+        int32_t* restrict l[10];
+        for (int32_t i=0 ; i<10 ; ++i) {
+          l[i] = L + i*ldl;
+        }
+
+        l[0][0] = 0; l[0][1] = 0; l[0][2] = 0;
+        l[1][0] = 1; l[1][1] = 0; l[1][2] = 0;
+        l[2][0] = 0; l[2][1] = 1; l[2][2] = 0;
+        l[3][0] = 0; l[3][1] = 0; l[3][2] = 1;
+        l[4][0] = 2; l[4][1] = 0; l[4][2] = 0;
+        l[5][0] = 1; l[5][1] = 1; l[5][2] = 0;
+        l[6][0] = 1; l[6][1] = 0; l[6][2] = 1;
+        l[7][0] = 0; l[7][1] = 2; l[7][2] = 0;
+        l[8][0] = 0; l[8][1] = 1; l[8][2] = 1;
+        l[9][0] = 0; l[9][1] = 0; l[9][2] = 2;
+      }
+
+      const double Y[3] = { X[0]-R[0],
+                            X[1]-R[1],
+                            X[2]-R[2] };
+
+      if (ldv == 50) {
+        const double tmp[50] = {
+          1.0, Y[0], Y[1], Y[2], Y[0] * Y[0],
+          Y[0] * Y[1], Y[0] * Y[2], Y[1] * Y[1], Y[1] * Y[2], Y[2] * Y[2],
+          0.0, 1.0, 0.0, 0.0, Y[0] + Y[0],
+          Y[1], Y[2], 0.0, 0.0, 0.0,
+          0.0, 0.0, 1.0, 0.0, 0.0,
+          Y[0], 0.0, Y[1] + Y[1], Y[2], 0.0,
+          0.0, 0.0, 0.0, 1.0, 0.0,
+          0.0, Y[0], 0.0, Y[1], Y[2] + Y[2],
+          0.0, 0.0, 0.0, 0.0, 2.0,
+          0.0, 0.0, 2.0, 0., 2.0 };
+        for (int i=0 ; i<50 ; ++i)
+          VGL[i] = tmp[i];
+      } else {
+        double* restrict const vgl1 = VGL;
+        double* restrict const vgl2 = VGL + ldv;
+        double* restrict const vgl3 = VGL + (ldv << 1);
+        double* restrict const vgl4 = VGL + 3*ldv;
+        double* restrict const vgl5 = VGL + (ldv << 2);
+
+        vgl1[0] = 1.0      ; vgl1[1] = Y[0]     ; vgl1[2] = Y[1];
+        vgl1[3] = Y[2]     ; vgl1[4] = Y[0]*Y[0]; vgl1[5] = Y[0]*Y[1];
+        vgl1[6] = Y[0]*Y[2]; vgl1[7] = Y[1]*Y[1]; vgl1[8] = Y[1]*Y[2];
+        vgl1[9] = Y[2]*Y[2];
+
+        vgl2[0] = 0.0 ; vgl2[1] = 1.0      ; vgl2[2] = 0.0 ;
+        vgl2[3] = 0.0 ; vgl2[4] = Y[0]+Y[0]; vgl2[5] = Y[1];
+        vgl2[6] = Y[2]; vgl2[7] = 0.0      ; vgl2[8] = 0.0 ;
+        vgl2[9] = 0.0 ;
+
+        vgl3[0] = 0.0; vgl3[1] = 0.0      ; vgl3[2] = 1.0 ;
+        vgl3[3] = 0.0; vgl3[4] = 0.0      ; vgl3[5] = Y[0];
+        vgl3[6] = 0.0; vgl3[7] = Y[1]+Y[1]; vgl3[8] = Y[2];
+        vgl3[9] = 0.0;
+
+        vgl4[0] = 0.0      ; vgl4[1] = 0.0; vgl4[2] = 0.0 ;
+        vgl4[3] = 1.0      ; vgl4[4] = 0.0; vgl4[5] = 0.0 ;
+        vgl4[6] = Y[0]     ; vgl4[7] = 0.0; vgl4[8] = Y[1];
+        vgl4[9] = Y[2]+Y[2];
+
+        vgl5[0] = 0.0; vgl5[1] = 0.0; vgl5[2] = 0.0;
+        vgl5[3] = 0.0; vgl5[4] = 2.0; vgl5[5] = 0.0;
+        vgl5[6] = 0.0; vgl5[7] = 2.0; vgl5[8] = 0.0;
+        vgl5[9] = 2.0;
+      }
+      m=10;
+      break;
+    }
+  default:
+    {
+      const int32_t size_max = (lmax+1)*(lmax+2)*(lmax+3)/6;
+      if (ldv < size_max) return QMCKL_INVALID_ARG_9;
+
+      double* restrict const vgl1 = VGL;
+      double* restrict const vgl2 = VGL + ldv;
+      double* restrict const vgl3 = VGL + (ldv<<1);
+      double* restrict const vgl4 = VGL + ldv + (ldv<<1);
+      double* restrict const vgl5 = VGL + (ldv<<2);
+
+      const double Y[3] = { X[0]-R[0],
+                            X[1]-R[1],
+                            X[2]-R[2] };
+
+      assert(size_max > lmax+3);
+
+      int32_t* l;
+
+      for (int32_t i=0 ; i<4 ; ++i) {
+        l = &(L[i*ldl]);
+
+        l[0] = 0;
+        l[1] = 0;
+        l[2] = 0;
+      }
+
+      l = &(L[ldl]);
+      l[0] = 1;
+      l = &(L[2*ldl]);
+      l[1] = 1;
+      l = &(L[3*ldl]);
+      l[2] = 1;
+
+      for (int32_t k=0 ; k<4 ; ++k) {
+        vgl2[k] = 0.0;
+        vgl3[k] = 0.0;
+        vgl4[k] = 0.0;
+        vgl5[k] = 0.0;
+      }
+      vgl1[0] = 1.0;
+      vgl1[1] = Y[0];
+      vgl1[2] = Y[1];
+      vgl1[3] = Y[2];
+
+      vgl2[1] = 1.0;
+      vgl3[2] = 1.0;
+      vgl4[3] = 1.0;
+      m=4;
+
+      // As to avoid the use of variable-length arrays, this will be computed on the fly
+      /*
+      double pows[3][size_max];
+
+      for (int32_t i=0 ; i<3 ; ++i) {
+        pows[0][i] = 1.0;
+        pows[1][i] = 1.0;
+        pows[2][i] = 1.0;
+      }
+
+      for (int32_t i=3 ; i<=lmax+2 ; ++i) {
+        pows[0][i] = pows[0][i-1] * Y[0];
+        pows[1][i] = pows[1][i-1] * Y[1];
+        pows[2][i] = pows[2][i-1] * Y[2];
+      }
+      ,*/
+
+      double pow_1, pow_2, pow_3;
+      double dd = 2.0;
+
+      for (int32_t d=2 ; d<= lmax ; ++d) {
+        double da = dd;
+
+        // Compute pow_1 up to the power of d+2 (a loop)
+        pow_1 = 1.0;
+        for(int i=0; i<d+2; ++i) {
+          pow_1 *= Y[0];
+        }
+
+        for (int32_t a=d ; a>=0 ; --a) {
+          double db = dd-da;
+
+          // Compute pow_2 up to the power of d-a+2 (b loop)
+          pow_2 = 1.0f;
+          for(int i=0; i<d-a+2; ++i) {
+            pow_2 *= Y[1];
+          }
+
+          // Reinit pow_3 to power 0 (c counter)
+          pow_3 = 1.0;
+
+          for (int32_t b=d-a ; b>=0 ; --b) {
+            const int32_t c  = d - a - b;
+            const double dc = dd - da - db;
+
+            double xy = pow_1 * pow_2;
+            double yz = pow_2 * pow_3 * Y[2] * Y[2];
+            double xz = pow_1 * pow_3 * Y[2] * Y[2];
+
+            l = &(L[m*ldl]);
+            l[0] = a;
+            l[1] = b;
+            l[2] = c;
+
+            vgl1[m] = xy * pow_3 * Y[2] * Y[2];
+
+            xy *= dc;
+            xz *= db;
+            yz *= da;
+
+            vgl2[m] = pow_1 / Y[0] * yz;
+            vgl3[m] = pow_2 / Y[1] * xz;
+            vgl4[m] = pow_3 * Y[2] * xy;
+
+            vgl5[m] = (da-1.) * pow_1 / Y[0] / Y[0] * yz +
+              (db-1.) * pow_2 / Y[1] / Y[1] * xz +
+              (dc-1.) * pow_3 * xy;
+
+            db -= 1.0;
+            ++m;
+
+            // Lower power of pow_2 by 1
+            pow_2 /= Y[1];
+            // Increase power of pow_3 by 1
+            pow_3 *= Y[2];
+          }
+          da -= 1.0;
+
+          // Lower power of pow_1 by 1
+          pow_1 /= Y[0];
+        }
+        dd += 1.0;
+      }
+    }
+  }
+  ,*n = m;
+  return QMCKL_SUCCESS;
+}
 #ifdef HAVE_OPENMP_OFFLOAD
 #pragma omp end declare target
 #endif
 
         #+end_src
+
 
         #+CALL: generate_c_interface(table=qmckl_ao_polynomial_vgl_args,rettyp=get_value("CRetType"),fname="qmckl_ao_polynomial_transp_vgl_doc")
 
@@ -5995,13 +6307,11 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
         default:
           // BUG Couldn't call this from GPU
 
-          /*
-          rc = qmckl_ao_polynomial_transp_vgl_hpc(context, e_coord, n_coord,
+          rc = qmckl_ao_polynomial_transp_vgl_hpc_omp_offload(context, e_coord, n_coord,
                                                   nucleus_max_ang_mom[inucl],
                                                   &n_poly, powers, (int64_t) 3,
                                                   poly_vgl, size_max);
           assert (rc == QMCKL_SUCCESS);
-          ,*/
 
           break;
         }
