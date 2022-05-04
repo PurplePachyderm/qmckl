@@ -6148,7 +6148,6 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
 
   qmckl_exit_code rc;
   int32_t * powers = (int32_t*) malloc(prim_max * sizeof(int32_t));
-  double * poly_vgl = (double*) malloc(5*size_max*sizeof(double));
 
 
   double * coef_mat = malloc(nucl_num*shell_max*prim_max*sizeof(double));
@@ -6159,6 +6158,16 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
       }
     }
   }
+
+
+
+  // Allocate a large vgl_shared array, so that each thread can have
+  // its own private subarray
+
+  // WARNING We're using hardcoded values for now
+  int num_teams = 32;
+  int num_threads = 32;
+  double * poly_vgl_shared = (double*) malloc(num_teams*num_threads * 5*size_max*sizeof(double));
 
   // WARNING This probably breaks the restrict on expo_per_nucleus.data
   double * expo_per_nucleus_data = expo_per_nucleus.data;
@@ -6177,17 +6186,23 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
          ao_factor[0:ao_num],                      \
          expo_per_nucleus_data[0:expo_per_nucleus_size_0*expo_per_nucleus_size_1], \
          coef_mat[0:nucl_num*shell_max*prim_max],\
-         ao_index[0:shell_num+1],\
+         ao_index[0:shell_num+1]\
   )\
   map(alloc:ao_vgl[0:point_num*5*ao_num],\
             powers[0:prim_max],\
-            poly_vgl[0:5*size_max]\
+            poly_vgl_shared[0:num_teams*num_threads*5*size_max]\
   )
   {
 
-    #pragma omp target teams num_teams(1) thread_limit(1) distribute parallel for simd
-    //#pragma omp target teams distribute parallel for simd
+    //#pragma omp target teams num_teams(1) thread_limit(1) distribute parallel for simd
+    #pragma omp target teams num_teams(num_teams) thread_limit(num_threads) distribute parallel for simd
     for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
+
+      int thread_num = omp_get_thread_num();
+      int team_num = omp_get_team_num();
+      printf("Thread : (%d, %d)\n", team_num, thread_num);
+
+      double * poly_vgl = &(poly_vgl_shared[team_num*num_threads*5*size_max + thread_num*5*size_max]);
 
       // Move static arrays inside the loop
 
@@ -6434,8 +6449,11 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
     #pragma omp target update from(ao_vgl[0:point_num*5*ao_num])
   }
 
+  //free(num_teams);
+  //free(num_threads);
+
   free(powers);
-  free(poly_vgl);
+  free(poly_vgl_shared);
   free(coef_mat);
   return QMCKL_SUCCESS;}
 #endif
