@@ -5091,212 +5091,100 @@ qmckl_ao_polynomial_transp_vgl_hpc_omp_offload (const qmckl_context context,
 
   int32_t m;
 
-  switch (lmax) {
-  case 0:
-    {
-      if (ldv < 1) return QMCKL_INVALID_ARG_9;
+  const int32_t size_max = (lmax+1)*(lmax+2)*(lmax+3)/6;
+  if (ldv < size_max) return QMCKL_INVALID_ARG_9;
 
-      VGL[0         ] = 1.0;
-      VGL[ldv       ] = 0.0;
-      VGL[ldv<<1    ] = 0.0;
-      VGL[(ldv<<1)+ldv] = 0.0;
-      VGL[ldv<<2    ] = 0.0;
-      m=1;
-      break;
+    double* restrict const vgl1 = VGL;
+    double* restrict const vgl2 = VGL + ldv;
+    double* restrict const vgl3 = VGL + (ldv<<1);
+    double* restrict const vgl4 = VGL + ldv + (ldv<<1);
+    double* restrict const vgl5 = VGL + (ldv<<2);
+
+    const double Y[3] = { X[0]-R[0],
+                          X[1]-R[1],
+                          X[2]-R[2] };
+
+    assert(size_max > lmax+3);
+
+    for (int32_t k=0 ; k<4 ; ++k) {
+      vgl2[k] = 0.0;
+      vgl3[k] = 0.0;
+      vgl4[k] = 0.0;
+      vgl5[k] = 0.0;
     }
-  case 1:
-    {
-      if (ldv < 4) return QMCKL_INVALID_ARG_9;
+    vgl1[0] = 1.0;
+    vgl1[1] = Y[0];
+    vgl1[2] = Y[1];
+    vgl1[3] = Y[2];
 
-      if (ldv == 4) {
+    vgl2[1] = 1.0;
+    vgl3[2] = 1.0;
+    vgl4[3] = 1.0;
+    m=4;
 
-        const double tmp[20] = {1.0, X[0]-R[0], X[1]-R[1], X[2]-R[2],
-                                0.0, 1.0, 0.0, 0.0,
-                                0.0, 0.0, 1.0, 0.0,
-                                0.0, 0.0, 0.0, 1.0,
-                                0.0, 0.0, 0.0, 0.0};
+    double pow_1, pow_2, pow_3;
+    double dd = 2.0;
 
-        for (int i=0 ; i<20 ; ++i)
-          VGL[i] = tmp[i];
+    for (int32_t d=2 ; d<= lmax ; ++d) {
+      double da = dd;
 
-      } else {
+      for (int32_t a=d ; a>=0 ; --a) {
+        double db = dd-da;
 
-        double* restrict const vgl1 = VGL;
-        double* restrict const vgl2 = VGL + ldv;
-        double* restrict const vgl3 = VGL + (ldv << 1);
-        double* restrict const vgl4 = VGL + ldv + (ldv << 1);
-        double* restrict const vgl5 = VGL + (ldv << 2);
+        for (int32_t b=d-a ; b>=0 ; --b) {
+          const int32_t c  = d - a - b;
+          const double dc = dd - da - db;
 
-        for (int32_t k=0 ; k<4 ; ++k) {
-          vgl2[k] = 0.0;
-          vgl3[k] = 0.0;
-          vgl4[k] = 0.0;
-          vgl5[k] = 0.0;
-        }
-        vgl1[0] = 1.0;
-        vgl1[1] = X[0]-R[0];
-        vgl1[2] = X[1]-R[1];
-        vgl1[3] = X[2]-R[2];
-        vgl2[1] = 1.0;
-        vgl3[2] = 1.0;
-        vgl4[3] = 1.0;
-      }
-      m=4;
-      break;
-    }
-  case 2:
-    {
-      if (ldv < 10) return QMCKL_INVALID_ARG_9;
-      const double Y[3] = { X[0]-R[0],
-                            X[1]-R[1],
-                            X[2]-R[2] };
-
-      if (ldv == 50) {
-        const double tmp[50] = {
-          1.0, Y[0], Y[1], Y[2], Y[0] * Y[0],
-          Y[0] * Y[1], Y[0] * Y[2], Y[1] * Y[1], Y[1] * Y[2], Y[2] * Y[2],
-          0.0, 1.0, 0.0, 0.0, Y[0] + Y[0],
-          Y[1], Y[2], 0.0, 0.0, 0.0,
-          0.0, 0.0, 1.0, 0.0, 0.0,
-          Y[0], 0.0, Y[1] + Y[1], Y[2], 0.0,
-          0.0, 0.0, 0.0, 1.0, 0.0,
-          0.0, Y[0], 0.0, Y[1], Y[2] + Y[2],
-          0.0, 0.0, 0.0, 0.0, 2.0,
-          0.0, 0.0, 2.0, 0., 2.0 };
-        for (int i=0 ; i<50 ; ++i)
-          VGL[i] = tmp[i];
-      } else {
-        double* restrict const vgl1 = VGL;
-        double* restrict const vgl2 = VGL + ldv;
-        double* restrict const vgl3 = VGL + (ldv << 1);
-        double* restrict const vgl4 = VGL + 3*ldv;
-        double* restrict const vgl5 = VGL + (ldv << 2);
-
-        vgl1[0] = 1.0      ; vgl1[1] = Y[0]     ; vgl1[2] = Y[1];
-        vgl1[3] = Y[2]     ; vgl1[4] = Y[0]*Y[0]; vgl1[5] = Y[0]*Y[1];
-        vgl1[6] = Y[0]*Y[2]; vgl1[7] = Y[1]*Y[1]; vgl1[8] = Y[1]*Y[2];
-        vgl1[9] = Y[2]*Y[2];
-
-        vgl2[0] = 0.0 ; vgl2[1] = 1.0      ; vgl2[2] = 0.0 ;
-        vgl2[3] = 0.0 ; vgl2[4] = Y[0]+Y[0]; vgl2[5] = Y[1];
-        vgl2[6] = Y[2]; vgl2[7] = 0.0      ; vgl2[8] = 0.0 ;
-        vgl2[9] = 0.0 ;
-
-        vgl3[0] = 0.0; vgl3[1] = 0.0      ; vgl3[2] = 1.0 ;
-        vgl3[3] = 0.0; vgl3[4] = 0.0      ; vgl3[5] = Y[0];
-        vgl3[6] = 0.0; vgl3[7] = Y[1]+Y[1]; vgl3[8] = Y[2];
-        vgl3[9] = 0.0;
-
-        vgl4[0] = 0.0      ; vgl4[1] = 0.0; vgl4[2] = 0.0 ;
-        vgl4[3] = 1.0      ; vgl4[4] = 0.0; vgl4[5] = 0.0 ;
-        vgl4[6] = Y[0]     ; vgl4[7] = 0.0; vgl4[8] = Y[1];
-        vgl4[9] = Y[2]+Y[2];
-
-        vgl5[0] = 0.0; vgl5[1] = 0.0; vgl5[2] = 0.0;
-        vgl5[3] = 0.0; vgl5[4] = 2.0; vgl5[5] = 0.0;
-        vgl5[6] = 0.0; vgl5[7] = 2.0; vgl5[8] = 0.0;
-        vgl5[9] = 2.0;
-      }
-      m=10;
-      break;
-    }
-  default:
-    {
-      const int32_t size_max = (lmax+1)*(lmax+2)*(lmax+3)/6;
-      if (ldv < size_max) return QMCKL_INVALID_ARG_9;
-
-      double* restrict const vgl1 = VGL;
-      double* restrict const vgl2 = VGL + ldv;
-      double* restrict const vgl3 = VGL + (ldv<<1);
-      double* restrict const vgl4 = VGL + ldv + (ldv<<1);
-      double* restrict const vgl5 = VGL + (ldv<<2);
-
-      const double Y[3] = { X[0]-R[0],
-                            X[1]-R[1],
-                            X[2]-R[2] };
-
-      assert(size_max > lmax+3);
-
-      for (int32_t k=0 ; k<4 ; ++k) {
-        vgl2[k] = 0.0;
-        vgl3[k] = 0.0;
-        vgl4[k] = 0.0;
-        vgl5[k] = 0.0;
-      }
-      vgl1[0] = 1.0;
-      vgl1[1] = Y[0];
-      vgl1[2] = Y[1];
-      vgl1[3] = Y[2];
-
-      vgl2[1] = 1.0;
-      vgl3[2] = 1.0;
-      vgl4[3] = 1.0;
-      m=4;
-
-      double pow_1, pow_2, pow_3;
-      double dd = 2.0;
-
-      for (int32_t d=2 ; d<= lmax ; ++d) {
-        double da = dd;
-
-        for (int32_t a=d ; a>=0 ; --a) {
-          double db = dd-da;
-
-          for (int32_t b=d-a ; b>=0 ; --b) {
-            const int32_t c  = d - a - b;
-            const double dc = dd - da - db;
-
-            // Compute pow_1 up to the power of a (a loop)
-            pow_1 = 1.0f;
-            for(int i=0; i<a; ++i) {
-              pow_1 = pow_1 *  Y[0];
-            }
-            // Compute pow_2 up to the power of b (b loop)
-            pow_2 = 1.0f;
-            for(int i=0; i<b; ++i) {
-              pow_2 = pow_2 *  Y[1];
-            }
-            // Compute pow_3 up to the power of c (c loop)
-            pow_3 = 1.0f;
-            for(int i=0; i<c; ++i) {
-              pow_3 = pow_3 *  Y[2];
-            }
-
-            double xy = pow_1 * pow_2;
-            double yz = pow_2 * pow_3;
-            double xz = pow_1 * pow_3;
-
-
-            vgl1[m] = xy * pow_3;
-
-            xy *= dc;
-            xz *= db;
-            yz *= da;
-
-            if(a>=2) vgl2[m] = pow_1 / Y[0] * yz; else vgl2[m] = 1.0 * yz;
-            if(b>=2) vgl3[m] = pow_2 / Y[1] * xz; else vgl3[m] = 1.0 * xz;
-            if(c>=2) vgl4[m] = pow_3 / Y[2] * xy; else vgl4[m] = 1.0 * xy;
-
-            double pow_1_tmp = (a>=3) ? pow_1 : 1.;
-            double pow_2_tmp = (b>=3) ? pow_2 : 1.;
-            double pow_3_tmp = (c>=3) ? pow_3 : 1.;
-
-            vgl5[m] = (da-1.) * pow_1_tmp * yz +
-              (db-1.) * pow_2_tmp * xz +
-              (dc-1.) * pow_3_tmp * xy;
-
-            db -= 1.0;
-            ++m;
-
+          // Compute pow_1 up to the power of a (a loop)
+          pow_1 = 1.0f;
+          for(int i=0; i<a; ++i) {
+            pow_1 = pow_1 *  Y[0];
           }
-          da -= 1.0;
+          // Compute pow_2 up to the power of b (b loop)
+          pow_2 = 1.0f;
+          for(int i=0; i<b; ++i) {
+            pow_2 = pow_2 *  Y[1];
+          }
+          // Compute pow_3 up to the power of c (c loop)
+          pow_3 = 1.0f;
+          for(int i=0; i<c; ++i) {
+            pow_3 = pow_3 *  Y[2];
+          }
+
+          double xy = pow_1 * pow_2;
+          double yz = pow_2 * pow_3;
+          double xz = pow_1 * pow_3;
+
+
+          vgl1[m] = xy * pow_3;
+
+          xy *= dc;
+          xz *= db;
+          yz *= da;
+
+          if(a>=2) vgl2[m] = pow_1 / Y[0] * yz; else vgl2[m] = 1.0 * yz;
+          if(b>=2) vgl3[m] = pow_2 / Y[1] * xz; else vgl3[m] = 1.0 * xz;
+          if(c>=2) vgl4[m] = pow_3 / Y[2] * xy; else vgl4[m] = 1.0 * xy;
+
+          double pow_1_tmp = (a>=3) ? pow_1 : 1.;
+          double pow_2_tmp = (b>=3) ? pow_2 : 1.;
+          double pow_3_tmp = (c>=3) ? pow_3 : 1.;
+
+          vgl5[m] = (da-1.) * pow_1_tmp * yz +
+            (db-1.) * pow_2_tmp * xz +
+            (dc-1.) * pow_3_tmp * xy;
+
+          db -= 1.0;
+          ++m;
 
         }
-        dd += 1.0;
+        da -= 1.0;
+
       }
+      dd += 1.0;
     }
-  }
-  ,*n = m;
+
+  *n = m;
   return QMCKL_SUCCESS;
 }
 #ifdef HAVE_OPENMP_OFFLOAD
