@@ -587,14 +587,13 @@ qmckl_exit_code qmckl_provide_mo_vgl(qmckl_context context)
                                        ctx->mo_basis.mo_vgl);
 
     #elif HAVE_OPENMP_OFFLOAD
-    /*rc = qmckl_compute_mo_basis_mo_vgl_offload_openmp(context,
+    rc = qmckl_compute_mo_basis_mo_vgl_offload_openmp(context,
                                        ctx->ao_basis.ao_num,
                                        ctx->mo_basis.mo_num,
                                        ctx->point.num,
                                        ctx->mo_basis.coefficient_t,
                                        ctx->ao_basis.ao_vgl,
-                                       ctx->mo_basis.mo_vgl);
-                                       */
+                                      ctx->mo_basis.mo_vgl);
 
      #else
      rc = qmckl_compute_mo_basis_mo_vgl(context,
@@ -748,8 +747,8 @@ qmckl_compute_mo_basis_mo_vgl (const qmckl_context context,
 {
 #ifdef HAVE_OPENMP_OFFLOAD
   return qmckl_compute_mo_basis_mo_vgl_offload_openmp( context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
-//#elseif HAVE_HPC
-//  return qmckl_compute_mo_basis_mo_vgl_hpc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
+#elif HAVE_HPC
+  return qmckl_compute_mo_basis_mo_vgl_hpc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
 #else
   return qmckl_compute_mo_basis_mo_vgl_doc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
 #endif
@@ -810,7 +809,6 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
     double* ck ;
 
 
-
   #pragma omp target map(to:coef_normalized_t[0:ao_num*mo_num],\
                                     ao_vgl[0:point_num*5*ao_num],\
                                     mo_vgl[0:point_num*5*mo_num])\
@@ -837,7 +835,7 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
                                     ck4,\
                                     ck)
 
-  #pragma omp teams distribute parallel for
+  #pragma omp teams distribute parallel for simd
   for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
     vgl1 = &(mo_vgl[ipoint*5*mo_num]);
     avgl1 = &(ao_vgl[ipoint*5*ao_num]);
@@ -944,7 +942,6 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
 #endif
     #+end_src
 
-    **OPEN ACC version
 
      #+begin_src c :tangle (eval h_func) :comments org
 #ifdef HAVE_OPENACC_OFFLOAD
@@ -1023,7 +1020,7 @@ qmckl_compute_mo_basis_mo_vgl_offload_openACC (const qmckl_context context,
                                     ck4,\
                                     ck)
 
-  #pragma acc loop independent gan worker vector
+  #pragma acc loop independent gang worker vector
   for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
     vgl1 = &(mo_vgl[ipoint*5*mo_num]);
     avgl1 = &(ao_vgl[ipoint*5*ao_num]);

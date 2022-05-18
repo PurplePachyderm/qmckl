@@ -6456,15 +6456,6 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
       ctx->ao_basis.ao_vgl = ao_vgl;
     }
 #ifdef HAVE_OPENMP_OFFLOAD
-/* #pragma omp target enter data map(to:ctx->ao_basis.prim_num_per_nucleus[0:ctx->nucleus.num],  \ */
-/*     ctx->point.coord.data[0:ctx->point.num],                   \ */
-/*     ctx->ao_basis.nucleus_index[0:ctx->nucleus.num],            \ */
-/*     ctx->ao_basis.nucleus_shell_num[0:ctx->nucleus.num],        \ */
-/*     ctx->ao_basis.nucleus_range[0:ctx->nucleus.num],            \ */
-/*     ctx->ao_basis.nucleus_max_ang_mom[0:ctx->nucleus.num],      \ */
-/*     ctx->ao_basis.shell_ang_mom[0:ctx->nucleus.num],            \ */
-/*     ctx->ao_basis.ao_factor[0:ctx->ao_basis.ao_num],                  \ */
-/*     ctx->ao_basis.ao_vgl[0:ctx->point.num]) */
 
     if (ctx->ao_basis.type == 'G') {
       rc = qmckl_compute_ao_vgl_gaussian_omp_offload(context,
@@ -6484,29 +6475,26 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
                                                      ctx->ao_basis.expo_per_nucleus,
                                                      ctx->ao_basis.coef_per_nucleus,
                                                      ctx->ao_basis.ao_vgl);
+	  /*
+      rc = qmckl_compute_ao_vgl_hpc_gaussian(context,
+                                             ctx->ao_basis.ao_num,
+                                             ctx->ao_basis.shell_num,
+                                             ctx->ao_basis.prim_num_per_nucleus,
+                                             ctx->point.num,
+                                             ctx->nucleus.num,
+                                             ctx->point.coord.data,
+                                             ctx->nucleus.coord.data,
+                                             ctx->ao_basis.nucleus_index,
+                                             ctx->ao_basis.nucleus_shell_num,
+                                             ctx->ao_basis.nucleus_range,
+                                             ctx->ao_basis.nucleus_max_ang_mom,
+                                             ctx->ao_basis.shell_ang_mom,
+                                             ctx->ao_basis.ao_factor,
+                                             ctx->ao_basis.expo_per_nucleus,
+                                             ctx->ao_basis.coef_per_nucleus,
+                                             ctx->ao_basis.ao_vgl);
+	*/
 
-     /*
-        } else if (ctx->ao_basis.type == 'S') {
-        rc = qmck_compute_ao_vgl_hpc_slater(context,
-        ctx->ao_basis.ao_num,
-        ctx->ao_basis.shell_num,
-        ctx->ao_basis.prim_num,
-        ctx->point.num,
-        ctx->nucleus.num,
-        ctx->point.coord.data,
-        ctx->nucleus.coord.data,
-        ctx->ao_basis.nucleus_index,
-        ctx->ao_basis.nucleus_shell_num,
-        ctx->ao_basis.nucleus_range,
-        ctx->ao_basis.nucleus_max_ang_mom,
-        ctx->ao_basis.shell_ang_mom,
-        ctx->ao_basis.shell_prim_index,
-        ctx->ao_basis.shell_prim_num,
-        ctx->ao_basis.ao_factor,
-        ctx->ao_basis.exponent,
-        ctx->ao_basis.coefficient_normalized,
-        ctx->ao_basis.ao_vgl);
-      ,*/
     } else {
       rc = qmckl_compute_ao_vgl_doc(context,
                                     ctx->ao_basis.ao_num,
