@@ -93,6 +93,7 @@ AC_PROG_F77
 m4_version_prereq([2.70],[], [AC_PROG_CC_C99])
 AS_IF([test "$ac_cv_prog_cc_c99" = "no"], [AC_MSG_ERROR([The compiler does not support C99])])
 AC_PROG_CC_C_O
+AM_PROG_CC_C_O
 AC_PROG_FC
 AC_PROG_FC_C_O
 AC_FC_PP_DEFINE
@@ -137,10 +138,10 @@ case "$with_chameleon" in
       [PKG_CFLAGS="$PKG_CFLAGS $LIBCHAMELEON_CFLAGS"
       PKG_LIBS="$PKG_LIBS $LIBCHAMELEON_LIBS"]
                       ,[
-    
+
       ## something went wrong.
       ## try to find the package without pkg-config
-    
+
       ## check that the library is actually new enough.
       ## by testing for a 1.0.0+ function which we use
       AC_CHECK_LIB(chameleon,CHAMELEON_finalize,[LIBCHAMELEON_LIBS="-lchameleon"])
@@ -205,15 +206,18 @@ case $FC in
       ;;
 
  *nvfortran*)
-      FCFLAGS="$FCFLAGS -fPIC -Mnomain -mp -target=gpu"
+      FCFLAGS="$FCFLAGS -fPIC -Mnomain"
       ;;
 
 esac
 
 case $CC in
 
+  *gcc*)
+        CFLAGS="$CFLAGS -fPIC"
+        ;;
   *nvc*)
-        CFLAGS="$CFLAGS -fPIC -mp -target=gpu"
+        CFLAGS="$CFLAGS -fPIC"
         ;;
 esac
 
@@ -242,26 +246,110 @@ fi
 
 ## Enable GPU offloading
 
-# OpenACC offloading
-AC_ARG_ENABLE(openacc-offload, [AS_HELP_STRING([--openacc-offload],[Use OpenACC-offloaded functions])], HAVE_OPENACC_OFFLOAD=$enableval, HAVE_OPENACC_OFFLOAD=no)
-AS_IF([test "$HAVE_OPENACC_OFFLOAD" = "yes"], [
-   AC_DEFINE([HAVE_OPENACC_OFFLOAD], [1], [If defined, activate OpenACC-offloaded routines])
-   CFLAGS="$OFFLOAD_FLAGS $OFFLOAD_CFLAGS $CFLAGS"
-   FCFLAGS="$OFFLOAD_FLAGS $OFFLOAD_FCFLAGS -DHAVE_OPENACC_OFFLOAD $FCFLAGS"
+# GPU offloading
+AC_ARG_ENABLE(gpu, [AS_HELP_STRING([--enable-gpu],[openmp|openacc : Use GPU-offloaded functions])], enable_gpu=$enableval, enable_gpu=no)
+AS_IF([test "$enable_gpu" = "yes"], [enable_gpu="openmp"])
+
+# OpenMP offloading
+HAVE_OPENMP_OFFLOAD="no"
+AS_IF([test "$enable_gpu" = "openmp"], [
+  AC_DEFINE([HAVE_OPENMP_OFFLOAD], [1], [If defined, activate OpenMP-offloaded routines])
+  HAVE_OPENMP_OFFLOAD="yes"
+  case $CC in
+
+    *gcc*)
+          CFLAGS="$CFLAGS -fopenmp"
+          ;;
+    *nvc*)
+          CFLAGS="$CFLAGS -mp=gpu"
+          ;;
+  esac
+
+  case $FC in
+
+    *gfortran*)
+          FCFLAGS="$FCFLAGS -fopenmp"
+          ;;
+    *nvfortran*)
+          FCFLAGS="$FCFLAGS -mp=gpu"
+          ;;
+  esac]
+)
+
+# OpenMP offloading
+HAVE_OPENACC_OFFLOAD="no"
+AS_IF([test "$enable_gpu" = "openacc"], [
+  AC_DEFINE([HAVE_OPENACC_OFFLOAD], [1], [If defined, activate OpenACC-offloaded routines])
+  HAVE_OPENACC_OFFLOAD="yes"
+  case $CC in
+
+    *gcc*)
+          CFLAGS="$CFLAGS -fopenacc"
+          ;;
+    *nvc*)
+          CFLAGS="$CFLAGS -acc=gpu"
+          ;;
+  esac
+
+  case $FC in
+
+    *gfortran*)
+          FCFLAGS="$FCFLAGS -fopenacc"
+          ;;
+    *nvfortran*)
+          FCFLAGS="$FCFLAGS -acc=gpu"
+          ;;
+  esac
+
 ])
 
 # cuBLAS offloading
-AC_ARG_ENABLE(cublas-offload, [AS_HELP_STRING([--cublas-offload],[Use cuBLAS-offloaded functions])], HAVE_CUBLAS_OFFLOAD=$enableval, HAVE_CUBLAS_OFFLOAD=no)
+AC_ARG_WITH(cublas, [AS_HELP_STRING([--with-cublas],[Use cuBLAS-offloaded functions])], HAVE_CUBLAS_OFFLOAD=$withval, HAVE_CUBLAS_OFFLOAD=no)
 AS_IF([test "$HAVE_CUBLAS_OFFLOAD" = "yes"], [
-   AC_DEFINE([HAVE_CUBLAS_OFFLOAD], [1], [If defined, activate cuBLAS-offloaded routines])
-   FCFLAGS="-DHAVE_CUBLAS_OFFLOAD"
+  AC_DEFINE([HAVE_CUBLAS_OFFLOAD], [1], [If defined, activate cuBLAS-offloaded routines])
+  HAVE_OPENACC_OFFLOAD="yes"
+  case $CC in
+
+    *gcc*)
+          CFLAGS="$CFLAGS -fopenmp"
+          LDFLAGS="-lcublas"
+          ;;
+    *nvc*)
+          CFLAGS="$CFLAGS -mp=gpu -cudalib=cublas"
+          ;;
+  esac
+
+  case $FC in
+
+    *gfortran*)
+          FCFLAGS="$FCFLAGS -fopenmp"
+          ;;
+    *nvfortran*)
+          FCFLAGS="$FCFLAGS -mp=gpu -cudalib=cublas"
+          ;;
+  esac
 ])
 
-# General offload
-AS_IF([test "$HAVE_OPENACC_OFFLOAD" = "yes" || test "$HAVE_CUBLAS_OFFLOAD" = "yes"], [
-   CFLAGS="$OFFLOAD_FLAGS $OFFLOAD_CFLAGS $CFLAGS"
-   FCFLAGS="$OFFLOAD_FLAGS $OFFLOAD_FCFLAGS $FCFLAGS"
-])
+AC_ARG_ENABLE(malloc-trace, [AS_HELP_STRING([--enable-malloc-trace],[use debug malloc/free])], ok=$enableval, ok=no)
+if test "$ok" = "yes"; then
+	AC_DEFINE(MALLOC_TRACE,"malloc_trace.dat",[Define to use debugging malloc/free])
+        ARGS="${ARGS} malloc-trace"
+fi
+
+AC_ARG_ENABLE(prof, [AS_HELP_STRING([--enable-prof],[compile for profiling])], ok=$enableval, ok=no)
+if test "$ok" = "yes"; then
+	CFLAGS="${CFLAGS} -pg"
+	AC_DEFINE(ENABLE_PROF,1,[Define when using the profiler tool])
+        ARGS="${ARGS} prof"
+fi
+
+AC_ARG_WITH(efence, [AS_HELP_STRING([--with-efence],[use ElectricFence library])], ok=$withval, ok=no)
+if test "$ok" = "yes"; then
+	AC_CHECK_LIB([efence], [malloc])
+        ARGS="${ARGS} efence"
+fi
+
+
 
 ##
 
@@ -287,26 +375,6 @@ if test "$ok" = "yes"; then
 	AC_DEFINE(DEBUG,1,[Define to turn on debugging checks])
         ARGS="${ARGS} debug"
 fi
-
-AC_ARG_ENABLE(malloc-trace, [AS_HELP_STRING([--enable-malloc-trace],[use debug malloc/free])], ok=$enableval, ok=no)
-if test "$ok" = "yes"; then
-	AC_DEFINE(MALLOC_TRACE,"malloc_trace.dat",[Define to use debugging malloc/free])
-        ARGS="${ARGS} malloc-trace"
-fi
-
-AC_ARG_ENABLE(prof, [AS_HELP_STRING([--enable-prof],[compile for profiling])], ok=$enableval, ok=no)
-if test "$ok" = "yes"; then
-	CFLAGS="${CFLAGS} -pg"
-	AC_DEFINE(ENABLE_PROF,1,[Define when using the profiler tool])
-        ARGS="${ARGS} prof"
-fi
-
-AC_ARG_WITH(efence, [AS_HELP_STRING([--with-efence],[use ElectricFence library])], ok=$withval, ok=no)
-if test "$ok" = "yes"; then
-	AC_CHECK_LIB(efence, malloc)
-        ARGS="${ARGS} efence"
-fi
-
 
 # Checks for header files.
 
@@ -395,6 +463,7 @@ LDFLAGS:........: ${LDFLAGS}
 LIBS............: ${LIBS}
 USE CHAMELEON...: ${with_chameleon}
 HPC version.....: ${HAVE_HPC}
+OpenMP offload..: ${HAVE_OPENMP_OFFLOAD}
 OpenACC offload.: ${HAVE_OPENACC_OFFLOAD}
 cuBLAS offload..: ${HAVE_CUBLAS_OFFLOAD}
 
