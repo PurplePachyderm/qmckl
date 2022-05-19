@@ -968,6 +968,26 @@ qmckl_compute_mo_basis_mo_vgl_offload_openACC (const qmckl_context context,
                                    double* restrict const mo_vgl )
 {
 
+
+    int64_t * idx = malloc(sizeof(int64_t)*ao_num);
+    double * av1 = malloc(sizeof(double)*ao_num);
+    double * av2 = malloc(sizeof(double)*ao_num);
+    double * av3 = malloc(sizeof(double)*ao_num);
+    double * av4 = malloc(sizeof(double)*ao_num);
+    double * av5 = malloc(sizeof(double)*ao_num);
+
+  #pragma acc parallel copyout(coef_normalized_t[0:ao_num*mo_num],\
+                                    ao_vgl[0:point_num*5*ao_num],\
+                                    mo_vgl[0:point_num*5*mo_num])\
+                                copyin(idx[0:ao_num],\
+                                    av1[0:ao_num],\
+                                    av2[0:ao_num],\
+                                    av3[0:ao_num],\
+                                    av4[0:ao_num],\
+                                    av5[0:ao_num])
+
+  #pragma acc loop independent gang worker vector
+  for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
     double* vgl1 ;
     double* avgl1 ;
     double* vgl2 ;
@@ -979,14 +999,7 @@ qmckl_compute_mo_basis_mo_vgl_offload_openACC (const qmckl_context context,
     double* avgl4 ;
     double* avgl5 ;
 
-    int64_t * idx = malloc(sizeof(int64_t)*ao_num);
-    double * av1 = malloc(sizeof(double)*ao_num);
-    double * av2 = malloc(sizeof(double)*ao_num);
-    double * av3 = malloc(sizeof(double)*ao_num);
-    double * av4 = malloc(sizeof(double)*ao_num);
-    double * av5 = malloc(sizeof(double)*ao_num);
-
-    double* ck1 ;
+	  double* ck1 ;
     double* ck2 ;
     double* ck3 ;
     double* ck4 ;
@@ -994,34 +1007,6 @@ qmckl_compute_mo_basis_mo_vgl_offload_openACC (const qmckl_context context,
     double* ck ;
 
 
-
-  #pragma acc parallel copyout(coef_normalized_t[0:ao_num*mo_num],\
-                                    ao_vgl[0:point_num*5*ao_num],\
-                                    mo_vgl[0:point_num*5*mo_num])\
-                                copyin(vgl1,\
-                                    avgl1,\
-                                    vgl2,\
-                                    vgl3,\
-                                    vgl4,\
-                                    vgl5,\
-                                    avgl2,\
-                                    avgl3,\
-                                    avgl4,\
-                                    avgl5,\
-                                    idx[0:ao_num],\
-                                    av1[0:ao_num],\
-                                    av2[0:ao_num],\
-                                    av3[0:ao_num],\
-                                    av4[0:ao_num],\
-                                    av5[0:ao_num],\
-                                    ck1,\
-                                    ck2,\
-                                    ck3,\
-                                    ck4,\
-                                    ck)
-
-  #pragma acc loop independent gang worker vector
-  for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
     vgl1 = &(mo_vgl[ipoint*5*mo_num]);
     avgl1 = &(ao_vgl[ipoint*5*ao_num]);
     vgl2 =  vgl1 + mo_num;
