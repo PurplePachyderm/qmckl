@@ -1360,6 +1360,8 @@ qmckl_set_ao_basis_cartesian (qmckl_context context,
 equal of larger than the value given in the table of section [[Context]].
 
 **** C interface
+
+#+begin_src c :comments org :tangle (eval h_func)
 qmckl_exit_code
 qmckl_get_ao_basis_type (const qmckl_context context,
                          char* const basis_type);
@@ -5571,7 +5573,6 @@ for (int32_t ldl=3 ; ldl<=5 ; ++ldl) {
 
      #+begin_src f90 :comments org :tangle (eval f) :noweb yes
 integer function qmckl_compute_ao_value_doc_f(context, &
-ckl_compute_ao_vgl_doc_f(context, &
      ao_num, shell_num, point_num, nucl_num, &
      coord, nucl_coord, nucleus_index, nucleus_shell_num, &
      nucleus_range, nucleus_max_ang_mom, shell_ang_mom, &
