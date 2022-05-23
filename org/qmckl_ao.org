@@ -6852,11 +6852,7 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
 
   qmckl_exit_code rc;
 
-   // WARNING We're using hardcoded values for now
-  int num_teams = 32;
-  int num_threads = 32;
-  double * poly_vgl_shared = (double*) malloc(num_teams*num_threads * 5*size_max*sizeof(double));
-  double  poly_vgl[5][size_max];
+  double * poly_vgl_shared = (double*) malloc(point_num * 5*size_max*sizeof(double));
 
 
   double * coef_mat = (double*) malloc(nucl_num*shell_max*prim_max*sizeof(double));
@@ -6888,17 +6884,17 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
          ao_index[0:shell_num+1]\
   )\
   map(alloc:ao_vgl[0:point_num*5*ao_num],\
-            poly_vgl_shared[0:num_teams*num_threads*5*size_max]\
+            poly_vgl_shared[0:point_num*5*size_max]\
   )
   {
 
 
-    #pragma omp target teams num_teams(num_teams) thread_limit(num_threads) distribute parallel for simd
+    #pragma omp target teams distribute parallel for simd
     for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
       int thread_num = omp_get_thread_num();
       int team_num = omp_get_team_num();
 
-      double * poly_vgl = &(poly_vgl_shared[team_num*num_threads*5*size_max + thread_num*5*size_max]);
+      double * poly_vgl = &(poly_vgl_shared[ipoint*5*size_max]);
 
      int32_t lstart[32];
      for (int32_t l=0 ; l<32 ; ++l) {
