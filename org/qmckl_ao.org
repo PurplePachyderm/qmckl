@@ -311,6 +311,29 @@ typedef struct qmckl_ao_basis_struct {
 #ifdef HAVE_HPC
   <<HPC_struct>>
 #endif
+
+#ifdef DEVICE_POINTER
+  int64_t * nucleus_index_device;
+  int64_t * nucleus_shell_num_device;
+  int32_t * shell_ang_mom_device;
+  int64_t * shell_prim_num_device;
+  int64_t * shell_prim_index_device;
+  double  * shell_factor_device;
+  double  * exponent_device;
+  double  * coefficient_device;
+  double  * prim_factor_device;
+  double  * ao_factor_device;
+
+  int64_t * nucleus_prim_index;
+  double  * coefficient_normalized;
+  int32_t * nucleus_max_ang_mom;
+  double  * nucleus_range;
+  double  * primitive_vgl;
+  double  * shell_vgl;
+  double  * ao_vgl;
+  double  * ao_value;
+#endif
+
 } qmckl_ao_basis_struct;
 #+end_src
 
@@ -7010,8 +7033,6 @@ qmckl_compute_ao_vgl_gaussian_omp_offload (
 
     #pragma omp target teams distribute parallel for simd
     for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
-      int thread_num = omp_get_thread_num();
-      int team_num = omp_get_team_num();
 
       double * poly_vgl = &(poly_vgl_shared[ipoint*5*size_max]);
 

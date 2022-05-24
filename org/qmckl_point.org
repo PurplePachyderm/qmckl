@@ -267,6 +267,16 @@ qmckl_exit_code qmckl_set_point (qmckl_context context,
                                  const int64_t num);
    #+end_src
 
+   #+begin_src c :comments org :tangle (eval h_func)
+#ifdef DEVICE_POINTER
+qmckl_exit_code qmckl_set_point_device (qmckl_context context,
+                                 const char transp,
+                                 const double* coord,
+                                 const int64_t num);
+#endif
+   #+end_src
+
+
    Copy a sequence of ~num~ points $(x,y,z)$ into the context.
 
    #+begin_src c :comments org :tangle (eval c) :noweb yes
@@ -346,6 +356,85 @@ qmckl_set_point (qmckl_context context,
 }
    #+end_src
 
+   #+begin_src c :comments org :tangle (eval c) :noweb yes
+#ifdef DEVICE_POINTER
+qmckl_exit_code
+qmckl_set_point_device (qmckl_context context,
+                 const char transp,
+                 const double* coord,
+                 const int64_t num)
+{
+
+  if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
+    return QMCKL_NULL_CONTEXT;
+  }
+
+  if (transp != 'N' && transp != 'T') {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_2,
+                           "qmckl_set_point",
+                           "transp should be 'N' or 'T'");
+  }
+
+  if (coord == NULL) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_3,
+                           "qmckl_set_point",
+                           "coord is a NULL pointer");
+  }
+
+  qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
+  assert (ctx != NULL);
+
+  qmckl_exit_code rc;
+  if (ctx->point.num < num) {
+
+    if (ctx->point.coord.data != NULL) {
+      rc = qmckl_matrix_free_device(context, &(ctx->point.coord));
+      assert (rc == QMCKL_SUCCESS);
+    }
+
+    ctx->point.coord = qmckl_matrix_alloc_device(context, num, 3);
+    if (ctx->point.coord.data == NULL) {
+      return qmckl_failwith( context,
+                             QMCKL_ALLOCATION_FAILED,
+                             "qmckl_set_point",
+                             NULL);
+    }
+
+  };
+
+  ctx->point.num = num;
+
+  if (transp == 'T') {
+    double *a = ctx->point.coord.data;
+#ifdef HAVE_OPENMP
+    #pragma omp for
+#endif
+    for (int64_t i=0 ; i<3*num ; ++i) {
+      a[i] = coord[i];
+    }
+  } else {
+#ifdef HAVE_OPENMP
+    #pragma omp for
+#endif
+    for (int64_t i=0 ; i<num ; ++i) {
+      qmckl_mat(ctx->point.coord, i, 0) = coord[3*i  ];
+      qmckl_mat(ctx->point.coord, i, 1) = coord[3*i+1];
+      qmckl_mat(ctx->point.coord, i, 2) = coord[3*i+2];
+    }
+  }
+
+  /* Increment the date of the context */
+  rc = qmckl_context_touch(context);
+  assert (rc == QMCKL_SUCCESS);
+
+  return QMCKL_SUCCESS;
+
+}
+#endif
+   #+end_src
+
    #+begin_src f90 :comments org :tangle (eval fh_func) :noweb yes
 interface
   integer(c_int32_t) function qmckl_set_point(context, &
@@ -360,6 +449,24 @@ interface
     integer (c_int64_t) , intent(in)  , value :: num
   end function
 end interface
+   #+end_src
+
+   #+begin_src f90 :comments org :tangle (eval fh_func) :noweb yes
+#ifdef DEVICE_POINTER
+interface
+  integer(c_int32_t) function qmckl_set_point(context, &
+       transp, coord, num) bind(C)
+    use, intrinsic :: iso_c_binding
+    import
+    implicit none
+
+    integer (c_int64_t) , intent(in)  , value :: context
+    character(c_char)   , intent(in)  , value :: transp
+    real    (c_double ) , intent(in)          :: coord(*)
+    integer (c_int64_t) , intent(in)  , value :: num
+  end function
+end interface
+#endif
    #+end_src
 
 

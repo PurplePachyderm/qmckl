@@ -330,6 +330,14 @@ AS_IF([test "$HAVE_CUBLAS_OFFLOAD" = "yes"], [
   esac
 ])
 
+# Device pointers
+
+
+AC_ARG_WITH(device-pointers, [AS_HELP_STRING([--with-device-pointers],[Use device pointers on offloaded functions to optimize memory transfers])], HAVE_DEVICE_POINTERS=$withval, HAVE_DEVICE_POINTERS=no)
+AS_IF([test "$HAVE_DEVICE_POINTERS" = "yes"], [
+  AC_DEFINE([HAVE_DEVICE_POINTERS], [1], [If defined, use device pointers with offloaded routines])
+])
+
 AC_ARG_ENABLE(malloc-trace, [AS_HELP_STRING([--enable-malloc-trace],[use debug malloc/free])], ok=$enableval, ok=no)
 if test "$ok" = "yes"; then
 	AC_DEFINE(MALLOC_TRACE,"malloc_trace.dat",[Define to use debugging malloc/free])
@@ -461,9 +469,11 @@ LDFLAGS:........: ${LDFLAGS}
 LIBS............: ${LIBS}
 USE CHAMELEON...: ${with_chameleon}
 HPC version.....: ${HAVE_HPC}
-OpenMP offload..: ${HAVE_OPENMP_OFFLOAD}
-OpenACC offload.: ${HAVE_OPENACC_OFFLOAD}
-cuBLAS offload..: ${HAVE_CUBLAS_OFFLOAD}
+
+OpenMP offload...: ${HAVE_OPENMP_OFFLOAD}
+OpenACC offload..: ${HAVE_OPENACC_OFFLOAD}
+cuBLAS offload...: ${HAVE_CUBLAS_OFFLOAD}
+Device pointers..: ${HAVE_DEVICE_POINTERS}
 
 Package features:
   ${ARGS}
