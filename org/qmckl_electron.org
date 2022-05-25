@@ -136,7 +136,7 @@ typedef struct qmckl_electron_struct {
   int32_t        uninitialized;
   bool           provided;
 
-  #ifdef DEVICE_POINTER
+  #ifdef HAVE_DEVICE_POINTERS
     double*        ee_distance_device;
     double*        en_distance_device;
     double*        ee_pot_device;

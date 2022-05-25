@@ -268,7 +268,7 @@ qmckl_exit_code qmckl_set_point (qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval h_func)
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code qmckl_set_point_device (qmckl_context context,
                                  const char transp,
                                  const double* coord,
@@ -357,7 +357,7 @@ qmckl_set_point (qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :noweb yes
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_set_point_device (qmckl_context context,
                  const char transp,
@@ -452,9 +452,9 @@ end interface
    #+end_src
 
    #+begin_src f90 :comments org :tangle (eval fh_func) :noweb yes
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 interface
-  integer(c_int32_t) function qmckl_set_point(context, &
+  integer(c_int32_t) function qmckl_set_point_device(context, &
        transp, coord, num) bind(C)
     use, intrinsic :: iso_c_binding
     import

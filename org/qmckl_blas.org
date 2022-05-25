@@ -162,7 +162,7 @@ qmckl_vector_free( qmckl_context context,
 typedef struct qmckl_matrix {
   double* restrict data;
 
-  #ifdef DEVICE_POINTER
+  #ifdef HAVE_DEVICE_POINTERS
   double* restrict data_device;
   #endif
 
@@ -179,11 +179,11 @@ qmckl_matrix_alloc( qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval h_private_func)
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_matrix
 qmckl_matrix_alloc_device( qmckl_context context,
-                    const int64_t size1,
-                    const int64_t size2);
+                           const int64_t size1,
+                           const int64_t size2);
 #endif
    #+end_src
 
@@ -218,7 +218,7 @@ qmckl_matrix_alloc( qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :exports none
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_matrix
 qmckl_matrix_alloc_device( qmckl_context context,
                     const int64_t size1,
@@ -234,8 +234,7 @@ qmckl_matrix_alloc_device( qmckl_context context,
 
   qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
   mem_info.size = size1 * size2 * sizeof(double);
-  //result.data = (double*) qmckl_malloc (context, mem_info);
-  result.data =  (double*) omp_target_alloc(mem_info.size, 0);
+  result.data = (double*) qmckl_malloc_device (context, mem_info, 0);
 
   if (result.data == NULL) {
     result.size[0] = (int64_t) 0;
@@ -255,10 +254,10 @@ qmckl_matrix_free( qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval h_private_func)
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_matrix_free_device( qmckl_context context,
-                   qmckl_matrix* matrix);
+                          qmckl_matrix* matrix);
 #endif
    #+end_src
 
@@ -286,17 +285,17 @@ qmckl_matrix_free( qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :exports none
-#ifdef DEVICE_POINTER
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_matrix_free_device( qmckl_context context,
-                   qmckl_matrix* matrix)
+                          qmckl_matrix* matrix)
 {
   /* Always true */
   assert (matrix->data != NULL);
 
   qmckl_exit_code rc;
 
-  rc = omp_target_free(matrix->data, 0);
+  rc = qmckl_free_device(context, matrix->data, 0);
   if (rc != QMCKL_SUCCESS) {
     return rc;
   }

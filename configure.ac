@@ -331,12 +331,13 @@ AS_IF([test "$HAVE_CUBLAS_OFFLOAD" = "yes"], [
 ])
 
 # Device pointers
-
-
+# BUG Even if the AC_DEFINE should execute only when gpu=openmp and device-pointers are set,
+# the device pointers will appear as defined in the output if only device_pointers is set
 AC_ARG_WITH(device-pointers, [AS_HELP_STRING([--with-device-pointers],[Use device pointers on offloaded functions to optimize memory transfers])], HAVE_DEVICE_POINTERS=$withval, HAVE_DEVICE_POINTERS=no)
-AS_IF([test "$HAVE_DEVICE_POINTERS" = "yes"], [
+AS_IF([test "$HAVE_DEVICE_POINTERS" = "yes" && test "$enable_gpu" = "openmp"], [
   AC_DEFINE([HAVE_DEVICE_POINTERS], [1], [If defined, use device pointers with offloaded routines])
 ])
+
 
 AC_ARG_ENABLE(malloc-trace, [AS_HELP_STRING([--enable-malloc-trace],[use debug malloc/free])], ok=$enableval, ok=no)
 if test "$ok" = "yes"; then
