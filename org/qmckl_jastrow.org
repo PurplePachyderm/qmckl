@@ -6169,7 +6169,7 @@ qmckl_compute_tmp_c_omp_offload (const qmckl_context context,
 
   #pragma omp target data map(from:tmp_c[0:size_tmp_c]) map(to:een_rescaled_e[0:size_e], een_rescaled_n[0:size_n])
   {
-  #pragma omp target teams distribute parallel for collapse(4) simd
+  #pragma omp target teams distribute parallel for collapse(4)
   for (int nw=0; nw < walk_num; ++nw) {
     for (int i=0; i<cord_num; ++i){
 
@@ -6182,7 +6182,7 @@ qmckl_compute_tmp_c_omp_offload (const qmckl_context context,
 
           // Single reduction
 		  double sum = 0.;
-		  //#pragma omp simd reduction(+:sum)
+		  #pragma omp simd reduction(+:sum)
           for (int m=0; m<elec_num; m++) {
             sum +=
             een_rescaled_e[index_e_base + m*stride_m_e] *
@@ -6705,7 +6705,7 @@ qmckl_exit_code qmckl_compute_dtmp_c_omp_offload (
   double sum = 0.;
   #pragma omp target data map(from:dtmp_c[0:size_dtmp_c]) map(to:een_rescaled_e_deriv_e[0:size_e], een_rescaled_n[0:size_n])
   {
-  #pragma omp target teams distribute parallel for collapse(4) simd
+  #pragma omp target teams distribute parallel for collapse(4)
   for (int nw=0; nw < walk_num; nw++) {
     for (int i=0; i < cord_num; i++) {
 
@@ -6717,7 +6717,7 @@ qmckl_exit_code qmckl_compute_dtmp_c_omp_offload (
 		  int index_n_base = jk * stride_k_n  + nw * stride_nw_n;
 		  int index_e_base = ml + i * stride_i_e + nw * stride_nw_e;
 		  sum = 0.;
-		  //#pragma omp simd reduction(+:sum)
+		  #pragma omp simd reduction(+:sum)
           for(int n=0; n<elec_num; n++){
             sum +=
             een_rescaled_e_deriv_e[index_e_base + n * stride_n_e] *

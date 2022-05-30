@@ -23,6 +23,8 @@ optimized libraries to fine-tune the memory allocation.
 #include <string.h>
 #include <assert.h>
 
+#include <omp.h>
+
 #include "qmckl.h"
 #include "qmckl_memory_private_type.h"
 #include "qmckl_context_private_type.h"
@@ -183,7 +185,11 @@ void* qmckl_malloc_device(qmckl_context context, const qmckl_memory_info_struct 
   if (pointer == NULL) {
     return NULL;
   }
-  memset(pointer, 0, info.size);
+
+  // TODO
+  // Memset to 0 of size info.size
+  // memset(pointer, 0, info.size);
+
 
   qmckl_lock(context);
   {

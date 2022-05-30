@@ -2998,14 +2998,6 @@ qmckl_get_ao_basis_ao_vgl (qmckl_context context,
                            const int64_t size_max);
 #+end_src
 
-#+begin_src c :comments org :tangle (eval h_func) :noweb yes
-qmckl_exit_code
-qmckl_get_ao_basis_ao_vgl_device (qmckl_context context,
-                           double* const ao_vgl,
-                           const int64_t size_max);
-#+end_src
-
-
 Returns the array of values, gradients an Laplacian of the atomic orbitals
 evaluated at the current coordinates.
 See section [[Combining radial and polynomial parts]].
@@ -3120,11 +3112,14 @@ qmckl_get_ao_basis_ao_vgl_inplace (qmckl_context context,
 #+end_src
 
 #+begin_src c :comments org :tangle (eval c) :noweb yes  :exports none
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_get_ao_basis_ao_vgl_device (qmckl_context context,
                                   double* const ao_vgl,
                                   const int64_t size_max)
 {
+
+  printf("qmckl_get_ao_basis_ao_vgl_device\n");
 
   // ao_vgl should be a device pointer
 
@@ -3162,6 +3157,7 @@ qmckl_get_ao_basis_ao_vgl_device (qmckl_context context,
 
   return QMCKL_SUCCESS;
 }
+#endif
 #+end_src
 
 
@@ -7717,6 +7713,8 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 {
   // Device pointers : ao_vgl
 
+  printf("qmckl_compute_ao_vgl_gaussian_device_pointers\n");
+
   int32_t lstart_h[32];
   for (int32_t l=0 ; l<32 ; ++l) {
     lstart_h[l] = l*(l+1)*(l+2)/6;
@@ -7766,8 +7764,8 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   int expo_per_nucleus_size_0 = expo_per_nucleus.size[0];
   int expo_per_nucleus_size_1 = expo_per_nucleus.size[1];
 
-  #pragma omp target enter data \
-  map(to:prim_num_per_nucleus[0:nucl_num],         \
+  #pragma omp target \
+  enter data map(to:prim_num_per_nucleus[0:nucl_num],\
          coord[0:3*point_num],                     \
          nucl_coord[0:3*nucl_num],                 \
          nucleus_index[0:nucl_num],                \
@@ -7780,8 +7778,7 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
          coef_mat[0:nucl_num*shell_max*prim_max],\
          ao_index[0:shell_num+1]\
   )\
-  map(alloc:poly_vgl_shared[0:point_num*5*size_max]\
-  )
+  map(alloc:poly_vgl_shared[0:point_num*5*size_max])
   {
 
     #pragma omp target teams distribute parallel for simd
@@ -8251,7 +8248,7 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
                                                      ctx->ao_basis.expo_per_nucleus,
                                                      ctx->ao_basis.coef_per_nucleus,
                                                      ctx->ao_basis.ao_vgl);
-	} else {
+    } else {
       rc = qmckl_compute_ao_vgl_doc(context,
                                     ctx->ao_basis.ao_num,
                                     ctx->ao_basis.shell_num,
@@ -8267,7 +8264,7 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
                                     ctx->ao_basis.ao_factor,
                                     ctx->ao_basis.shell_vgl,
                                     ctx->ao_basis.ao_vgl);
-	}
+    }
 
 #elif HAVE_OPENACC_OFFLOAD
 
@@ -8289,7 +8286,7 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
                                                      ctx->ao_basis.expo_per_nucleus,
                                                      ctx->ao_basis.coef_per_nucleus,
                                                      ctx->ao_basis.ao_vgl);
-	} else {
+    } else {
       rc = qmckl_compute_ao_vgl_doc(context,
                                     ctx->ao_basis.ao_num,
                                     ctx->ao_basis.shell_num,
@@ -8308,6 +8305,7 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
     }
 
 #elif HAVE_HPC
+
     if (ctx->ao_basis.type == 'G') {
       rc = qmckl_compute_ao_vgl_hpc_gaussian(context,
                                              ctx->ao_basis.ao_num,
@@ -8401,6 +8399,8 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
 // We also have HAVE_HPC and HAVE_OPENMP_OFFLOAD
 qmckl_exit_code qmckl_provide_ao_vgl_device(qmckl_context context)
 {
+
+  printf("qmckl_provide_ao_vgl_device\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return qmckl_failwith( context,
