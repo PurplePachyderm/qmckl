@@ -390,8 +390,9 @@ qmckl_set_point_device (qmckl_context context,
 
   qmckl_exit_code rc;
   if (ctx->point.num < num) {
-
+    printf("Need new alloc\n");
     if (ctx->point.coord.data != NULL) {
+	  printf("Free previous ctx->point.coord\n");
       rc = qmckl_matrix_free_device(context, &(ctx->point.coord));
       assert (rc == QMCKL_SUCCESS);
     }
@@ -435,6 +436,7 @@ qmckl_set_point_device (qmckl_context context,
 	}
 
   }
+  printf("  End cases\n");
 
   /* Increment the date of the context */
   rc = qmckl_context_touch(context);

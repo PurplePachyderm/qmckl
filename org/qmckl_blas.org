@@ -224,6 +224,7 @@ qmckl_matrix_alloc_device( qmckl_context context,
                     const int64_t size1,
                     const int64_t size2)
 {
+  printf("  qmckl_alloc_device\n");
   /* Should always be true by contruction */
   assert (size1 * size2 > (int64_t) 0);
 
@@ -241,6 +242,7 @@ qmckl_matrix_alloc_device( qmckl_context context,
     result.size[1] = (int64_t) 0;
   }
 
+  printf("  Leaving\n");
   return result;
 }
 #endif

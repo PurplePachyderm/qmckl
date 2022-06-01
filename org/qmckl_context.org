@@ -233,6 +233,7 @@ qmckl_context qmckl_context_create();
    #+begin_src c :tangle (eval c) :exports none
 qmckl_context qmckl_context_create() {
 
+  printf("qmckl_context_create\n");
   qmckl_context_struct* const ctx =
     (qmckl_context_struct*) malloc (sizeof(qmckl_context_struct));
 
@@ -308,6 +309,10 @@ qmckl_context qmckl_context_create() {
     ctx->memory.array_size = size;
     ctx->memory.n_allocated = (size_t) 0;
   }
+
+  printf("ctx->point.coord=%p\n", ctx->point.coord);
+  printf("ctx->electron.coord_old=%p\n", ctx->electron.coord_old);
+  printf("ctx->electron.coord_new=%p\n\n", ctx->electron.coord_new);
 
   return (qmckl_context) ctx;
 }

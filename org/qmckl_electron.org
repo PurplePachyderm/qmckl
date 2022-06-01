@@ -756,7 +756,7 @@ qmckl_set_electron_coord_device(qmckl_context context,
                          const int64_t size_max)
 {
 
-  printf("qmckl_set_electron_coord\n");
+  printf("qmckl_set_electron_coord_device\n");
 
   <<pre2>>
 
@@ -795,6 +795,11 @@ qmckl_set_electron_coord_device(qmckl_context context,
   }
 
   assert(point_num == elec_num * walk_num);
+
+  printf("Existing pointers:\n");
+  printf("ctx->point.coord=%p\n", ctx->point.coord);
+  printf("ctx->electron.coord_old=%p\n", ctx->electron.coord_old);
+  printf("ctx->electron.coord_new=%p\n", ctx->electron.coord_new);
 
   /* Swap pointers */
   ctx->point.coord         = ctx->electron.coord_old;
