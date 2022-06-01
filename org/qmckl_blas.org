@@ -85,6 +85,11 @@ are not intended to be passed to external codes.
    #+begin_src c :comments org :tangle (eval h_private_type) :exports none
 typedef struct qmckl_vector {
   double* restrict data;
+
+  #ifdef HAVE_DEVICE_POINTERS
+  double* restrict data_device;
+  #endif
+
   int64_t size;
 } qmckl_vector;
    #+end_src
@@ -95,6 +100,13 @@ qmckl_vector
 qmckl_vector_alloc( qmckl_context context, 
                     const int64_t size);
    #+end_src
+
+   #+begin_src c :comments org :tangle (eval h_private_func)
+qmckl_vector
+qmckl_vector_alloc_device( qmckl_context context,
+                    const int64_t size);
+   #+end_src
+
 
    Allocates a new vector. If the allocation failed the size is zero.
 
@@ -120,10 +132,39 @@ qmckl_vector_alloc( qmckl_context context,
   return result;
 }
    #+end_src
-   
+
+   #+begin_src c :comments org :tangle (eval c) :exports none
+qmckl_vector
+qmckl_vector_alloc_device( qmckl_context context,
+                    const int64_t size)
+{
+  /* Should always be true by contruction */
+  assert (size > (int64_t) 0);
+
+  qmckl_vector result;
+  result.size = size;
+
+  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+  mem_info.size = size * sizeof(double);
+  result.data = (double*) qmckl_malloc_device (context, mem_info, 0);
+
+  if (result.data == NULL) {
+    result.size = (int64_t) 0;
+  }
+
+  return result;
+}
+   #+end_src
+
    #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_exit_code
 qmckl_vector_free( qmckl_context context, 
+                   qmckl_vector* vector);
+   #+end_src
+
+    #+begin_src c :comments org :tangle (eval h_private_func)
+qmckl_exit_code
+qmckl_vector_free_device( qmckl_context context,
                    qmckl_vector* vector);
    #+end_src
 
@@ -137,7 +178,7 @@ qmckl_vector_free( qmckl_context context,
   
   qmckl_exit_code rc;
   
-  rc = qmckl_free(context, vector->data);
+  rc = qmckl_free(context, vector->data_device);
   if (rc != QMCKL_SUCCESS) {
     return rc;
   }
@@ -147,6 +188,28 @@ qmckl_vector_free( qmckl_context context,
   return QMCKL_SUCCESS;
 }
    #+end_src
+
+   #+begin_src c :comments org :tangle (eval c) :exports none
+qmckl_exit_code
+qmckl_vector_free_device( qmckl_context context,
+                   qmckl_vector* vector)
+{
+  /* Always true */
+  assert (vector->data != NULL);
+
+  qmckl_exit_code rc;
+
+  rc = qmckl_free_device(context, vector->data_device, 0);
+  if (rc != QMCKL_SUCCESS) {
+    return rc;
+  }
+
+  vector->size = (int64_t) 0;
+  vector->data = NULL;
+  return QMCKL_SUCCESS;
+}
+   #+end_src
+
 
 ** Matrix
    
@@ -2302,6 +2365,12 @@ qmckl_transpose (qmckl_context context,
                  qmckl_matrix At ); 
     #+end_src
 
+    #+begin_src c :tangle (eval h_private_func) :comments org
+qmckl_exit_code
+qmckl_transpose_device (qmckl_context context,
+                 const qmckl_matrix A,
+                 qmckl_matrix At );
+    #+end_src
 
     #+begin_src c :tangle (eval c) :comments org :exports none
 qmckl_exit_code
@@ -2334,10 +2403,60 @@ qmckl_transpose (qmckl_context context,
                            "Invalid size for At");
   }
 
-  for (int64_t j=0 ; j<At.size[1] ; ++j) 
-    for (int64_t i=0 ; i<At.size[0] ; ++i) 
+  for (int64_t j=0 ; j<At.size[1] ; ++j)
+    for (int64_t i=0 ; i<At.size[0] ; ++i)
       qmckl_mat(At, i, j) = qmckl_mat(A, j, i);
-  
+
+  return QMCKL_SUCCESS;
+}
+    #+end_src
+
+    #+begin_src c :tangle (eval c) :comments org :exports none
+qmckl_exit_code
+qmckl_transpose_device (qmckl_context context,
+                 const qmckl_matrix A,
+                 qmckl_matrix At )
+{
+  if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
+    return QMCKL_INVALID_CONTEXT;
+  }
+
+  if (A.size[0] < 1) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_2,
+                           "qmckl_transpose",
+                           "Invalid size for A");
+  }
+
+  if (At.data == NULL) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_3,
+                           "qmckl_transpose",
+                           "Output matrix not allocated");
+  }
+
+  if (At.size[0] != A.size[1] || At.size[1] != A.size[0]) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_3,
+                           "qmckl_transpose",
+                           "Invalid size for At");
+  }
+
+  double * A_data = A.data;
+  int A_s0 = A.size[0];
+
+  double * At_data = At.data;
+  int At_s0 = At.size[0];
+  int At_s1 = At.size[1];
+
+  #pragma omp target is_device_ptr(A_data, At_data)
+  {
+  #pragma omp parallel for collapse(2)
+  for (int64_t j=0 ; j<At_s1 ; ++j)
+    for (int64_t i=0 ; i<At_s0 ; ++i)
+      At_data[i + j*At_s0] = A_data[j + i*A_s0];
+  }
+
   return QMCKL_SUCCESS;
 }
     #+end_src
