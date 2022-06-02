@@ -823,7 +823,7 @@ qmckl_vector_of_double(const qmckl_context context,
     #+begin_src c :comments org :tangle (eval h_private_func)
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
-qmckl_vector_of_double(const qmckl_context context,
+qmckl_vector_of_double_device(const qmckl_context context,
                        const double* target,
                        const int64_t size_max,
                        qmckl_vector* vector);

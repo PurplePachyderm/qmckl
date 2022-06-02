@@ -114,6 +114,14 @@ typedef struct qmckl_mo_basis_struct {
 
   int32_t   uninitialized;
   bool      provided;
+
+#ifdef HAVE_DEVICE_POINTERS
+  double * restrict coefficient_device;
+  double * restrict coefficient_t_device;
+
+  double * restrict mo_vgl_device;
+  double * restrict mo_value_device;
+#endif
 } qmckl_mo_basis_struct;
    #+end_src
 
@@ -293,8 +301,12 @@ end interface
    called.
 
    #+begin_src c :comments org :tangle (eval h_func)
-qmckl_exit_code  qmckl_set_mo_basis_mo_num           (qmckl_context context, const int64_t   mo_num);
-qmckl_exit_code  qmckl_set_mo_basis_coefficient      (qmckl_context context, const double  * coefficient);
+qmckl_exit_code  qmckl_set_mo_basis_mo_num             (qmckl_context context, const int64_t   mo_num);
+qmckl_exit_code  qmckl_set_mo_basis_coefficient        (qmckl_context context, const double  * coefficient);
+
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, const double  * coefficient);
+#endif
    #+end_src
 
    #+NAME:pre
@@ -364,6 +376,46 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient(qmckl_context context, const dou
 
   <<post>>
 }
+
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, const double* coefficient) {
+  <<pre>>
+
+  // Accepts an host array and copies it on device
+
+  int32_t mask = 1 << 1;
+
+  if (ctx->mo_basis.coefficient != NULL) {
+    qmckl_exit_code rc = qmckl_free(context, ctx->mo_basis.coefficient);
+    if (rc != QMCKL_SUCCESS) {
+      return qmckl_failwith( context, rc,
+                             "qmckl_set_mo_basis_coefficient",
+                             NULL);
+    }
+  }
+
+  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+  mem_info.size = ctx->ao_basis.ao_num * ctx->mo_basis.mo_num * sizeof(double);
+  double* new_array = (double*) qmckl_malloc_device(context, mem_info, 0);
+  if (new_array == NULL) {
+    return qmckl_failwith( context,
+                           QMCKL_ALLOCATION_FAILED,
+                           "qmckl_set_mo_basis_coefficient",
+                           NULL);
+  }
+
+  omp_target_memcpy(
+    new_array, coefficient,
+    mem_info.size,
+    0, 0,
+    0, omp_get_initial_device()
+  );
+
+  ctx->mo_basis.coefficient_device = new_array;
+
+  <<post>>
+}
+#endif
 
    #+end_src
 
@@ -1316,28 +1368,16 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
     double* vgl4 ;
     double* vgl5 ;
 
-	  double* avgl1 ;
-    double* avgl2 ;
-    double* avgl3 ;
-    double* avgl4 ;
-    double* avgl5 ;
-
-    double* ck1 ;
-    double* ck2 ;
-    double* ck3 ;
-    double* ck4 ;
-    double* ck ;
-
     vgl1 = &(mo_vgl[ipoint*5*mo_num]);
     vgl2 =  vgl1 + mo_num;
     vgl3 =  vgl1 + (mo_num << 1);
     vgl4 =  vgl1 + (mo_num << 1) + mo_num;
     vgl5 =  vgl1 + (mo_num << 2);
-    avgl1 = &(ao_vgl[ipoint*5*ao_num]);
-    avgl2 = avgl1 + ao_num;
-    avgl3 = avgl1 + (ao_num << 1);
-    avgl4 = avgl1 + (ao_num << 1) + ao_num;
-    avgl5 = avgl1 + (ao_num << 2);
+    const double * avgl1 = &(ao_vgl[ipoint*5*ao_num]);
+    const double * avgl2 = avgl1 + ao_num;
+    const double * avgl3 = avgl1 + (ao_num << 1);
+    const double * avgl4 = avgl1 + (ao_num << 1) + ao_num;
+    const double * avgl5 = avgl1 + (ao_num << 2);
 
     for (int64_t i=0 ; i<mo_num ; ++i) {
       vgl1[i] = 0.;
@@ -1364,10 +1404,10 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
     int64_t n;
 
     for (n=0 ; n < nidx-4 ; n+=4) {
-      ck1 = coef_normalized_t + idx[ipoint*ao_num + n  ]*mo_num;
-      ck2 = coef_normalized_t + idx[ipoint*ao_num + n+1]*mo_num;
-      ck3 = coef_normalized_t + idx[ipoint*ao_num + n+2]*mo_num;
-      ck4 = coef_normalized_t + idx[ipoint*ao_num + n+3]*mo_num;
+      const double * ck1 = coef_normalized_t + idx[ipoint*ao_num + n  ]*mo_num;
+      const double * ck2 = coef_normalized_t + idx[ipoint*ao_num + n+1]*mo_num;
+      const double * ck3 = coef_normalized_t + idx[ipoint*ao_num + n+2]*mo_num;
+      const double * ck4 = coef_normalized_t + idx[ipoint*ao_num + n+3]*mo_num;
 
       double a11 = av1[ipoint*ao_num + n  ];
       double a21 = av1[ipoint*ao_num + n+1];
@@ -1407,7 +1447,7 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
 
     const int64_t n0 = n < 0 ? 0 : n;
     for (int64_t m=n0 ; m < nidx ; m+=1) {
-      ck = coef_normalized_t + idx[ipoint*ao_num + m]*mo_num;
+      const double * ck = coef_normalized_t + idx[ipoint*ao_num + m]*mo_num;
       double a1 = av1[ipoint*ao_num + m];
       double a2 = av2[ipoint*ao_num + m];
       double a3 = av3[ipoint*ao_num + m];
@@ -1428,12 +1468,12 @@ qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
   #pragma omp target update from(mo_vgl[0:point_num*5*mo_num])
   }
 
-	free(idx);
-	free(av1);
-	free(av2);
-	free(av3);
-	free(av4);
-	free(av5);
+  free(idx);
+  free(av1);
+  free(av2);
+  free(av3);
+  free(av4);
+  free(av5);
 
   return QMCKL_SUCCESS;
 }

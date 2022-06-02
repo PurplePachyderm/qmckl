@@ -310,10 +310,6 @@ qmckl_context qmckl_context_create() {
     ctx->memory.n_allocated = (size_t) 0;
   }
 
-  printf("ctx->point.coord=%p\n", ctx->point.coord);
-  printf("ctx->electron.coord_old=%p\n", ctx->electron.coord_old);
-  printf("ctx->electron.coord_new=%p\n\n", ctx->electron.coord_new);
-
   return (qmckl_context) ctx;
 }
    #+end_src
