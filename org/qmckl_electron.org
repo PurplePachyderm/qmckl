@@ -749,6 +749,7 @@ qmckl_set_electron_coord(qmckl_context context,
   #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_set_electron_coord_device(qmckl_context context,
                          const char transp,
@@ -796,11 +797,6 @@ qmckl_set_electron_coord_device(qmckl_context context,
 
   assert(point_num == elec_num * walk_num);
 
-  printf("Existing pointers:\n");
-  printf("ctx->point.coord=%p\n", ctx->point.coord);
-  printf("ctx->electron.coord_old=%p\n", ctx->electron.coord_old);
-  printf("ctx->electron.coord_new=%p\n", ctx->electron.coord_new);
-
   /* Swap pointers */
   ctx->point.coord         = ctx->electron.coord_old;
   ctx->electron.coord_old  = ctx->electron.coord_new ;
@@ -816,6 +812,7 @@ qmckl_set_electron_coord_device(qmckl_context context,
   return QMCKL_SUCCESS;
 
 }
+#endif
   #+end_src
 
 
