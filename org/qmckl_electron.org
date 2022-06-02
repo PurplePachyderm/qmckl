@@ -925,7 +925,7 @@ assert(w == walk_num);
 
 assert(qmckl_electron_provided(context));
 
-rc = qmckl_set_electron_coord_device (context, 'N', elec_coord, walk_num*elec_num*3);
+rc = qmckl_set_electron_coord (context, 'N', elec_coord, walk_num*elec_num*3);
 assert(rc == QMCKL_SUCCESS);
 
 double elec_coord2[walk_num*3*elec_num];
