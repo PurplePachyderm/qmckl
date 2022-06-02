@@ -117,7 +117,7 @@ qmckl_vector_alloc( qmckl_context context,
 {
   /* Should always be true by contruction */
   assert (size > (int64_t) 0);
-  
+
   qmckl_vector result;
   result.size = size;
 
@@ -134,6 +134,7 @@ qmckl_vector_alloc( qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_vector
 qmckl_vector_alloc_device( qmckl_context context,
                     const int64_t size)
@@ -154,11 +155,12 @@ qmckl_vector_alloc_device( qmckl_context context,
 
   return result;
 }
+#endif
    #+end_src
 
    #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_exit_code
-qmckl_vector_free( qmckl_context context, 
+qmckl_vector_free( qmckl_context context,
                    qmckl_vector* vector);
    #+end_src
 
@@ -170,15 +172,15 @@ qmckl_vector_free_device( qmckl_context context,
 
    #+begin_src c :comments org :tangle (eval c) :exports none
 qmckl_exit_code
-qmckl_vector_free( qmckl_context context, 
+qmckl_vector_free( qmckl_context context,
                    qmckl_vector* vector)
 {
   /* Always true */
   assert (vector->data != NULL);
-  
+
   qmckl_exit_code rc;
-  
-  rc = qmckl_free(context, vector->data_device);
+
+  rc = qmckl_free(context, vector->data);
   if (rc != QMCKL_SUCCESS) {
     return rc;
   }
@@ -190,6 +192,7 @@ qmckl_vector_free( qmckl_context context,
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_vector_free_device( qmckl_context context,
                    qmckl_vector* vector)
@@ -208,11 +211,12 @@ qmckl_vector_free_device( qmckl_context context,
   vector->data = NULL;
   return QMCKL_SUCCESS;
 }
+#endif
    #+end_src
 
 
 ** Matrix
-   
+
   | Variable | Type         | Description                 |
   |----------+--------------+-----------------------------|
   | ~size~   | ~int64_t[2]~ | Dimension of each component |
@@ -220,7 +224,7 @@ qmckl_vector_free_device( qmckl_context context,
 
   The dimensions use Fortran ordering: two elements differing by one
   in the first dimension are consecutive in memory.
-  
+
    #+begin_src c :comments org :tangle (eval h_private_type) :exports none
 typedef struct qmckl_matrix {
   double* restrict data;
@@ -236,7 +240,7 @@ typedef struct qmckl_matrix {
 
    #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_matrix
-qmckl_matrix_alloc( qmckl_context context, 
+qmckl_matrix_alloc( qmckl_context context,
                     const int64_t size1,
                     const int64_t size2);
    #+end_src
@@ -255,13 +259,13 @@ qmckl_matrix_alloc_device( qmckl_context context,
 
    #+begin_src c :comments org :tangle (eval c) :exports none
 qmckl_matrix
-qmckl_matrix_alloc( qmckl_context context, 
+qmckl_matrix_alloc( qmckl_context context,
                     const int64_t size1,
                     const int64_t size2)
 {
   /* Should always be true by contruction */
   assert (size1 * size2 > (int64_t) 0);
-  
+
   qmckl_matrix result;
 
   result.size[0] = size1;
@@ -2464,7 +2468,7 @@ assert(QMCKL_SUCCESS == test_qmckl_adjugate(context));
    | ~context~ | ~qmckl_context~ | in     | Global state      |
    | ~A~       | ~qmckl_matrix~  | in     | Input matrix      |
    | ~At~      | ~qmckl_matrix~  | out    | Transposed matrix |
-   
+
     #+begin_src c :tangle (eval h_private_func) :comments org
 qmckl_exit_code
 qmckl_transpose (qmckl_context context,
@@ -2473,10 +2477,12 @@ qmckl_transpose (qmckl_context context,
     #+end_src
 
     #+begin_src c :tangle (eval h_private_func) :comments org
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_transpose_device (qmckl_context context,
                  const qmckl_matrix A,
                  qmckl_matrix At );
+#endif
     #+end_src
 
     #+begin_src c :tangle (eval c) :comments org :exports none
@@ -2519,6 +2525,7 @@ qmckl_transpose (qmckl_context context,
     #+end_src
 
     #+begin_src c :tangle (eval c) :comments org :exports none
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_transpose_device (qmckl_context context,
                  const qmckl_matrix A,
@@ -2566,6 +2573,7 @@ qmckl_transpose_device (qmckl_context context,
 
   return QMCKL_SUCCESS;
 }
+#endif
     #+end_src
 
 *** Test                                                           :noexport:
