@@ -3743,7 +3743,7 @@ qmckl_get_ao_basis_ao_vgl (qmckl_context context,
 
   qmckl_exit_code rc;
 
-  rc = qmckl_provide_ao_vgl_device(context);
+  rc = qmckl_provide_ao_vgl(context);
   if (rc != QMCKL_SUCCESS) return rc;
 
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
