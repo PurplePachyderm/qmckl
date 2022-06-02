@@ -1793,7 +1793,6 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file)
 #endif
    #+end_src
 
-   
 ** Molecular orbitals
 
    In this section we read the MO coefficients.
@@ -1881,6 +1880,93 @@ qmckl_trexio_read_mo_X(qmckl_context context, trexio_t* const file)
 #endif
    #+end_src
 
+** Molecular orbitals (device)
+
+   In this section we read the MO coefficients. Arrays are allocated on device.
+
+   #+begin_src c :tangle (eval c)
+#if defined(HAVE_TREXIO) && defined(HAVE_DEVICE_POINTERS)
+qmckl_exit_code
+qmckl_trexio_read_mo_X_device(qmckl_context context, trexio_t* const file)
+{
+  assert (context != (qmckl_context) 0);
+  assert (file != NULL);
+
+  qmckl_exit_code rc;
+  int rcio = 0;
+  int64_t ao_num = 0L;
+
+  rc = qmckl_get_ao_basis_ao_num(context, &ao_num);
+  if (rc != QMCKL_SUCCESS)
+    return rc;
+
+   #+end_src
+
+*** Number of MOs
+
+   #+begin_src c :tangle (eval c)
+  int64_t mo_num = 0L;
+
+  rcio = trexio_read_mo_num_64(file, &mo_num);
+  if (rcio != TREXIO_SUCCESS) {
+    return qmckl_failwith( context,
+                           QMCKL_FAILURE,
+                           "trexio_read_mo_num",
+                           trexio_string_of_error(rcio));
+  }
+
+  assert (mo_num > 0);
+  rc = qmckl_set_mo_basis_mo_num(context, mo_num);
+
+  if (rc != QMCKL_SUCCESS)
+    return rc;
+   #+end_src
+
+*** MO coefficients
+
+   #+begin_src c :tangle (eval c)
+  {
+    qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+    mem_info.size = ao_num * mo_num * sizeof(double);
+
+    double* mo_coef = (double*) qmckl_malloc(context, mem_info);
+
+    if (mo_coef == NULL) {
+      return qmckl_failwith( context,
+                             QMCKL_ALLOCATION_FAILED,
+                             "qmckl_trexio_read_mo_X",
+                             NULL);
+    }
+
+    assert (mo_coef != NULL);
+
+    rcio = trexio_read_mo_coefficient_64(file, mo_coef);
+    if (rcio != TREXIO_SUCCESS) {
+      return qmckl_failwith( context,
+                             QMCKL_FAILURE,
+                             "trexio_read_mo_coefficient",
+                             trexio_string_of_error(rcio));
+    }
+
+    rc = qmckl_set_mo_basis_coefficient_device(context, mo_coef);
+
+    qmckl_free(context, mo_coef);
+    mo_coef = NULL;
+
+    if (rc != QMCKL_SUCCESS)
+      return rc;
+
+  }
+   #+end_src
+
+   #+begin_src c :tangle (eval c)
+
+  return QMCKL_SUCCESS;
+}
+#endif
+   #+end_src
+
+
 ** TODO ECP
 * Read everything
 
@@ -1892,10 +1978,12 @@ qmckl_trexio_read(const qmckl_context context,
   #+end_src
 
   #+begin_src c :tangle (eval h_func)
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_trexio_read_device(const qmckl_context context,
                   const char* file_name,
                   const int64_t size_max);
+#endif
   #+end_src
 
 
@@ -1917,6 +2005,7 @@ qmckl_trexio_read_device(const qmckl_context context,
   #+end_src
 
   #+begin_src f90 :tangle (eval fh_func) :comments org :exports none
+#ifdef HAVE_DEVICE_POINTERS
     interface
       integer(c_int32_t) function qmckl_trexio_read_device &
           (context, file_name, size_max) &
@@ -1931,6 +2020,7 @@ qmckl_trexio_read_device(const qmckl_context context,
 
       end function qmckl_trexio_read_device
     end interface
+#endif
   #+end_src
 
   #+begin_src c :tangle (eval c)
@@ -2008,6 +2098,7 @@ qmckl_trexio_read(const qmckl_context context, const char* file_name, const int6
   #+end_src
 
   #+begin_src c :tangle (eval c)
+#ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_trexio_read_device(const qmckl_context context, const char* file_name, const int64_t size_max)
 {
@@ -2041,7 +2132,7 @@ qmckl_trexio_read_device(const qmckl_context context, const char* file_name, con
                            "Error reading electron");
   }
 
-  rc = qmckl_trexio_read_nucleus_X(context, file);
+  rc = qmckl_trexio_read_nucleus_X_device(context, file);
   if (rc != QMCKL_SUCCESS) {
     trexio_close(file);
     return qmckl_failwith( context,
@@ -2050,7 +2141,7 @@ qmckl_trexio_read_device(const qmckl_context context, const char* file_name, con
                            "Error reading nucleus");
   }
 
-  rc = qmckl_trexio_read_ao_X(context, file);
+  rc = qmckl_trexio_read_ao_X_device(context, file);
   if (rc != QMCKL_SUCCESS) {
     trexio_close(file);
     return qmckl_failwith( context,
@@ -2059,7 +2150,7 @@ qmckl_trexio_read_device(const qmckl_context context, const char* file_name, con
                            "Error reading AOs");
   }
 
-  rc = qmckl_trexio_read_mo_X(context, file);
+  rc = qmckl_trexio_read_mo_X_device(context, file);
   if (rc != QMCKL_SUCCESS) {
     trexio_close(file);
     return qmckl_failwith( context,
@@ -2079,6 +2170,7 @@ qmckl_trexio_read_device(const qmckl_context context, const char* file_name, con
 #endif
   return rc;
 }
+#endif
   #+end_src
 
 

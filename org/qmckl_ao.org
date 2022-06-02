@@ -59,6 +59,9 @@ gradients and Laplacian of the atomic basis functions.
 #include <stdbool.h>
 #include <stdio.h>
 #include <inttypes.h>
+
+#include <omp.h>
+
 #include "qmckl_blas_private_type.h"
 #+end_src
 

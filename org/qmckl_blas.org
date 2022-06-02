@@ -820,8 +820,18 @@ qmckl_vector_of_double(const qmckl_context context,
                        qmckl_vector* vector);
     #+end_src
 
+    #+begin_src c :comments org :tangle (eval h_private_func)
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code
+qmckl_vector_of_double(const qmckl_context context,
+                       const double* target,
+                       const int64_t size_max,
+                       qmckl_vector* vector);
+#endif
+    #+end_src
+
     Converts a ~double*~ to a vector.
-    
+
     #+begin_src c :comments org :tangle (eval c) :exports none
 qmckl_exit_code
 qmckl_vector_of_double(const qmckl_context context,
@@ -836,14 +846,14 @@ qmckl_vector_of_double(const qmckl_context context,
   if (vector.size == 0) {
     return qmckl_failwith( context,
                            QMCKL_INVALID_ARG_4,
-                           "qmckl_double_of_vector",
+                           "qmckl_vector_of_double",
                            "Vector not allocated");
   }
 
   if (vector.size != size_max) {
       return qmckl_failwith( context,
                              QMCKL_INVALID_ARG_4,
-                             "qmckl_double_of_vector",
+                             "qmckl_vector_of_double",
                              "Wrong vector size");
   }
 
@@ -857,6 +867,50 @@ qmckl_vector_of_double(const qmckl_context context,
 }
     #+end_src
 
+    #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code
+qmckl_vector_of_double_device(const qmckl_context context,
+                       const double* target,
+                       const int64_t size_max,
+                       qmckl_vector* vector_out)
+{
+
+  // Accepts an host array an copies it in the device section of vector_out
+  // (assuming the vector is already allocated)
+
+  qmckl_vector vector = *vector_out;
+  /* Always true by construction */
+  assert (qmckl_context_check(context) != QMCKL_NULL_CONTEXT);
+
+  if (vector.size == 0) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_4,
+                           "qmckl_vector_of_double",
+                           "Vector not allocated");
+  }
+
+  if (vector.size != size_max) {
+      return qmckl_failwith( context,
+                             QMCKL_INVALID_ARG_4,
+                             "qmckl_vector_of_double",
+                             "Wrong vector size");
+  }
+
+  omp_target_memcpy(
+    vector.data_device, target,
+    vector.size * sizeof(double),
+    0, 0,
+    0, omp_get_initial_device()
+  );
+
+  ,*vector_out = vector;
+  return QMCKL_SUCCESS;
+
+}
+#endif
+    #+end_src
+
 
     #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_exit_code
@@ -866,8 +920,18 @@ qmckl_matrix_of_double(const qmckl_context context,
                        qmckl_matrix* matrix);
     #+end_src
 
+    #+begin_src c :comments org :tangle (eval h_private_func)
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code
+qmckl_matrix_of_double_device(const qmckl_context context,
+                       const double* target,
+                       const int64_t size_max,
+                       qmckl_matrix* matrix);
+#endif
+    #+end_src
+
     Converts a ~double*~ to a matrix.
-    
+
     #+begin_src c :comments org :tangle (eval c) :exports none
 qmckl_exit_code
 qmckl_matrix_of_double(const qmckl_context context,
@@ -883,6 +947,49 @@ qmckl_matrix_of_double(const qmckl_context context,
 }
     #+end_src
 
+    #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code
+qmckl_matrix_of_double_device(const qmckl_context context,
+                       const double* target,
+                       const int64_t size_max,
+                       qmckl_matrix* matrix_out)
+{
+
+  // Accepts an host array an copies it in the device section of matrix
+  // (assuming the matrix is already allocated)
+
+  qmckl_matrix matrix = *matrix_out;
+  /* Always true by construction */
+  assert (qmckl_context_check(context) != QMCKL_NULL_CONTEXT);
+
+  if (matrix.size[0] * matrix.size[1] == 0) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_ARG_4,
+                           "qmckl_matrix_of_double",
+                           "Matrix not allocated");
+  }
+
+  if (matrix.size[0] * matrix.size[1] != size_max) {
+      return qmckl_failwith( context,
+                             QMCKL_INVALID_ARG_4,
+                             "qmckl_matrix_of_double",
+                             "Wrong vector size");
+  }
+
+  omp_target_memcpy(
+    matrix.data_device, target,
+    size_max * sizeof(double),
+    0, 0,
+    0, omp_get_initial_device()
+  );
+
+  ,*matrix_out = matrix;
+  return QMCKL_SUCCESS;
+}
+#endif
+    #+end_src
+
 
     #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_exit_code
@@ -893,7 +1000,7 @@ qmckl_tensor_of_double(const qmckl_context context,
     #+end_src
 
     Converts a ~double*~ to a tensor.
-    
+
     #+begin_src c :comments org :tangle (eval c) :exports none
 qmckl_exit_code
 qmckl_tensor_of_double(const qmckl_context context,

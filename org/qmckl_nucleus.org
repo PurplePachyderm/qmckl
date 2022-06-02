@@ -577,9 +577,8 @@ qmckl_set_nucleus_charge_device(qmckl_context context,
                            "Array too small");
   }
 
-  ctx->nucleus.charge = qmckl_vector_alloc(context, num);
-  // TODO Find this function & make device version as it seems to
-  rc = qmckl_vector_of_double(context, charge, num, &(ctx->nucleus.charge));
+  ctx->nucleus.charge = qmckl_vector_alloc_device(context, num);
+  rc = qmckl_vector_of_double_device(context, charge, num, &(ctx->nucleus.charge));
   if (rc != QMCKL_SUCCESS) {
     return qmckl_failwith( context,
                            QMCKL_FAILURE,
