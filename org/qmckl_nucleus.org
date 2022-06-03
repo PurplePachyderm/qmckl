@@ -495,7 +495,8 @@ qmckl_set_nucleus_charge(qmckl_context context,
 qmckl_exit_code
 qmckl_set_nucleus_charge_device(qmckl_context context,
                                 const double* charge,
-                                const int64_t size_max);
+                                const int64_t size_max,
+								int device_id);
 #endif
    #+end_src
 
@@ -549,11 +550,12 @@ qmckl_set_nucleus_charge(qmckl_context context,
 qmckl_exit_code
 qmckl_set_nucleus_charge_device(qmckl_context context,
                                 const double* charge,
-                                const int64_t size_max)
+                                const int64_t size_max,
+								int device_id)
 {
   <<pre2>>
 
-  // This accepts a host pointer an copies it in context as a device pointer
+  // This accepts a host pointer and copies it in context as a device pointer
 
   if (charge == NULL) {
     return qmckl_failwith( context,
@@ -578,7 +580,7 @@ qmckl_set_nucleus_charge_device(qmckl_context context,
   }
 
   ctx->nucleus.charge = qmckl_vector_alloc_device(context, num);
-  rc = qmckl_vector_of_double_device(context, charge, num, &(ctx->nucleus.charge));
+  rc = qmckl_vector_of_double_device(context, charge, num, &(ctx->nucleus.charge), device_id);
   if (rc != QMCKL_SUCCESS) {
     return qmckl_failwith( context,
                            QMCKL_FAILURE,
@@ -619,9 +621,10 @@ qmckl_set_nucleus_coord(qmckl_context context,
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_set_nucleus_coord_device(qmckl_context context,
-                        const char transp,
-                        const double* coord,
-                        const int64_t size_max);
+                               const char transp,
+                               const double* coord,
+                               const int64_t size_max,
+							   int device_id);
 #endif
    #+end_src
 
@@ -683,9 +686,10 @@ qmckl_set_nucleus_coord(qmckl_context context,
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_set_nucleus_coord_device(qmckl_context context,
-                        const char transp,
-                        const double* coord,
-                        const int64_t size_max)
+                               const char transp,
+                               const double* coord,
+                               const int64_t size_max,
+							   int device_id)
 {
   <<pre2>>
 
@@ -702,7 +706,7 @@ qmckl_set_nucleus_coord_device(qmckl_context context,
     if (rc != QMCKL_SUCCESS) return rc;
   }
 
-  ctx->nucleus.coord = qmckl_matrix_alloc_device(context, nucl_num, 3);
+  ctx->nucleus.coord = qmckl_matrix_alloc_device(context, nucl_num, 3, device_id);
 
   if (ctx->nucleus.coord.data == NULL) {
     return qmckl_failwith( context,
@@ -718,15 +722,14 @@ qmckl_set_nucleus_coord_device(qmckl_context context,
                            "Array too small");
   }
 
-  // TODO qmckl_matrix_of_double for device
   if (transp == 'N') {
     qmckl_matrix At;
-    At = qmckl_matrix_alloc_device(context, 3, nucl_num);
-    rc = qmckl_matrix_of_double(context, coord, 3*nucl_num, &At);
+    At = qmckl_matrix_alloc_device(context, 3, nucl_num, device_id, 0);
+    rc = qmckl_matrix_of_double_device(context, coord, 3*nucl_num, &At, device_id);
     if (rc != QMCKL_SUCCESS) return rc;
     rc = qmckl_transpose_device(context, At, ctx->nucleus.coord);
   } else {
-    rc = qmckl_matrix_of_double(context, coord, nucl_num*3, &(ctx->nucleus.coord));
+    rc = qmckl_matrix_of_double_device(context, coord, nucl_num*3, &(ctx->nucleus.coord), device_id);
   }
   if (rc != QMCKL_SUCCESS) return rc;
 

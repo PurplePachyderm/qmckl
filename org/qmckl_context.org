@@ -233,7 +233,6 @@ qmckl_context qmckl_context_create();
    #+begin_src c :tangle (eval c) :exports none
 qmckl_context qmckl_context_create() {
 
-  printf("qmckl_context_create\n");
   qmckl_context_struct* const ctx =
     (qmckl_context_struct*) malloc (sizeof(qmckl_context_struct));
 
