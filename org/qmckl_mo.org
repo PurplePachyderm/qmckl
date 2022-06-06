@@ -305,7 +305,7 @@ qmckl_exit_code  qmckl_set_mo_basis_mo_num             (qmckl_context context, c
 qmckl_exit_code  qmckl_set_mo_basis_coefficient        (qmckl_context context, const double  * coefficient);
 
 #ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, const double  * coefficient);
+qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, const double  * coefficient, int device_id);
 #endif
    #+end_src
 
@@ -378,7 +378,7 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient(qmckl_context context, const dou
 }
 
 #ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, const double* coefficient) {
+qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, const double* coefficient, int device_id) {
   <<pre>>
 
   // Accepts an host array and copies it on device
@@ -396,7 +396,7 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, co
 
   qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
   mem_info.size = ctx->ao_basis.ao_num * ctx->mo_basis.mo_num * sizeof(double);
-  double* new_array = (double*) qmckl_malloc_device(context, mem_info, 0);
+  double* new_array = (double*) qmckl_malloc_device(context, mem_info, device_id);
   if (new_array == NULL) {
     return qmckl_failwith( context,
                            QMCKL_ALLOCATION_FAILED,
@@ -408,7 +408,7 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, co
     new_array, coefficient,
     mem_info.size,
     0, 0,
-    0, omp_get_initial_device()
+    device_id, omp_get_initial_device()
   );
 
   ctx->mo_basis.coefficient_device = new_array;

@@ -497,7 +497,7 @@ qmckl_exit_code qmckl_set_electron_rescale_factor_en (qmckl_context context, con
 
    #+begin_src c :comments org :tangle (eval h_func)
 #ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code qmckl_set_electron_coord_device    (qmckl_context context, const char transp, const double* coord, const int64_t size_max);
+qmckl_exit_code qmckl_set_electron_coord_device    (qmckl_context context, const char transp, const double* coord, const int64_t size_max, int device_id);
 #endif
    #+end_src
 
@@ -752,9 +752,10 @@ qmckl_set_electron_coord(qmckl_context context,
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_set_electron_coord_device(qmckl_context context,
-                         const char transp,
-                         const double* coord,
-                         const int64_t size_max)
+                                const char transp,
+                                const double* coord,
+                                const int64_t size_max,
+                                int device_id)
 {
 
   printf("qmckl_set_electron_coord_device\n");
@@ -802,7 +803,7 @@ qmckl_set_electron_coord_device(qmckl_context context,
   ctx->electron.coord_old  = ctx->electron.coord_new ;
 
   qmckl_exit_code rc;
-  rc = qmckl_set_point_device(context, transp, coord, size_max/3);
+  rc = qmckl_set_point_device(context, transp, coord, size_max/3, device_id);
   assert (rc == QMCKL_SUCCESS);
 
   ctx->electron.coord_new  = ctx->point.coord ;

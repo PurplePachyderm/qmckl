@@ -679,7 +679,6 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
 
    #+begin_src c :tangle (eval c)
   {
-	  // TODO
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -880,7 +879,6 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
 
    #+begin_src c :tangle (eval c)
   {
-	  // TODO
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1050,7 +1048,6 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
 *** AO Normalization
    #+begin_src c :tangle (eval c)
   {
-	  // TODO
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1105,7 +1102,7 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
    #+begin_src c :tangle (eval c)
 #if defined(HAVE_TREXIO) && defined(HAVE_DEVICE_POINTERS)
 qmckl_exit_code
-qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file)
+qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int device_id)
 {
   assert (context != (qmckl_context) 0);
   assert (file != NULL);
@@ -1842,7 +1839,6 @@ qmckl_trexio_read_mo_X(qmckl_context context, trexio_t* const file)
 
    #+begin_src c :tangle (eval c)
   {
-	  // TODO
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
     mem_info.size = ao_num * mo_num * sizeof(double);
 
@@ -1890,7 +1886,7 @@ qmckl_trexio_read_mo_X(qmckl_context context, trexio_t* const file)
    #+begin_src c :tangle (eval c)
 #if defined(HAVE_TREXIO) && defined(HAVE_DEVICE_POINTERS)
 qmckl_exit_code
-qmckl_trexio_read_mo_X_device(qmckl_context context, trexio_t* const file)
+qmckl_trexio_read_mo_X_device(qmckl_context context, trexio_t* const file, int device_id)
 {
   assert (context != (qmckl_context) 0);
   assert (file != NULL);
@@ -1984,8 +1980,9 @@ qmckl_trexio_read(const qmckl_context context,
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_trexio_read_device(const qmckl_context context,
-                  const char* file_name,
-                  const int64_t size_max);
+                         const char* file_name,
+                         const int64_t size_max,
+	                       int device_id);
 #endif
   #+end_src
 

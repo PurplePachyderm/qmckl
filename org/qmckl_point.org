@@ -270,9 +270,10 @@ qmckl_exit_code qmckl_set_point (qmckl_context context,
    #+begin_src c :comments org :tangle (eval h_func)
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code qmckl_set_point_device (qmckl_context context,
-                                 const char transp,
-                                 const double* coord,
-                                 const int64_t num);
+                                        const char transp,
+                                        const double* coord,
+                                        const int64_t num,
+                                        int device_id);
 #endif
    #+end_src
 
@@ -360,9 +361,10 @@ qmckl_set_point (qmckl_context context,
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code
 qmckl_set_point_device (qmckl_context context,
-                 const char transp,
-                 const double* coord,
-                 const int64_t num)
+                        const char transp,
+                        const double* coord,
+                        const int64_t num,
+                        int device_id)
 {
 
   printf("qmckl_set_point_device\n");
@@ -393,11 +395,11 @@ qmckl_set_point_device (qmckl_context context,
     printf("Need new alloc\n");
     if (ctx->point.coord.data != NULL) {
 	  printf("Free previous ctx->point.coord\n");
-      rc = qmckl_matrix_free_device(context, &(ctx->point.coord));
+      rc = qmckl_matrix_free_device(context, &(ctx->point.coord), device_id);
       assert (rc == QMCKL_SUCCESS);
     }
 
-    ctx->point.coord = qmckl_matrix_alloc_device(context, num, 3);
+    ctx->point.coord = qmckl_matrix_alloc_device(context, num, 3, device_id);
     if (ctx->point.coord.data == NULL) {
       return qmckl_failwith( context,
                              QMCKL_ALLOCATION_FAILED,
