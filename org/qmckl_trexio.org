@@ -353,7 +353,7 @@ qmckl_trexio_read_nucleus_X_device(qmckl_context context, trexio_t* const file, 
 
    #+begin_src c :tangle (eval c)
   {
-    // TODO
+    printf("  Entering nuclear coords\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
     mem_info.size = nucleus_num * 3 * sizeof(double);
 
@@ -384,6 +384,7 @@ qmckl_trexio_read_nucleus_X_device(qmckl_context context, trexio_t* const file, 
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
+    printf("  Leaving nuclear coords\n");
   }
    #+end_src
 
@@ -921,7 +922,6 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
 
    #+begin_src c :tangle (eval c)
   {
-	  // TODO
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -964,7 +964,6 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
 
    #+begin_src c :tangle (eval c)
   {
-	  // TODO
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1212,6 +1211,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering nucleus index array\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1289,6 +1289,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving nucleus index array\n");
   }
    #+end_src
 
@@ -1296,6 +1297,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering num shell per nucleus\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1371,6 +1373,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving num shell per nucleus\n");
   }
    #+end_src
 
@@ -1378,6 +1381,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering angular momentum\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1413,6 +1417,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving angular momentum\n");
   }
    #+end_src
 
@@ -1420,6 +1425,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering num prim per shell\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1494,6 +1500,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving num prim per shell\n");
   }
    #+end_src
 
@@ -1501,6 +1508,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering indices of the primitives\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1571,6 +1579,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving indices of the primitives\n");
   }
    #+end_src
 
@@ -1578,6 +1587,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering normalization of shells\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1613,6 +1623,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving normalization of shells\n");
   }
    #+end_src
 
@@ -1620,6 +1631,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering exponents\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1655,6 +1667,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving normalization of shells\n");
   }
    #+end_src
 
@@ -1662,6 +1675,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering coefficients\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1697,6 +1711,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving coefficients\n");
   }
    #+end_src
 
@@ -1704,6 +1719,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering normalization of prim\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1739,12 +1755,14 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving normalization of prim\n");
   }
    #+end_src
 
 *** AO Normalization
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering normalization of AO\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1775,11 +1793,13 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
     /* Store data */
     rc = qmckl_set_ao_basis_ao_factor_device(context, ao_normalization, ao_num, device_id);
 
+    printf("Done with func call\n");
     qmckl_free(context, ao_normalization);
     ao_normalization = NULL;
 
     if (rc != QMCKL_SUCCESS)
       return rc;
+    printf("  Leaving normalization of AO\n");
   }
    #+end_src
 
@@ -1925,6 +1945,7 @@ qmckl_trexio_read_mo_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+    printf("  Entering MO coefficients\n");
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
     mem_info.size = ao_num * mo_num * sizeof(double);
 
@@ -1955,6 +1976,7 @@ qmckl_trexio_read_mo_X_device(qmckl_context context, trexio_t* const file, int d
     if (rc != QMCKL_SUCCESS)
       return rc;
 
+    printf("  Leaving MO coefficients\n");
   }
    #+end_src
 

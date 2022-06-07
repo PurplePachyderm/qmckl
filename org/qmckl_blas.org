@@ -149,7 +149,7 @@ qmckl_vector_alloc_device( qmckl_context context,
 
   qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
   mem_info.size = size * sizeof(double);
-  result.data = (double*) qmckl_malloc_device (context, mem_info, device_id);
+  result.data_device = (double*) qmckl_malloc_device (context, mem_info, device_id);
 
   if (result.data == NULL) {
     result.size = (int64_t) 0;
@@ -297,7 +297,6 @@ qmckl_matrix_alloc_device( qmckl_context context,
                            const int64_t size2,
                            int device_id)
 {
-  printf("  qmckl_alloc_device\n");
   /* Should always be true by contruction */
   assert (size1 * size2 > (int64_t) 0);
 
@@ -308,14 +307,13 @@ qmckl_matrix_alloc_device( qmckl_context context,
 
   qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
   mem_info.size = size1 * size2 * sizeof(double);
-  result.data = (double*) qmckl_malloc_device (context, mem_info, device_id);
+  result.data_device = (double*) qmckl_malloc_device (context, mem_info, device_id);
 
   if (result.data == NULL) {
     result.size[0] = (int64_t) 0;
     result.size[1] = (int64_t) 0;
   }
 
-  printf("  Leaving\n");
   return result;
 }
 #endif
@@ -2569,10 +2567,10 @@ qmckl_transpose_device (qmckl_context context,
                            "Invalid size for At");
   }
 
-  double * A_data = A.data;
+  double * A_data = A.data_device;
   int A_s0 = A.size[0];
 
-  double * At_data = At.data;
+  double * At_data = At.data_device;
   int At_s0 = At.size[0];
   int At_s1 = At.size[1];
 
