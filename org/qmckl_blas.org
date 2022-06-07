@@ -898,6 +898,7 @@ qmckl_vector_of_double_device(const qmckl_context context,
   assert (qmckl_context_check(context) != QMCKL_NULL_CONTEXT);
 
   if (vector.size == 0) {
+    // This error is thrown
     return qmckl_failwith( context,
                            QMCKL_INVALID_ARG_4,
                            "qmckl_vector_of_double",

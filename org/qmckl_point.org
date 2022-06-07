@@ -394,12 +394,13 @@ qmckl_set_point_device (qmckl_context context,
   if (ctx->point.num < num) {
     printf("Need new alloc\n");
     if (ctx->point.coord.data != NULL) {
-	  printf("Free previous ctx->point.coord\n");
+      printf("Free previous ctx->point.coord\n");
       rc = qmckl_matrix_free_device(context, &(ctx->point.coord), device_id);
       assert (rc == QMCKL_SUCCESS);
     }
 
     ctx->point.coord = qmckl_matrix_alloc_device(context, num, 3, device_id);
+    printf("ctx->point.coord after alloc = %p\n", ctx->point.coord);
     if (ctx->point.coord.data == NULL) {
       return qmckl_failwith( context,
                              QMCKL_ALLOCATION_FAILED,
@@ -412,23 +413,27 @@ qmckl_set_point_device (qmckl_context context,
   ctx->point.num = num;
 
   if (transp == 'T') {
-	printf("  Case 1\n");
+    printf("  Case 1\n");
 
     double *a = ctx->point.coord.data;
 
-	// DEVICE POINTER
-	#pragma omp target is_device_ptr(coord, a)
-	{
+    printf("elec_coord before kernel (coord) = %p\n", coord);
+    printf("ctx->point.coord before kernel (a) = %p\n", a);
+
+
+    // DEVICE POINTER
+    #pragma omp target is_device_ptr(coord, a)
+    {
     for (int64_t i=0 ; i<3*num ; ++i) {
       a[i] = coord[i];
     }
-	}
+    }
 
   } else {
     printf("  Case 2\n");
 
-	// DEVICE POINTER
- 	#pragma omp target is_device_ptr(coord)
+    // DEVICE POINTER
+    #pragma omp target is_device_ptr(coord)
     {
     for (int64_t i=0 ; i<num ; ++i) {
       qmckl_mat(ctx->point.coord, i, 0) = coord[3*i  ];

@@ -581,6 +581,7 @@ qmckl_set_nucleus_charge_device(qmckl_context context,
 
   ctx->nucleus.charge = qmckl_vector_alloc_device(context, num, device_id);
   rc = qmckl_vector_of_double_device(context, charge, num, &(ctx->nucleus.charge), device_id);
+
   if (rc != QMCKL_SUCCESS) {
     return qmckl_failwith( context,
                            QMCKL_FAILURE,
