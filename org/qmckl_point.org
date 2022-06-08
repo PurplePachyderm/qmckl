@@ -390,6 +390,9 @@ qmckl_set_point_device (qmckl_context context,
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   assert (ctx != NULL);
 
+  printf("ctx->point.num = %d\n", ctx->point.num);
+  printf("num = %d\n", num);
+
   qmckl_exit_code rc;
   if (ctx->point.num < num) {
     printf("Need new alloc\n");
@@ -415,17 +418,15 @@ qmckl_set_point_device (qmckl_context context,
   if (transp == 'T') {
     printf("  Case 1\n");
 
-    double *a = ctx->point.coord.data;
-
-    printf("elec_coord before kernel (coord) = %p\n", coord);
-    printf("ctx->point.coord before kernel (a) = %p\n", a);
-
+    double * a = ctx->point.coord.data_device;
 
     // DEVICE POINTER
-    #pragma omp target is_device_ptr(coord, a)
+    #pragma omp target is_device_ptr(a)
     {
-    for (int64_t i=0 ; i<3*num ; ++i) {
-      a[i] = coord[i];
+    // for (int64_t i=0 ; i<3*num ; ++i) {
+    for (int64_t i=0 ; i<3 ; ++i) {
+      // a[i] = coord[i];
+	  a[i] = 1.0;
     }
     }
 
