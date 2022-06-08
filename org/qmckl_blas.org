@@ -402,6 +402,10 @@ typedef struct qmckl_tensor {
   double* restrict data;
   int64_t order;
   int64_t size[QMCKL_TENSOR_ORDER_MAX];
+
+#ifdef HAVE_DEVICE_POINTERS
+  double* restrict data_device;
+#endif
 } qmckl_tensor;
    #+end_src
 
@@ -411,6 +415,16 @@ qmckl_tensor
 qmckl_tensor_alloc( qmckl_context context, 
                     const int64_t order,
                     const int64_t* size);
+   #+end_src
+
+   #+begin_src c :comments org :tangle (eval h_private_func)
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_tensor
+qmckl_tensor_alloc_device( qmckl_context context,
+                           const int64_t order,
+                           const int64_t* size,
+	                       int device_id);
+#endif
    #+end_src
 
    Allocates memory for a tensor. If the allocation failed, the size
@@ -449,11 +463,57 @@ qmckl_tensor_alloc( qmckl_context context,
   return result;
 }
    #+end_src
-   
+
+   #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_tensor
+qmckl_tensor_alloc_device( qmckl_context context,
+                           const int64_t  order,
+                           const int64_t* size,
+	                       int device_id)
+{
+  /* Should always be true by contruction */
+  assert (order > 0);
+  assert (order <= QMCKL_TENSOR_ORDER_MAX);
+  assert (size  != NULL);
+
+  qmckl_tensor result;
+  result.order = order;
+
+  int64_t prod_size = (int64_t) 1;
+  for (int64_t i=0 ; i<order ; ++i) {
+    assert (size[i] > (int64_t) 0);
+    result.size[i] = size[i];
+    prod_size *= size[i];
+  }
+
+  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+  mem_info.size = prod_size * sizeof(double);
+
+  result.data_device = (double*) qmckl_malloc_device (context, mem_info, device_id);
+
+  if (result.data_device == NULL) {
+    memset(&result, 0, sizeof(qmckl_tensor));
+  }
+
+  return result;
+}
+#endif
+   #+end_src
+
    #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_exit_code
 qmckl_tensor_free (qmckl_context context, 
                    qmckl_tensor* tensor);
+   #+end_src
+
+   #+begin_src c :comments org :tangle (eval h_private_func)
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code
+qmckl_tensor_free_device (qmckl_context context,
+                          qmckl_tensor* tensor,
+	                      int device_id);
+#endif
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :exports none
@@ -475,6 +535,30 @@ qmckl_tensor_free( qmckl_context context,
 
   return QMCKL_SUCCESS;
 }
+   #+end_src
+
+   #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code
+qmckl_tensor_free_device( qmckl_context context,
+                          qmckl_tensor* tensor,
+	                      int device_id)
+{
+  /* Always true */
+  assert (tensor->data != NULL);
+
+  qmckl_exit_code rc;
+
+  rc = qmckl_free_device(context, tensor->data_device, device_id);
+  if (rc != QMCKL_SUCCESS) {
+    return rc;
+  }
+
+  memset(tensor, 0, sizeof(qmckl_tensor));
+
+  return QMCKL_SUCCESS;
+}
+#endif
    #+end_src
 
 ** Reshaping
@@ -711,6 +795,13 @@ qmckl_matrix
 qmckl_matrix_set(qmckl_matrix matrix, double value);
     #+end_src
 
+    #+begin_src c :comments org :tangle (eval h_private_func)
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_matrix
+qmckl_matrix_set_device(qmckl_matrix matrix, double value);
+#endif
+    #+end_src
+
     #+begin_src c :comments org :tangle (eval c) :exports none
 qmckl_matrix
 qmckl_matrix_set(qmckl_matrix matrix, double value)
@@ -722,12 +813,39 @@ qmckl_matrix_set(qmckl_matrix matrix, double value)
   return qmckl_matrix_of_vector(vector, matrix.size[0], matrix.size[1]);
 }
     #+end_src
-    
+
+    #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_matrix
+qmckl_matrix_set_device(qmckl_matrix matrix, double value)
+{
+	// Recompute array size
+	int prod_size = matrix.size[0] * matrix.size[1];
+
+	double * data_device = matrix.data_device;
+	#pragma omp target is_device_ptr(data_device)
+	{
+	for(int i=0; i<prod_size; i++) {
+    data_device[i] = value;
+	}
+	}
+  return matrix;
+}
+#endif
+    #+end_src
+
 *** Tensor
 
     #+begin_src c :comments org :tangle (eval h_private_func)
 qmckl_tensor
 qmckl_tensor_set(qmckl_tensor tensor, double value);
+    #+end_src
+
+    #+begin_src c :comments org :tangle (eval h_private_func)
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_tensor
+qmckl_tensor_set_device(qmckl_tensor tensor, double value);
+#endif
     #+end_src
 
     #+begin_src c :comments org :tangle (eval c) :exports none
@@ -741,7 +859,31 @@ qmckl_tensor_set(qmckl_tensor tensor, double value)
   return qmckl_tensor_of_vector(vector, tensor.order, tensor.size);
 }
     #+end_src
-    
+
+    #+begin_src c :comments org :tangle (eval c) :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_tensor
+qmckl_tensor_set_device(qmckl_tensor tensor, double value)
+{
+	// Recompute array size
+	int prod_size = 1;
+
+	for(int i=0; i<tensor.order; i++) {
+	  prod_size *= tensor.size[i];
+	}
+
+	double * data_device = tensor.data_device;
+	#pragma omp target is_device_ptr(data_device)
+	{
+	for(int i=0; i<prod_size; i++) {
+    data_device[i] = value;
+	}
+	}
+  return tensor;
+}
+#endif
+    #+end_src
+
 ** Copy to/from to ~double*~
 
     #+begin_src c :comments org :tangle (eval h_private_func)

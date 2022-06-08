@@ -3632,7 +3632,6 @@ qmckl_exit_code qmckl_finalize_basis_device(qmckl_context context, int device_id
 
   // In principle, we should always have HAVE_HPC
 #ifdef HAVE_HPC
-  printf("Reached HPC finalize\n");
   rc = qmckl_finalize_basis_hpc_device(context, device_id);
 #else
   rc = QMCKL_SUCCESS;
@@ -3841,6 +3840,7 @@ qmckl_exit_code qmckl_finalize_basis_hpc (qmckl_context context)
 #if defined(HAVE_HPC) && defined(HAVE_DEVICE_POINTERS)
 qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int device_id)
 {
+
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
@@ -3848,90 +3848,150 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
   ctx->ao_basis.prim_num_per_nucleus_device = (int32_t*) qmckl_malloc_device(context, mem_info, device_id);
 
   /* Find max number of primitives per nucleus */
-  // TODO Offload
+
+  // Extract arrays from context
+  int64_t * nucleus_shell_num = ctx->ao_basis.nucleus_shell_num_device;
+  int64_t * nucleus_index = ctx->ao_basis.nucleus_index_device;
+  int64_t * shell_prim_num = ctx->ao_basis.shell_prim_num_device;
+  int32_t * prim_num_per_nucleus = ctx->ao_basis.prim_num_per_nucleus_device;
+
   int64_t shell_max = 0;
   int64_t prim_max  = 0;
   int64_t nucl_num = ctx->nucleus.num;
+
+  int64_t * shell_max_ptr = &shell_max;
+  int64_t * prim_max_ptr  = &prim_max;
+
+  #pragma omp target map(tofrom: shell_max_ptr[:1], prim_max_ptr[:1])\
+  is_device_ptr(nucleus_shell_num, nucleus_index, shell_prim_num, prim_num_per_nucleus)
+  {
   for (int inucl=0 ; inucl < nucl_num ; ++inucl) {
-    shell_max = ctx->ao_basis.nucleus_shell_num[inucl] > shell_max ?
-      ctx->ao_basis.nucleus_shell_num[inucl] : shell_max;
+    shell_max_ptr[0] = nucleus_shell_num[inucl] > shell_max_ptr[0] ?
+      nucleus_shell_num[inucl] : shell_max_ptr[0];
 
     int64_t prim_num = 0;
-    const int64_t ishell_start = ctx->ao_basis.nucleus_index[inucl];
-    const int64_t ishell_end   = ctx->ao_basis.nucleus_index[inucl] + ctx->ao_basis.nucleus_shell_num[inucl];
+    const int64_t ishell_start = nucleus_index[inucl];
+    const int64_t ishell_end   = nucleus_index[inucl] + nucleus_shell_num[inucl];
     for (int64_t ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
-      prim_num += ctx->ao_basis.shell_prim_num[ishell];
+      prim_num += shell_prim_num[ishell];
     }
-    prim_max = prim_num > prim_max ?
-      prim_num : prim_max;
-    ctx->ao_basis.prim_num_per_nucleus[inucl] = prim_num;
+    prim_max_ptr[0] = prim_num > prim_max_ptr[0] ?
+      prim_num : prim_max_ptr[0];
+    prim_num_per_nucleus[inucl] = prim_num;
+  }
   }
 
 
   int64_t size[3] = { prim_max, shell_max, nucl_num };
-  ctx->ao_basis.coef_per_nucleus = qmckl_tensor_alloc( context, 3, size );
-  ctx->ao_basis.coef_per_nucleus = qmckl_tensor_set(ctx->ao_basis.coef_per_nucleus, 0.);
+  ctx->ao_basis.coef_per_nucleus = qmckl_tensor_alloc_device( context, 3, size, device_id );
+  ctx->ao_basis.coef_per_nucleus = qmckl_tensor_set_device(ctx->ao_basis.coef_per_nucleus, 0.);
 
-  ctx->ao_basis.expo_per_nucleus = qmckl_matrix_alloc( context, prim_max, nucl_num );
-  ctx->ao_basis.expo_per_nucleus = qmckl_matrix_set(ctx->ao_basis.expo_per_nucleus, 0.);
+  ctx->ao_basis.expo_per_nucleus = qmckl_matrix_alloc_device( context, prim_max, nucl_num, device_id );
+  ctx->ao_basis.expo_per_nucleus = qmckl_matrix_set_device(ctx->ao_basis.expo_per_nucleus, 0.);
 
-  // To avoid offloading structures, expo is split in two arrays
-  //struct combined expo[prim_max];
-  double expo_expo[prim_max];
-  int64_t expo_index[prim_max];
+  // To avoid offloading structures, expo is split in two arrays :
+  // struct combined expo[prim_max];
+  // ... gets replaced by :
+  double * expo_expo = omp_target_alloc(prim_max * sizeof(double), device_id);
+  int64_t * expo_index = omp_target_alloc(prim_max * sizeof(double), device_id);
 
-  double coef[shell_max][prim_max];
-  double newcoef[prim_max];
-  // TODO Offload
+  double * coef = omp_target_alloc(shell_max*prim_max*sizeof(double), device_id);
+  double * newcoef = omp_target_alloc(prim_max * sizeof(double), device_id);
+
+  int64_t * newidx = omp_target_alloc(prim_max * sizeof(int64_t), device_id);
+
+  //int64_t * nucleus_index = ctx->ao_basis.nucleus_index_device;
+  int64_t * shell_prim_index = ctx->ao_basis.shell_prim_index_device;
+  //int64_t * nucleus_shell_num = ctx->ao_basis.nucleus_shell_num_device;
+  int64_t * exponent = ctx->ao_basis.exponent_device;
+  double * coefficient_normalized = ctx->ao_basis.coefficient_normalized_device;
+
+  double * expo_per_nucleus_data = ctx->ao_basis.expo_per_nucleus.data_device;
+  int expo_per_nucleus_s0 = ctx->ao_basis.expo_per_nucleus.size[0];
+
+  double * coef_per_nucleus_data = ctx->ao_basis.coef_per_nucleus.data_device;
+  int coef_per_nucleus_s0 = ctx->ao_basis.coef_per_nucleus.size[0];
+  int coef_per_nucleus_s1 = ctx->ao_basis.coef_per_nucleus.size[1];
+
+  #pragma omp target is_device_ptr( \
+  expo_expo,              \
+  expo_index,             \
+  coef,                   \
+  newcoef,                \
+  nucleus_index,          \
+  shell_prim_index,       \
+  nucleus_shell_num,      \
+  exponent,               \
+  coefficient_normalized, \
+  coef_per_nucleus_data   \
+  )
+  {
   for (int64_t inucl=0 ; inucl < nucl_num ; ++inucl) {
-    memset(expo_expo, 0, sizeof(double) * prim_max);
-    memset(expo_index, 0, sizeof(int64_t) * prim_max);
-    memset(coef, 0, sizeof(double) * sizeof(int64_t) * prim_max);
+    // memset(expo_expo, 0, sizeof(double) * prim_max);
+    // memset(expo_index, 0, sizeof(int64_t) * prim_max);
+    // memset(coef, 0, sizeof(double) * sizeof(int64_t) * prim_max);
+    for(int i=0; i<prim_max; i++) {
+      expo_expo[i] = 0.;
+      expo_index[i] = 0;
+      coef[i] = 0.;
+    }
 
     int64_t idx = 0;
-    const int64_t ishell_start = ctx->ao_basis.nucleus_index[inucl];
-    const int64_t ishell_end   = ctx->ao_basis.nucleus_index[inucl] + ctx->ao_basis.nucleus_shell_num[inucl];
+    const int64_t ishell_start = nucleus_index[inucl];
+    const int64_t ishell_end   = nucleus_index[inucl] + nucleus_shell_num[inucl];
+
     for (int64_t ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
 
-      const int64_t iprim_start = ctx->ao_basis.shell_prim_index[ishell];
-      const int64_t iprim_end   = ctx->ao_basis.shell_prim_index[ishell] + ctx->ao_basis.shell_prim_num[ishell];
+      const int64_t iprim_start = shell_prim_index[ishell];
+      const int64_t iprim_end   = shell_prim_index[ishell] + shell_prim_num[ishell];
       for (int64_t iprim = iprim_start ; iprim < iprim_end ; ++iprim) {
-        expo_expo[idx] = ctx->ao_basis.exponent[iprim];
+        expo_expo[idx] = exponent[iprim];
         expo_index[idx] = idx;
         idx += 1;
       }
     }
 
     /* Sort exponents */
-    // TODO Offload (manual bubble sort ?)
+    // In the CPU version :
     // qsort( expo, (size_t) idx, sizeof(struct combined), compare_basis );
+    // ... is replaced by a hand written bubble sort on expo_expo :
+    double tmp;
+    for(int i=0; i<idx-1; i++) {
+      for(int j=0; i<idx-i; i++) {
+        if(expo_expo[j+1]<expo_expo[j]) {
+          tmp = expo_expo[j+1];
+          expo_expo[j+1] = expo_expo[j];
+          expo_expo[j] = tmp;
+        }
+      }
+    }
 
+    // TODO Offload
     idx = 0;
     int64_t idx2 = 0;
     for (int64_t ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
 
       memset(newcoef, 0, sizeof(newcoef));
-      const int64_t iprim_start = ctx->ao_basis.shell_prim_index[ishell];
-      const int64_t iprim_end   = ctx->ao_basis.shell_prim_index[ishell] + ctx->ao_basis.shell_prim_num[ishell];
+      const int64_t iprim_start = shell_prim_index[ishell];
+      const int64_t iprim_end   = shell_prim_index[ishell] + shell_prim_num[ishell];
       for (int64_t iprim = iprim_start ; iprim < iprim_end ; ++iprim) {
-        newcoef[idx] = ctx->ao_basis.coefficient_normalized[iprim];
+        newcoef[idx] = coefficient_normalized[iprim];
         idx += 1;
       }
-      for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
+      for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
         idx2 = expo_index[i];
-        coef[ishell - ishell_start][i] = newcoef[idx2];
+        coef[(ishell - ishell_start)*prim_max + i] = newcoef[idx2];
       }
     }
 
     /* Apply ordering to coefficients */
 
     /* Remove duplicates */
-    int64_t newidx[prim_max];
     int64_t idxmax = 0;
     idx = 0;
     newidx[0] = 0;
 
-    for (int32_t i=1 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
+    for (int32_t i=1 ; i<prim_num_per_nucleus[inucl] ; ++i) {
       if (expo_expo[i] != expo_expo[i-1]) {
         idx += 1;
       }
@@ -3940,31 +4000,41 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
     idxmax = idx;
 
     for (int32_t j=0 ; j<ishell_end-ishell_start ; ++j) {
-      memset(newcoef, 0, sizeof(newcoef));
-      for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
-        newcoef[newidx[i]] += coef[j][i];
+      for(int i=0; i<prim_max; i++) {
+        newcoef[i] = 0.;
       }
-      for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
-        coef[j][i] = newcoef[i];
+
+      for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
+        newcoef[newidx[i]] += coef[j*prim_max + i];
+      }
+      for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
+        coef[j*prim_max + i] = newcoef[i];
       }
     }
 
-    for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
+    for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
       expo_expo[newidx[i]] = expo_expo[i];
     }
-    ctx->ao_basis.prim_num_per_nucleus[inucl] = idxmax+1;
+    prim_num_per_nucleus[inucl] = idxmax+1;
 
-    for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
-      qmckl_mat( ctx->ao_basis.expo_per_nucleus, i, inucl ) = expo_expo[i];
+    for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
+      expo_per_nucleus_data[i + inucl*expo_per_nucleus_s0] = expo_expo[i];
     }
 
     for (int32_t j=0 ; j<ishell_end-ishell_start ; ++j) {
-      for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
-        qmckl_ten3( ctx->ao_basis.coef_per_nucleus, i, j, inucl ) = coef[j][i];
+      for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
+        coef_per_nucleus_data[(i) + coef_per_nucleus_s0*((j) + coef_per_nucleus_s1*(inucl))] = coef[j*prim_max + i];
       }
     }
-
   }
+  }
+
+
+  omp_target_free(expo_expo, device_id);
+  omp_target_free(expo_index, device_id);
+  omp_target_free(coef, device_id);
+  omp_target_free(newcoef, device_id);
+  omp_target_free(newidx, device_id);
 
 
   return QMCKL_SUCCESS;
