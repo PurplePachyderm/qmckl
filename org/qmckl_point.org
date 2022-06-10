@@ -367,8 +367,6 @@ qmckl_set_point_device (qmckl_context context,
                         int device_id)
 {
 
-  printf("qmckl_set_point_device\n");
-
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
   }
@@ -390,50 +388,42 @@ qmckl_set_point_device (qmckl_context context,
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   assert (ctx != NULL);
 
-  printf("ctx->point.num = %d\n", ctx->point.num);
-  printf("num = %d\n", num);
 
   qmckl_exit_code rc;
-  if (ctx->point.num < num) {
-    printf("Need new alloc\n");
-    if (ctx->point.coord.data != NULL) {
-      printf("Free previous ctx->point.coord\n");
+  //if (ctx->point.num < num) {
+    if (ctx->point.coord.data_device != NULL) {
       rc = qmckl_matrix_free_device(context, &(ctx->point.coord), device_id);
       assert (rc == QMCKL_SUCCESS);
     }
 
     ctx->point.coord = qmckl_matrix_alloc_device(context, num, 3, device_id);
-    printf("ctx->point.coord after alloc = %p\n", ctx->point.coord);
-    if (ctx->point.coord.data == NULL) {
+    if (ctx->point.coord.data_device == NULL) {
       return qmckl_failwith( context,
                              QMCKL_ALLOCATION_FAILED,
                              "qmckl_set_point",
                              NULL);
     }
 
-  };
+  //};
 
   ctx->point.num = num;
 
   if (transp == 'T') {
-    printf("  Case 1\n");
 
     double * a = ctx->point.coord.data_device;
 
     // DEVICE POINTER
-    #pragma omp target is_device_ptr(a)
+    #pragma omp target is_device_ptr(a, coord)
     {
-    // for (int64_t i=0 ; i<3*num ; ++i) {
-    for (int64_t i=0 ; i<3 ; ++i) {
-      // a[i] = coord[i];
-	  a[i] = 1.0;
+    for (int64_t i=0 ; i<3*num ; ++i) {
+      a[i] = coord[i];
     }
     }
 
   } else {
-    printf("  Case 2\n");
 
     // DEVICE POINTER
+	// TODO Remove macro to support offload
     #pragma omp target is_device_ptr(coord)
     {
     for (int64_t i=0 ; i<num ; ++i) {
@@ -444,7 +434,6 @@ qmckl_set_point_device (qmckl_context context,
 	}
 
   }
-  printf("  End cases\n");
 
   /* Increment the date of the context */
   rc = qmckl_context_touch(context);
