@@ -8903,7 +8903,6 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 
   #pragma omp target is_device_ptr(lstart_h)
   {
-  #pragma omp target teams distribute parallel for simd
   for (int32_t l=0 ; l<32 ; ++l) {
     lstart_h[l] = l*(l+1)*(l+2)/6;
   }
@@ -9013,7 +9012,7 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   )
   {
 
-    #pragma omp target teams distribute parallel for simd
+    #pragma omp teams distribute parallel for simd
     for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
 
      double * poly_vgl = &(poly_vgl_shared[ipoint*5*size_max]);
@@ -9086,12 +9085,13 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 
         default:
 
+			/*
           rc = qmckl_ao_polynomial_transp_vgl_hpc_omp_offload(context, e_coord, n_coord,
                                                               nucleus_max_ang_mom[inucl],
                                                               &n_poly, (int64_t) 3,
                                                               poly_vgl, size_max);
-
-          assert (rc == QMCKL_SUCCESS);
+,*/
+          // assert (rc == QMCKL_SUCCESS);
           break;
         }
 
@@ -9262,6 +9262,7 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   omp_target_free(poly_vgl_shared, device_id);
   omp_target_free(lstart_h, device_id);
 
+  printf("Leaving\n");
   return QMCKL_SUCCESS;
 }
 #endif
