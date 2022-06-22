@@ -309,7 +309,7 @@ qmckl_matrix_alloc_device( qmckl_context context,
   mem_info.size = size1 * size2 * sizeof(double);
   result.data_device = (double*) qmckl_malloc_device (context, mem_info, device_id);
 
-  if (result.data == NULL) {
+  if (result.data_device == NULL) {
     result.size[0] = (int64_t) 0;
     result.size[1] = (int64_t) 0;
   }

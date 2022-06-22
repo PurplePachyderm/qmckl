@@ -758,8 +758,6 @@ qmckl_set_electron_coord_device(qmckl_context context,
                                 int device_id)
 {
 
-  printf("qmckl_set_electron_coord_device\n");
-
   <<pre2>>
 
   if (transp != 'N' && transp != 'T') {

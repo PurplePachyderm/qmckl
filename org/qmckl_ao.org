@@ -673,8 +673,8 @@ qmckl_set_ao_basis_nucleus_index_device (qmckl_context context,
                            "input array too small");
   }
 
-  if (ctx->ao_basis.nucleus_index != NULL) {
-    qmckl_exit_code rc = qmckl_free(context, ctx->ao_basis.nucleus_index);
+  if (ctx->ao_basis.nucleus_index_device != NULL) {
+    qmckl_exit_code rc = qmckl_free_device(context, ctx->ao_basis.nucleus_index_device, device_id);
     if (rc != QMCKL_SUCCESS) {
       return qmckl_failwith( context, rc,
                              "qmckl_set_ao_basis_nucleus_index",
@@ -3635,7 +3635,6 @@ qmckl_exit_code qmckl_finalize_basis_device(qmckl_context context, int device_id
   rc = QMCKL_SUCCESS;
 #endif
 
-  printf("Leaving device_finalize");
   return rc;
 }
 #endif
@@ -3714,7 +3713,9 @@ qmckl_exit_code qmckl_finalize_basis_hpc (qmckl_context context)
   int64_t shell_max = 0;
   int64_t prim_max  = 0;
   int64_t nucl_num = ctx->nucleus.num;
+
   for (int inucl=0 ; inucl < nucl_num ; ++inucl) {
+
     shell_max = ctx->ao_basis.nucleus_shell_num[inucl] > shell_max ?
       ctx->ao_basis.nucleus_shell_num[inucl] : shell_max;
 
@@ -3728,7 +3729,6 @@ qmckl_exit_code qmckl_finalize_basis_hpc (qmckl_context context)
       prim_num : prim_max;
     ctx->ao_basis.prim_num_per_nucleus[inucl] = prim_num;
   }
-
 
   int64_t size[3] = { prim_max, shell_max, nucl_num };
   ctx->ao_basis.coef_per_nucleus = qmckl_tensor_alloc( context, 3, size );
@@ -3768,12 +3768,14 @@ qmckl_exit_code qmckl_finalize_basis_hpc (qmckl_context context)
       memset(newcoef, 0, sizeof(newcoef));
       const int64_t iprim_start = ctx->ao_basis.shell_prim_index[ishell];
       const int64_t iprim_end   = ctx->ao_basis.shell_prim_index[ishell] + ctx->ao_basis.shell_prim_num[ishell];
+
       for (int64_t iprim = iprim_start ; iprim < iprim_end ; ++iprim) {
         newcoef[idx] = ctx->ao_basis.coefficient_normalized[iprim];
         idx += 1;
       }
       for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
         idx2 = expo[i].index;
+
         coef[ishell - ishell_start][i] = newcoef[idx2];
       }
     }
@@ -3818,18 +3820,7 @@ qmckl_exit_code qmckl_finalize_basis_hpc (qmckl_context context)
       }
     }
 
-    /*
-      for (int32_t i=0 ; i<ctx->ao_basis.prim_num_per_nucleus[inucl] ; ++i) {
-      printf("%4ld %4ld %15.5e | ", inucl, i, qmckl_mat( ctx->ao_basis.expo_per_nucleus, i, inucl ));
-      for (int64_t j=0 ; j<ishell_end-ishell_start ; ++j) {
-      printf("%8.5f ", qmckl_ten3( ctx->ao_basis.coef_per_nucleus, i, j, inucl ));
-      }
-      printf("\n");
-      }
-      printf("\n");
-    ,*/
   }
-
 
   return QMCKL_SUCCESS;
 }
@@ -3863,6 +3854,7 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
   #pragma omp target map(tofrom: shell_max_ptr[:1], prim_max_ptr[:1])\
   is_device_ptr(nucleus_shell_num, nucleus_index, shell_prim_num, prim_num_per_nucleus)
   {
+
   for (int inucl=0 ; inucl < nucl_num ; ++inucl) {
     shell_max_ptr[0] = nucleus_shell_num[inucl] > shell_max_ptr[0] ?
       nucleus_shell_num[inucl] : shell_max_ptr[0];
@@ -3877,8 +3869,8 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
       prim_num : prim_max_ptr[0];
     prim_num_per_nucleus[inucl] = prim_num;
   }
-  }
 
+  }
 
   int64_t size[3] = { prim_max, shell_max, nucl_num };
   ctx->ao_basis.coef_per_nucleus = qmckl_tensor_alloc_device( context, 3, size, device_id );
@@ -3898,9 +3890,7 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
 
   int64_t * newidx = omp_target_alloc(prim_max * sizeof(int64_t), device_id);
 
-  //int64_t * nucleus_index = ctx->ao_basis.nucleus_index_device;
   int64_t * shell_prim_index = ctx->ao_basis.shell_prim_index_device;
-  //int64_t * nucleus_shell_num = ctx->ao_basis.nucleus_shell_num_device;
   double * exponent = ctx->ao_basis.exponent_device;
   double * coefficient_normalized = ctx->ao_basis.coefficient_normalized_device;
 
@@ -3921,16 +3911,18 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
   nucleus_shell_num,      \
   exponent,               \
   coefficient_normalized, \
-  coef_per_nucleus_data   \
+	expo_per_nucleus_data,  \
+  coef_per_nucleus_data,  \
+  prim_num_per_nucleus    \
   )
   {
+
   for (int64_t inucl=0 ; inucl < nucl_num ; ++inucl) {
-    // memset(expo_expo, 0, sizeof(double) * prim_max);
-    // memset(expo_index, 0, sizeof(int64_t) * prim_max);
-    // memset(coef, 0, sizeof(double) * sizeof(int64_t) * prim_max);
     for(int i=0; i<prim_max; i++) {
       expo_expo[i] = 0.;
       expo_index[i] = 0;
+    }
+    for(int i=0; i<shell_max*prim_max; i++) {
       coef[i] = 0.;
     }
 
@@ -3955,23 +3947,29 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
     // ... is replaced by a hand written bubble sort on expo_expo :
     double tmp;
     for(int i=0; i<idx-1; i++) {
-      for(int j=0; i<idx-i; i++) {
+      for(int j=0; j<idx-i-1; j++) {
         if(expo_expo[j+1]<expo_expo[j]) {
           tmp = expo_expo[j+1];
           expo_expo[j+1] = expo_expo[j];
           expo_expo[j] = tmp;
+
+          tmp = expo_index[j+1];
+          expo_index[j+1] = expo_index[j];
+          expo_index[j] = tmp;
         }
       }
     }
 
-    // TODO Offload
     idx = 0;
     int64_t idx2 = 0;
     for (int64_t ishell = ishell_start ; ishell < ishell_end ; ++ishell) {
 
-      memset(newcoef, 0, sizeof(newcoef));
+      for(int i=0; i<prim_max; i++) {
+        newcoef[i] = 0;
+      }
       const int64_t iprim_start = shell_prim_index[ishell];
       const int64_t iprim_end   = shell_prim_index[ishell] + shell_prim_num[ishell];
+
       for (int64_t iprim = iprim_start ; iprim < iprim_end ; ++iprim) {
         newcoef[idx] = coefficient_normalized[iprim];
         idx += 1;
@@ -4013,21 +4011,21 @@ qmckl_exit_code qmckl_finalize_basis_hpc_device (qmckl_context context, int devi
     for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
       expo_expo[newidx[i]] = expo_expo[i];
     }
-    prim_num_per_nucleus[inucl] = idxmax+1;
+    prim_num_per_nucleus[inucl] = (int32_t) idxmax+1;
 
     for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
-      expo_per_nucleus_data[i + inucl*expo_per_nucleus_s0] = expo_expo[i];
+  	expo_per_nucleus_data[i + inucl*expo_per_nucleus_s0] = expo_expo[i];
     }
 
     for (int32_t j=0 ; j<ishell_end-ishell_start ; ++j) {
       for (int32_t i=0 ; i<prim_num_per_nucleus[inucl] ; ++i) {
-        coef_per_nucleus_data[(i) + coef_per_nucleus_s0*((j) + coef_per_nucleus_s1*(inucl))] = coef[j*prim_max + i];
+		  coef_per_nucleus_data[(i) + coef_per_nucleus_s0*((j) + coef_per_nucleus_s1*(inucl))] = coef[j*prim_max + i];
       }
     }
   }
+
   }
-
-
+  // End of target region
   omp_target_free(expo_expo, device_id);
   omp_target_free(expo_index, device_id);
   omp_target_free(coef, device_id);
@@ -4302,9 +4300,8 @@ qmckl_get_ao_basis_ao_vgl_device (qmckl_context context,
                                   int device_id)
 {
 
-  printf("qmckl_get_ao_basis_ao_vgl_device\n");
-
-  // ao_vgl should be a device pointer
+  // NOTE ao_vgl should be a device pointer
+  // Also, function is NOT inplace
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return qmckl_failwith( context,
@@ -4314,6 +4311,9 @@ qmckl_get_ao_basis_ao_vgl_device (qmckl_context context,
   }
 
   qmckl_exit_code rc;
+
+  rc = qmckl_provide_ao_vgl_device(context, device_id);
+  if (rc != QMCKL_SUCCESS) return rc;
 
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   assert (ctx != NULL);
@@ -4325,18 +4325,12 @@ qmckl_get_ao_basis_ao_vgl_device (qmckl_context context,
                            "qmckl_get_ao_basis_ao_vgl",
                            "input array too small");
   }
-
-  rc = qmckl_context_touch(context);
-  if (rc != QMCKL_SUCCESS) return rc;
-
-  double* old_array = ctx->ao_basis.ao_vgl;
-
-  ctx->ao_basis.ao_vgl = ao_vgl;
-
-  rc = qmckl_provide_ao_vgl_device(context, device_id);
-  if (rc != QMCKL_SUCCESS) return rc;
-
-  ctx->ao_basis.ao_vgl = old_array;
+  omp_target_memcpy(
+	  ao_vgl, ctx->ao_basis.ao_vgl_device,
+	  (size_t) sze * sizeof(double),
+	  0, 0,
+	  device_id, device_id
+	);
 
   return QMCKL_SUCCESS;
 }
@@ -6470,7 +6464,6 @@ qmckl_ao_polynomial_transp_vgl_hpc (const qmckl_context context,
         #+begin_src c :tangle (eval c) :comments org
 #ifdef HAVE_OPENMP_OFFLOAD
 #pragma omp declare target
-#endif
 qmckl_exit_code
 qmckl_ao_polynomial_transp_vgl_hpc_omp_offload (const qmckl_context context,
                                     const double* restrict X,
@@ -6482,7 +6475,7 @@ qmckl_ao_polynomial_transp_vgl_hpc_omp_offload (const qmckl_context context,
                                     const int64_t ldv )
 {
   const qmckl_context_struct* ctx = (qmckl_context_struct*) context;
-  assert (ctx != NULL && X != NULL && R != NULL && n != NULL && VGL != NULL);
+  // assert (ctx != NULL && X != NULL && R != NULL && n != NULL && VGL != NULL);
   if (lmax < 0) return QMCKL_INVALID_ARG_4;
   if (ldl < 3) return QMCKL_INVALID_ARG_7;
 
@@ -6584,7 +6577,6 @@ qmckl_ao_polynomial_transp_vgl_hpc_omp_offload (const qmckl_context context,
   *n = m;
   return QMCKL_SUCCESS;
 }
-#ifdef HAVE_OPENMP_OFFLOAD
 #pragma omp end declare target
 #endif
 
@@ -8897,7 +8889,8 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
                                            int device_id )
 {
 
-  printf("qmckl_compute_ao_vgl_gaussian_device_pointers\n");
+  double * expo_per_nucleus_data_device = expo_per_nucleus.data_device;
+  double * coef_per_nucleus_data_device = coef_per_nucleus.data_device;
 
   int32_t * lstart_h = omp_target_alloc(32 * sizeof(int32_t), device_id);
 
@@ -8933,6 +8926,12 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   k_ptr\
   )
   {
+
+	size_max_ptr[0] = 0;
+	prim_max_ptr[0] = 0;
+	shell_max_ptr[0] = 0;
+	k_ptr[0] = 0;
+
   for (int inucl=0 ; inucl < nucl_num ; ++inucl) {
     prim_max_ptr[0] = prim_num_per_nucleus[inucl] > prim_max_ptr[0] ?
       prim_num_per_nucleus[inucl] : prim_max_ptr[0];
@@ -8952,13 +8951,31 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   }
 
   // Affect _ptr values to host variables
-  #pragma omp target is_device_ptr(size_max_ptr, prim_max_ptr, shell_max_ptr)
-  {
-    size_max = size_max_ptr[0];
-    prim_max = prim_max_ptr[0];
-    shell_max = shell_max_ptr[0];
-    k = k_ptr[0];
-  }
+  omp_target_memcpy(
+    &size_max, size_max_ptr,
+    sizeof(int64_t),
+	  0, 0,
+	  omp_get_initial_device(), device_id
+  );
+  omp_target_memcpy(
+    &prim_max, prim_max_ptr,
+    sizeof(int64_t),
+	  0, 0,
+	  omp_get_initial_device(), device_id
+  );
+  omp_target_memcpy(
+    &shell_max, shell_max_ptr,
+    sizeof(int64_t),
+	  0, 0,
+	  omp_get_initial_device(), device_id
+  );
+  omp_target_memcpy(
+    &k, k_ptr,
+    sizeof(int64_t),
+	  0, 0,
+	  omp_get_initial_device(), device_id
+  );
+
 
   omp_target_free(size_max_ptr, device_id);
   omp_target_free(prim_max_ptr, device_id);
@@ -8970,7 +8987,7 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 
   qmckl_exit_code rc;
 
-  double * poly_vgl_shared = (double*) omp_target_alloc(point_num * 5*size_max*sizeof(double), device_id);
+  double * poly_vgl_shared = (double*) omp_target_alloc(point_num * 5 * size_max * sizeof(double), device_id);
 
   double * coef_mat = (double*) omp_target_alloc(nucl_num*shell_max*prim_max*sizeof(double), device_id);
 
@@ -9035,6 +9052,7 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
       const double e_coord[3] = { coord[ipoint],
                                   coord[ipoint + point_num],
                                   coord[ipoint + 2*point_num] };
+
       for (int64_t inucl=0 ; inucl < nucl_num ; ++inucl) {
         const double n_coord[3] = { nucl_coord[inucl],
                                     nucl_coord[inucl + nucl_num],
@@ -9085,20 +9103,17 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 
         default:
 
-			/*
           rc = qmckl_ao_polynomial_transp_vgl_hpc_omp_offload(context, e_coord, n_coord,
-                                                              nucleus_max_ang_mom[inucl],
-                                                              &n_poly, (int64_t) 3,
-                                                              poly_vgl, size_max);
-,*/
-          // assert (rc == QMCKL_SUCCESS);
+          nucleus_max_ang_mom[inucl],
+          &n_poly, (int64_t) 3,
+          poly_vgl, size_max);
+
           break;
         }
 
         // Compute all exponents
         int64_t nidx = 0;
         int base_idx = inucl * expo_per_nucleus_size_0;
-
 
         for (int64_t iprim = 0 ; iprim < prim_num_per_nucleus[inucl] ; ++iprim) {
           const double v = expo_per_nucleus_data[base_idx + iprim] * r2;
@@ -9171,7 +9186,9 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
           double* restrict poly_vgl_3 = NULL;
           double* restrict poly_vgl_4 = NULL;
           double* restrict poly_vgl_5 = NULL;
+
           if (nidx > 0) {
+			  //printf("k=%ld\n", k);
             const double* restrict f = ao_factor + k;
             const int64_t idx = lstart[l];
 
@@ -9200,7 +9217,13 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
             }
             switch (n) {
             case(1):
+				//printf("0\n");
+				//printf("s1=%lf\n", s1);
+				//printf("ao_vgl_1[0]=%lf\n", ao_vgl_1[0]);
+				//printf("f[0]=%lf\n", f[0]);
+				//printf("1\n");
               ao_vgl_1[0] = s1 * f[0];
+				//printf("2\n");
               ao_vgl_2[0] = s2 * f[0];
               ao_vgl_3[0] = s3 * f[0];
               ao_vgl_4[0] = s4 * f[0];
@@ -9255,14 +9278,15 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
         }
       }
     }
+
   }
+  // End of target region
 
   omp_target_free(ao_index, device_id);
   omp_target_free(coef_mat, device_id);
   omp_target_free(poly_vgl_shared, device_id);
   omp_target_free(lstart_h, device_id);
 
-  printf("Leaving\n");
   return QMCKL_SUCCESS;
 }
 #endif
@@ -9635,8 +9659,6 @@ qmckl_exit_code qmckl_provide_ao_vgl(qmckl_context context)
 qmckl_exit_code qmckl_provide_ao_vgl_device(qmckl_context context, int device_id)
 {
 
-  printf("qmckl_provide_ao_vgl_device\n");
-
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return qmckl_failwith( context,
                            QMCKL_INVALID_CONTEXT,
@@ -9660,11 +9682,11 @@ qmckl_exit_code qmckl_provide_ao_vgl_device(qmckl_context context, int device_id
     qmckl_exit_code rc;
 
     /* Allocate array */
-    if (ctx->ao_basis.ao_vgl == NULL) {
+    if (ctx->ao_basis.ao_vgl_device == NULL) {
 
       qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
       mem_info.size = ctx->ao_basis.ao_num * 5 * ctx->point.num * sizeof(double);
-      double* ao_vgl = (double*) qmckl_malloc_device(context, mem_info, 0);
+      double* ao_vgl = (double*) qmckl_malloc_device(context, mem_info, device_id);
 
       if (ao_vgl == NULL) {
         return qmckl_failwith( context,
@@ -9672,28 +9694,28 @@ qmckl_exit_code qmckl_provide_ao_vgl_device(qmckl_context context, int device_id
                                "qmckl_ao_basis_ao_vgl",
                                NULL);
       }
-      ctx->ao_basis.ao_vgl = ao_vgl;
+      ctx->ao_basis.ao_vgl_device = ao_vgl;
     }
 
     if (ctx->ao_basis.type == 'G') {
       rc = qmckl_compute_ao_vgl_gaussian_device_pointers(context,
-                                             ctx->ao_basis.ao_num,
-                                             ctx->ao_basis.shell_num,
-                                             ctx->ao_basis.prim_num_per_nucleus_device,
-                                             ctx->point.num,
-                                             ctx->nucleus.num,
-                                             ctx->point.coord.data_device,
-                                             ctx->nucleus.coord.data_device,
-                                             ctx->ao_basis.nucleus_index_device,
-                                             ctx->ao_basis.nucleus_shell_num_device,
-                                             ctx->ao_basis.nucleus_range_device,
-                                             ctx->ao_basis.nucleus_max_ang_mom_device,
-                                             ctx->ao_basis.shell_ang_mom_device,
-                                             ctx->ao_basis.ao_factor_device,
-                                             ctx->ao_basis.expo_per_nucleus,
-                                             ctx->ao_basis.coef_per_nucleus,
-                                             ctx->ao_basis.ao_vgl_device,
-                                             device_id);
+                                                         ctx->ao_basis.ao_num,
+                                                         ctx->ao_basis.shell_num,
+                                                         ctx->ao_basis.prim_num_per_nucleus_device,
+                                                         ctx->point.num,
+                                                         ctx->nucleus.num,
+                                                         ctx->point.coord.data_device,
+                                                         ctx->nucleus.coord.data_device,
+                                                         ctx->ao_basis.nucleus_index_device,
+                                                         ctx->ao_basis.nucleus_shell_num_device,
+                                                         ctx->ao_basis.nucleus_range_device,
+                                                         ctx->ao_basis.nucleus_max_ang_mom_device,
+                                                         ctx->ao_basis.shell_ang_mom_device,
+                                                         ctx->ao_basis.ao_factor_device,
+                                                         ctx->ao_basis.expo_per_nucleus,
+                                                         ctx->ao_basis.coef_per_nucleus,
+                                                         ctx->ao_basis.ao_vgl_device,
+                                                         device_id);
     } else {
       rc = qmckl_compute_ao_vgl_doc(context,
                                     ctx->ao_basis.ao_num,
