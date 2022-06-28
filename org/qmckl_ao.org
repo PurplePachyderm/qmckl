@@ -8896,6 +8896,7 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 
   #pragma omp target is_device_ptr(lstart_h)
   {
+  #pragma omp teams distribute parallel for simd
   for (int32_t l=0 ; l<32 ; ++l) {
     lstart_h[l] = l*(l+1)*(l+2)/6;
   }
@@ -8927,10 +8928,10 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   )
   {
 
-	size_max_ptr[0] = 0;
-	prim_max_ptr[0] = 0;
-	shell_max_ptr[0] = 0;
-	k_ptr[0] = 0;
+  size_max_ptr[0] = 0;
+  prim_max_ptr[0] = 0;
+  shell_max_ptr[0] = 0;
+  k_ptr[0] = 0;
 
   for (int inucl=0 ; inucl < nucl_num ; ++inucl) {
     prim_max_ptr[0] = prim_num_per_nucleus[inucl] > prim_max_ptr[0] ?
@@ -8954,26 +8955,26 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
   omp_target_memcpy(
     &size_max, size_max_ptr,
     sizeof(int64_t),
-	  0, 0,
-	  omp_get_initial_device(), device_id
+    0, 0,
+    omp_get_initial_device(), device_id
   );
   omp_target_memcpy(
     &prim_max, prim_max_ptr,
     sizeof(int64_t),
-	  0, 0,
-	  omp_get_initial_device(), device_id
+    0, 0,
+    omp_get_initial_device(), device_id
   );
   omp_target_memcpy(
     &shell_max, shell_max_ptr,
     sizeof(int64_t),
-	  0, 0,
-	  omp_get_initial_device(), device_id
+    0, 0,
+    omp_get_initial_device(), device_id
   );
   omp_target_memcpy(
     &k, k_ptr,
     sizeof(int64_t),
-	  0, 0,
-	  omp_get_initial_device(), device_id
+    0, 0,
+    omp_get_initial_device(), device_id
   );
 
 
@@ -8997,10 +8998,10 @@ qmckl_compute_ao_vgl_gaussian_device_pointers (
 
   #pragma omp target is_device_ptr(coef_mat, coef_per_nucleus_data)
   {
+  #pragma omp teams distribute parallel for simd
   for (int i=0 ; i<nucl_num ; ++i) {
     for (int j=0 ; j<shell_max; ++j) {
       for (int k=0 ; k<prim_max; ++k) {
-        // coef_mat[i*shell_max*prim_max + j*prim_max + k] = qmckl_ten3(coef_per_nucleus,k, j, i);
         coef_mat[i*shell_max*prim_max + j*prim_max + k] = coef_per_nucleus_data[(k) + coef_per_nucleus_size_0*((j) + coef_per_nucleus_size_1*(i))];
       }
     }
