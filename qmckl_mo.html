@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-05-19 Thu 07:58 -->
+<!-- 2022-06-28 Tue 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Molecular Orbitals</title>
@@ -311,45 +311,45 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org40d0ba3">1. Context</a>
+<li><a href="#org2b37949">1. Context</a>
 <ul>
-<li><a href="#org97516e9">1.1. Data structure</a></li>
-<li><a href="#org402625e">1.2. Access functions</a>
+<li><a href="#org219d0cd">1.1. Data structure</a></li>
+<li><a href="#org8b6daae">1.2. Access functions</a>
 <ul>
-<li><a href="#org0384b37">1.2.1. Fortran interfaces</a></li>
+<li><a href="#orgd83471a">1.2.1. Fortran interfaces</a></li>
 </ul>
 </li>
-<li><a href="#org86fdbaa">1.3. Initialization functions</a></li>
+<li><a href="#org74ce3e5">1.3. Initialization functions</a></li>
 </ul>
 </li>
-<li><a href="#orge220304">2. Computation</a>
+<li><a href="#org4cc7296">2. Computation</a>
 <ul>
-<li><a href="#org2387753">2.1. Computation of MOs: values only</a>
+<li><a href="#org904228c">2.1. Computation of MOs: values only</a>
 <ul>
-<li><a href="#orga0e4bbd">2.1.1. Get</a></li>
-<li><a href="#org3fa00c1">2.1.2. Provide</a></li>
-<li><a href="#orgc89c8c8">2.1.3. Compute</a></li>
-<li><a href="#orgfc9d61c">2.1.4. HPC version</a></li>
+<li><a href="#org1e274fb">2.1.1. Get</a></li>
+<li><a href="#orgaa507a2">2.1.2. Provide</a></li>
+<li><a href="#orge1057e7">2.1.3. Compute</a></li>
+<li><a href="#org66f360c">2.1.4. HPC version</a></li>
 </ul>
 </li>
-<li><a href="#orgb30677b">2.2. Computation of MOs: values, gradient, Laplacian</a>
+<li><a href="#org22f6b83">2.2. Computation of MOs: values, gradient, Laplacian</a>
 <ul>
-<li><a href="#org1a8136e">2.2.1. Get</a></li>
-<li><a href="#org7abeb98">2.2.2. Provide</a></li>
-<li><a href="#org7a921a5">2.2.3. Compute</a></li>
-<li><a href="#org0a856d9">2.2.4. GPU version</a></li>
-<li><a href="#org2458878">2.2.5. HPC version</a></li>
+<li><a href="#orgf3d3166">2.2.1. Get</a></li>
+<li><a href="#org2b63956">2.2.2. Provide</a></li>
+<li><a href="#orge90b04d">2.2.3. Compute</a></li>
+<li><a href="#org91db110">2.2.4. GPU version</a></li>
+<li><a href="#orgf1ff717">2.2.5. HPC version</a></li>
 </ul>
 </li>
-<li><a href="#orgd436657">2.3. Test</a></li>
+<li><a href="#org2209c74">2.3. Test</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org40d0ba3" class="outline-2">
-<h2 id="org40d0ba3"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-org2b37949" class="outline-2">
+<h2 id="org2b37949"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following arrays are stored in the context:
@@ -429,8 +429,8 @@ Computed data:
 </table>
 </div>
 
-<div id="outline-container-org97516e9" class="outline-3">
-<h3 id="org97516e9"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-org219d0cd" class="outline-3">
+<h3 id="org219d0cd"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_mo_basis_struct</span> {
@@ -445,6 +445,14 @@ Computed data:
 
   <span style="color: #228b22;">int32_t</span>   <span style="color: #a0522d;">uninitialized</span>;
   <span style="color: #228b22;">bool</span>      <span style="color: #a0522d;">provided</span>;
+
+<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+  <span style="color: #228b22;">double</span> * <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">coefficient_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">coefficient_t_device</span>;
+
+  <span style="color: #228b22;">double</span> * <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">mo_vgl_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">mo_value_device</span>;
+<span style="color: #483d8b;">#endif</span>
 } <span style="color: #228b22;">qmckl_mo_basis_struct</span>;
 </pre>
 </div>
@@ -482,8 +490,8 @@ this mechanism.
 </div>
 </div>
 
-<div id="outline-container-org402625e" class="outline-3">
-<h3 id="org402625e"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-org8b6daae" class="outline-3">
+<h3 id="org8b6daae"><span class="section-number-3">1.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 When all the data for the AOs have been provided, the following
@@ -496,8 +504,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org0384b37" class="outline-4">
-<h4 id="org0384b37"><span class="section-number-4">1.2.1</span> Fortran interfaces</h4>
+<div id="outline-container-orgd83471a" class="outline-4">
+<h4 id="orgd83471a"><span class="section-number-4">1.2.1</span> Fortran interfaces</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 interface
@@ -533,8 +541,8 @@ end interface
 </div>
 </div>
 
-<div id="outline-container-org86fdbaa" class="outline-3">
-<h3 id="org86fdbaa"><span class="section-number-3">1.3</span> Initialization functions</h3>
+<div id="outline-container-org74ce3e5" class="outline-3">
+<h3 id="org74ce3e5"><span class="section-number-3">1.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 To set the basis set, all the following functions need to be
@@ -542,8 +550,12 @@ called.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_mo_num</span>           (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">mo_num</span>);
-<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_coefficient</span>      (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>);
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_mo_num</span>             (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">mo_num</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_coefficient</span>        (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>);
+
+<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_coefficient_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
@@ -555,16 +567,16 @@ computed to accelerate the calculations.
 </div>
 </div>
 
-<div id="outline-container-orge220304" class="outline-2">
-<h2 id="orge220304"><span class="section-number-2">2</span> Computation</h2>
+<div id="outline-container-org4cc7296" class="outline-2">
+<h2 id="org4cc7296"><span class="section-number-2">2</span> Computation</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org2387753" class="outline-3">
-<h3 id="org2387753"><span class="section-number-3">2.1</span> Computation of MOs: values only</h3>
+<div id="outline-container-org904228c" class="outline-3">
+<h3 id="org904228c"><span class="section-number-3">2.1</span> Computation of MOs: values only</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-orga0e4bbd" class="outline-4">
-<h4 id="orga0e4bbd"><span class="section-number-4">2.1.1</span> Get</h4>
+<div id="outline-container-org1e274fb" class="outline-4">
+<h4 id="org1e274fb"><span class="section-number-4">2.1.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -588,14 +600,14 @@ Uses the given array to compute the values.
 </div>
 </div>
 
-<div id="outline-container-org3fa00c1" class="outline-4">
-<h4 id="org3fa00c1"><span class="section-number-4">2.1.2</span> Provide</h4>
+<div id="outline-container-orgaa507a2" class="outline-4">
+<h4 id="orgaa507a2"><span class="section-number-4">2.1.2</span> Provide</h4>
 </div>
 
-<div id="outline-container-orgc89c8c8" class="outline-4">
-<h4 id="orgc89c8c8"><span class="section-number-4">2.1.3</span> Compute</h4>
+<div id="outline-container-orge1057e7" class="outline-4">
+<h4 id="orge1057e7"><span class="section-number-4">2.1.3</span> Compute</h4>
 <div class="outline-text-4" id="text-2-1-3">
-<table id="orgad51c89" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org4907442" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -769,8 +781,8 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-orgfc9d61c" class="outline-4">
-<h4 id="orgfc9d61c"><span class="section-number-4">2.1.4</span> HPC version</h4>
+<div id="outline-container-org66f360c" class="outline-4">
+<h4 id="org66f360c"><span class="section-number-4">2.1.4</span> HPC version</h4>
 <div class="outline-text-4" id="text-2-1-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_HPC
@@ -864,12 +876,12 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-orgb30677b" class="outline-3">
-<h3 id="orgb30677b"><span class="section-number-3">2.2</span> Computation of MOs: values, gradient, Laplacian</h3>
+<div id="outline-container-org22f6b83" class="outline-3">
+<h3 id="org22f6b83"><span class="section-number-3">2.2</span> Computation of MOs: values, gradient, Laplacian</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-org1a8136e" class="outline-4">
-<h4 id="org1a8136e"><span class="section-number-4">2.2.1</span> Get</h4>
+<div id="outline-container-orgf3d3166" class="outline-4">
+<h4 id="orgf3d3166"><span class="section-number-4">2.2.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -893,14 +905,14 @@ Uses the given array to compute the VGL.
 </div>
 </div>
 
-<div id="outline-container-org7abeb98" class="outline-4">
-<h4 id="org7abeb98"><span class="section-number-4">2.2.2</span> Provide</h4>
+<div id="outline-container-org2b63956" class="outline-4">
+<h4 id="org2b63956"><span class="section-number-4">2.2.2</span> Provide</h4>
 </div>
 
-<div id="outline-container-org7a921a5" class="outline-4">
-<h4 id="org7a921a5"><span class="section-number-4">2.2.3</span> Compute</h4>
+<div id="outline-container-orge90b04d" class="outline-4">
+<h4 id="orge90b04d"><span class="section-number-4">2.2.3</span> Compute</h4>
 <div class="outline-text-4" id="text-2-2-3">
-<table id="orga6ed717" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgb85451f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1084,8 +1096,8 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-org0a856d9" class="outline-4">
-<h4 id="org0a856d9"><span class="section-number-4">2.2.4</span> GPU version</h4>
+<div id="outline-container-org91db110" class="outline-4">
+<h4 id="org91db110"><span class="section-number-4">2.2.4</span> GPU version</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_OPENMP_OFFLOAD
@@ -1113,70 +1125,46 @@ matrix multiplication instead of a dgemm, as exposed in
                                    <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">mo_vgl</span> )
 {
 
+
+    <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">idx</span> = malloc(<span style="color: #a020f0;">sizeof</span>(int64_t)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av1</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av2</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av3</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av4</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av5</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+
+
+<span style="color: #483d8b;">  #pragma</span> omp target enter data map(to:coef_normalized_t[0:ao_num*mo_num],\
+                                    ao_vgl[0:point_num*5*ao_num],\
+                                    mo_vgl[0:point_num*5*mo_num])\
+                                map(alloc:\
+                                    idx[0:ao_num*point_num],\
+                                    av1[0:ao_num*point_num],\
+                                    av2[0:ao_num*point_num],\
+                                    av3[0:ao_num*point_num],\
+                                    av4[0:ao_num*point_num],\
+                                    av5[0:ao_num*point_num]\
+                                    )
+        {
+<span style="color: #483d8b;">  #pragma</span> omp target teams distribute parallel <span style="color: #a020f0;">for</span> simd
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ipoint</span>=0 ; ipoint &lt; point_num ; ++ipoint) {
+
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">vgl1</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">avgl1</span> ;
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">vgl2</span> ;
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">vgl3</span> ;
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">vgl4</span> ;
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">vgl5</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">avgl2</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">avgl3</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">avgl4</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">avgl5</span> ;
 
-    <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">idx</span> = malloc(<span style="color: #a020f0;">sizeof</span>(int64_t)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av1</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av2</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av3</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av4</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av5</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ck1</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ck2</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ck3</span> ;
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ck4</span> ;
-
-    <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ck</span> ;
-
-
-<span style="color: #483d8b;">  #pragma</span> omp target map(to:coef_normalized_t[0:ao_num*mo_num],\
-                                    ao_vgl[0:point_num*5*ao_num],\
-                                    mo_vgl[0:point_num*5*mo_num])\
-                                map(alloc:\
-                                    vgl1,\
-                                    avgl1,\
-                                    vgl2,\
-                                    vgl3,\
-                                    vgl4,\
-                                    vgl5,\
-                                    avgl2,\
-                                    avgl3,\
-                                    avgl4,\
-                                    avgl5,\
-                                    idx[0:ao_num],\
-                                    av1[0:ao_num],\
-                                    av2[0:ao_num],\
-                                    av3[0:ao_num],\
-                                    av4[0:ao_num],\
-                                    av5[0:ao_num],\
-                                    ck1,\
-                                    ck2,\
-                                    ck3,\
-                                    ck4,\
-                                    ck)
-
-<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> simd
-  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ipoint</span>=0 ; ipoint &lt; point_num ; ++ipoint) {
     vgl1 = &amp;(mo_vgl[ipoint*5*mo_num]);
-    avgl1 = &amp;(ao_vgl[ipoint*5*ao_num]);
     vgl2 =  vgl1 + mo_num;
     vgl3 =  vgl1 + (mo_num &lt;&lt; 1);
     vgl4 =  vgl1 + (mo_num &lt;&lt; 1) + mo_num;
     vgl5 =  vgl1 + (mo_num &lt;&lt; 2);
-    avgl2 = avgl1 + ao_num;
-    avgl3 = avgl1 + (ao_num &lt;&lt; 1);
-    avgl4 = avgl1 + (ao_num &lt;&lt; 1) + ao_num;
-    avgl5 = avgl1 + (ao_num &lt;&lt; 2);
+    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">avgl1</span> = &amp;(ao_vgl[ipoint*5*ao_num]);
+    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">avgl2</span> = avgl1 + ao_num;
+    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">avgl3</span> = avgl1 + (ao_num &lt;&lt; 1);
+    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">avgl4</span> = avgl1 + (ao_num &lt;&lt; 1) + ao_num;
+    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">avgl5</span> = avgl1 + (ao_num &lt;&lt; 2);
 
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;mo_num ; ++i) {
       vgl1[i] = 0.;
@@ -1190,12 +1178,12 @@ matrix multiplication instead of a dgemm, as exposed in
 
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">k</span>=0 ; k&lt;ao_num ; ++k) {
       <span style="color: #a020f0;">if</span> (avgl1[k] != 0.) {
-        idx[nidx] = k;
-        av1[nidx] = avgl1[k];
-        av2[nidx] = avgl2[k];
-        av3[nidx] = avgl3[k];
-        av4[nidx] = avgl4[k];
-        av5[nidx] = avgl5[k];
+        idx[ipoint*ao_num + nidx] = k;
+        av1[ipoint*ao_num + nidx] = avgl1[k];
+        av2[ipoint*ao_num + nidx] = avgl2[k];
+        av3[ipoint*ao_num + nidx] = avgl3[k];
+        av4[ipoint*ao_num + nidx] = avgl4[k];
+        av5[ipoint*ao_num + nidx] = avgl5[k];
         ++nidx;
       }
     }
@@ -1203,35 +1191,35 @@ matrix multiplication instead of a dgemm, as exposed in
     <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>;
 
     <span style="color: #a020f0;">for</span> (n=0 ; n &lt; nidx-4 ; n+=4) {
-      ck1 = coef_normalized_t + idx[n  ]*mo_num;
-      ck2 = coef_normalized_t + idx[n+1]*mo_num;
-      ck3 = coef_normalized_t + idx[n+2]*mo_num;
-      ck4 = coef_normalized_t + idx[n+3]*mo_num;
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">ck1</span> = coef_normalized_t + idx[ipoint*ao_num + n  ]*mo_num;
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">ck2</span> = coef_normalized_t + idx[ipoint*ao_num + n+1]*mo_num;
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">ck3</span> = coef_normalized_t + idx[ipoint*ao_num + n+2]*mo_num;
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">ck4</span> = coef_normalized_t + idx[ipoint*ao_num + n+3]*mo_num;
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a11</span> = av1[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a21</span> = av1[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a31</span> = av1[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a41</span> = av1[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a11</span> = av1[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a21</span> = av1[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a31</span> = av1[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a41</span> = av1[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a12</span> = av2[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a22</span> = av2[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a32</span> = av2[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a42</span> = av2[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a12</span> = av2[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a22</span> = av2[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a32</span> = av2[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a42</span> = av2[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a13</span> = av3[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a23</span> = av3[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a33</span> = av3[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a43</span> = av3[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a13</span> = av3[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a23</span> = av3[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a33</span> = av3[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a43</span> = av3[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a14</span> = av4[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a24</span> = av4[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a34</span> = av4[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a44</span> = av4[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a14</span> = av4[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a24</span> = av4[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a34</span> = av4[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a44</span> = av4[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a15</span> = av5[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a25</span> = av5[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a35</span> = av5[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a45</span> = av5[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a15</span> = av5[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a25</span> = av5[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a35</span> = av5[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a45</span> = av5[ipoint*ao_num + n+3];
 
       //<span style="color: #b22222;">#pragma omp parallel for</span>
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;mo_num ; ++i) {
@@ -1246,12 +1234,12 @@ matrix multiplication instead of a dgemm, as exposed in
 
     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n0</span> = n &lt; 0 ? 0 : n;
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">m</span>=n0 ; m &lt; nidx ; m+=1) {
-      ck = coef_normalized_t + idx[m]*mo_num;
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a1</span> = av1[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a2</span> = av2[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a3</span> = av3[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a4</span> = av4[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a5</span> = av5[m];
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">ck</span> = coef_normalized_t + idx[ipoint*ao_num + m]*mo_num;
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a1</span> = av1[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a2</span> = av2[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a3</span> = av3[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a4</span> = av4[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a5</span> = av5[ipoint*ao_num + m];
 
       //<span style="color: #b22222;">#pragma omp distribute parallel for</span>
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;mo_num ; ++i) {
@@ -1264,11 +1252,18 @@ matrix multiplication instead of a dgemm, as exposed in
     }
   }
 
-
-
-<span style="color: #483d8b;">  #pragma</span> omp target exit data map(from:mo_vgl[0:point_num*5*mo_num])
-  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+<span style="color: #483d8b;">  #pragma</span> omp target update from(mo_vgl[0:point_num*5*mo_num])
   }
+
+  free(idx);
+  free(av1);
+  free(av2);
+  free(av3);
+  free(av4);
+  free(av5);
+
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+}
 <span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
@@ -1301,24 +1296,25 @@ matrix multiplication instead of a dgemm, as exposed in
 {
 
 
-    <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">idx</span> = malloc(<span style="color: #a020f0;">sizeof</span>(int64_t)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av1</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av2</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av3</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av4</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av5</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num);
+    <span style="color: #228b22;">int64_t</span> * <span style="color: #a0522d;">idx</span> = malloc(<span style="color: #a020f0;">sizeof</span>(int64_t)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av1</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av2</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av3</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av4</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
+    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">av5</span> = malloc(<span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>)*ao_num*point_num);
 
-<span style="color: #483d8b;">  #pragma</span> acc parallel copyout(<span style="color: #228b22;">coef_normalized_t</span>[0:ao_num*mo_num],\
-                                    ao_vgl[0:point_num*5*ao_num],\
-                                    mo_vgl[0:point_num*5*mo_num])\
-                                copyin(idx[0:ao_num],\
-                                    av1[0:ao_num],\
-                                    av2[0:ao_num],\
-                                    av3[0:ao_num],\
-                                    av4[0:ao_num],\
-                                    av5[0:ao_num])
+<span style="color: #483d8b;">  #pragma</span> acc data copyin(<span style="color: #228b22;">coef_normalized_t</span>[0:ao_num*mo_num],\
+                          ao_vgl[0:point_num*5*ao_num])\
+                         copy(mo_vgl[0:point_num*5*mo_num])\
+                   create(idx[0:ao_num*point_num],\
+                          av1[0:ao_num*point_num],\
+                          av2[0:ao_num*point_num],\
+                          av3[0:ao_num*point_num],\
+                          av4[0:ao_num*point_num],\
+                          av5[0:ao_num*point_num])
+        {
 
-<span style="color: #483d8b;">  #pragma</span> acc loop independent gang worker vector
+<span style="color: #483d8b;">  #pragma</span> acc parallel loop independent gang worker vector
   <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ipoint</span>=0 ; ipoint &lt; point_num ; ++ipoint) {
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">vgl1</span> ;
     <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">avgl1</span> ;
@@ -1362,12 +1358,12 @@ matrix multiplication instead of a dgemm, as exposed in
 
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">k</span>=0 ; k&lt;ao_num ; ++k) {
       <span style="color: #a020f0;">if</span> (avgl1[k] != 0.) {
-        idx[nidx] = k;
-        av1[nidx] = avgl1[k];
-        av2[nidx] = avgl2[k];
-        av3[nidx] = avgl3[k];
-        av4[nidx] = avgl4[k];
-        av5[nidx] = avgl5[k];
+        idx[ipoint*ao_num + nidx] = k;
+        av1[ipoint*ao_num + nidx] = avgl1[k];
+        av2[ipoint*ao_num + nidx] = avgl2[k];
+        av3[ipoint*ao_num + nidx] = avgl3[k];
+        av4[ipoint*ao_num + nidx] = avgl4[k];
+        av5[ipoint*ao_num + nidx] = avgl5[k];
         ++nidx;
       }
     }
@@ -1375,35 +1371,35 @@ matrix multiplication instead of a dgemm, as exposed in
     <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>;
 
     <span style="color: #a020f0;">for</span> (n=0 ; n &lt; nidx-4 ; n+=4) {
-      ck1 = coef_normalized_t + idx[n  ]*mo_num;
-      ck2 = coef_normalized_t + idx[n+1]*mo_num;
-      ck3 = coef_normalized_t + idx[n+2]*mo_num;
-      ck4 = coef_normalized_t + idx[n+3]*mo_num;
+      ck1 = coef_normalized_t + idx[ipoint*ao_num + n  ]*mo_num;
+      ck2 = coef_normalized_t + idx[ipoint*ao_num + n+1]*mo_num;
+      ck3 = coef_normalized_t + idx[ipoint*ao_num + n+2]*mo_num;
+      ck4 = coef_normalized_t + idx[ipoint*ao_num + n+3]*mo_num;
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a11</span> = av1[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a21</span> = av1[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a31</span> = av1[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a41</span> = av1[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a11</span> = av1[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a21</span> = av1[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a31</span> = av1[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a41</span> = av1[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a12</span> = av2[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a22</span> = av2[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a32</span> = av2[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a42</span> = av2[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a12</span> = av2[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a22</span> = av2[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a32</span> = av2[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a42</span> = av2[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a13</span> = av3[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a23</span> = av3[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a33</span> = av3[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a43</span> = av3[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a13</span> = av3[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a23</span> = av3[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a33</span> = av3[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a43</span> = av3[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a14</span> = av4[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a24</span> = av4[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a34</span> = av4[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a44</span> = av4[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a14</span> = av4[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a24</span> = av4[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a34</span> = av4[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a44</span> = av4[ipoint*ao_num + n+3];
 
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a15</span> = av5[n  ];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a25</span> = av5[n+1];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a35</span> = av5[n+2];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a45</span> = av5[n+3];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a15</span> = av5[ipoint*ao_num + n  ];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a25</span> = av5[ipoint*ao_num + n+1];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a35</span> = av5[ipoint*ao_num + n+2];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a45</span> = av5[ipoint*ao_num + n+3];
 
       //<span style="color: #b22222;">#pragma omp parallel for</span>
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;mo_num ; ++i) {
@@ -1418,12 +1414,12 @@ matrix multiplication instead of a dgemm, as exposed in
 
     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n0</span> = n &lt; 0 ? 0 : n;
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">m</span>=n0 ; m &lt; nidx ; m+=1) {
-      ck = coef_normalized_t + idx[m]*mo_num;
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a1</span> = av1[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a2</span> = av2[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a3</span> = av3[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a4</span> = av4[m];
-      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a5</span> = av5[m];
+      ck = coef_normalized_t + idx[ipoint*ao_num + m]*mo_num;
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a1</span> = av1[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a2</span> = av2[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a3</span> = av3[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a4</span> = av4[ipoint*ao_num + m];
+      <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a5</span> = av5[ipoint*ao_num + m];
 
       //<span style="color: #b22222;">#pragma omp distribute parallel for</span>
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;mo_num ; ++i) {
@@ -1435,11 +1431,17 @@ matrix multiplication instead of a dgemm, as exposed in
       }
     }
   }
+  }
 
-
+        free(idx);
+        free(av1);
+        free(av2);
+        free(av3);
+        free(av4);
+        free(av5);
 
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
-  }
+}
 <span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
@@ -1448,8 +1450,8 @@ matrix multiplication instead of a dgemm, as exposed in
 
 
 
-<div id="outline-container-org2458878" class="outline-4">
-<h4 id="org2458878"><span class="section-number-4">2.2.5</span> HPC version</h4>
+<div id="outline-container-orgf1ff717" class="outline-4">
+<h4 id="orgf1ff717"><span class="section-number-4">2.2.5</span> HPC version</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_HPC
@@ -1596,14 +1598,14 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-orgd436657" class="outline-3">
-<h3 id="orgd436657"><span class="section-number-3">2.3</span> Test</h3>
+<div id="outline-container-org2209c74" class="outline-3">
+<h3 id="org2209c74"><span class="section-number-3">2.3</span> Test</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-05-19 Thu 07:58</p>
+<p class="date">Created: 2022-06-28 Tue 12:11</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
