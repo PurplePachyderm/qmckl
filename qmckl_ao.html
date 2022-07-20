@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-06-28 Tue 12:12 -->
+<!-- 2022-07-20 Wed 14:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Atomic Orbitals</title>
@@ -333,65 +333,66 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5e1ba6e">1. Introduction</a></li>
-<li><a href="#orgf2066f3">2. Context</a>
+<li><a href="#org8c93e32">1. Introduction</a></li>
+<li><a href="#orga757c5f">2. Context</a>
 <ul>
-<li><a href="#orgff58314">2.1. Constant data</a>
+<li><a href="#org46ca487">2.1. Constant data</a>
 <ul>
-<li><a href="#orga0a972b">2.1.1. Initialization functions</a>
+<li><a href="#org4cb4b65">2.1.1. Initialization functions</a>
 <ul>
-<li><a href="#org8beb173">2.1.1.1. C interface</a></li>
-<li><a href="#orgd34b021">2.1.1.2. Fortran interface</a></li>
+<li><a href="#orga87ef53">2.1.1.1. C interface</a></li>
+<li><a href="#org6ae0c56">2.1.1.2. Fortran interface</a></li>
 </ul>
 </li>
-<li><a href="#orgd5f7c42">2.1.2. Access functions</a>
+<li><a href="#org78efbb2">2.1.2. Access functions</a>
 <ul>
-<li><a href="#orgb3c5ff9">2.1.2.1. C interface</a></li>
-<li><a href="#orga49d5b4">2.1.2.2. Fortran interface</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org23c81b6">2.2. Computed data</a>
-<ul>
-<li><a href="#org407e626">2.2.1. After initialization</a></li>
-<li><a href="#orgfefd9a2">2.2.2. <span class="todo TODO">TODO</span> HPC-specific data structures</a></li>
-<li><a href="#orgc46e9e2">2.2.3. Access functions</a></li>
+<li><a href="#orge6264a7">2.1.2.1. C interface</a></li>
+<li><a href="#org00a0a33">2.1.2.2. Fortran interface</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org0601ced">3. Radial part</a>
+<li><a href="#orga6a9b8d">2.2. Computed data</a>
 <ul>
-<li><a href="#org391d92b">3.1. General functions for Gaussian basis functions</a></li>
-<li><a href="#org5f3813d">3.2. Computation of primitives</a></li>
-<li><a href="#orga2d1ea3">3.3. Computation of shells</a></li>
+<li><a href="#orgc1cd432">2.2.1. After initialization</a></li>
+<li><a href="#org63b1988">2.2.2. <span class="todo TODO">TODO</span> HPC-specific data structures</a></li>
+<li><a href="#org2b2bf51">2.2.3. Access functions</a></li>
 </ul>
 </li>
-<li><a href="#org9a97e54">4. Polynomial part</a>
-<ul>
-<li><a href="#orge9bd815">4.1. General functions for Powers of \(x-X_i\)</a></li>
-<li><a href="#org8930f20">4.2. General functions for Value, Gradient and Laplacian of a polynomial</a></li>
-<li><a href="#orgbd159b0">4.3. OpenMP offload version</a></li>
-<li><a href="#org29b9be4">4.4. OpenMP offload version</a></li>
 </ul>
 </li>
-<li><a href="#orgc08127d">5. Combining radial and polynomial parts</a>
+<li><a href="#org5fc9475">3. Radial part</a>
 <ul>
-<li><a href="#org1f662a5">5.1. Values only</a>
-<ul>
-<li><a href="#orgc9d73d8">5.1.1. Unoptimized version</a></li>
-<li><a href="#org1fc10e6">5.1.2. HPC version</a></li>
-<li><a href="#org866834b">5.1.3. Interfaces</a></li>
+<li><a href="#org25e88a4">3.1. General functions for Gaussian basis functions</a></li>
+<li><a href="#orgd8162e2">3.2. Computation of primitives</a></li>
+<li><a href="#org95a5741">3.3. Computation of shells</a></li>
 </ul>
 </li>
-<li><a href="#org7c48150">5.2. Value, gradients, Laplacian</a>
+<li><a href="#orge4bff1a">4. Polynomial part</a>
 <ul>
-<li><a href="#org8d31f96">5.2.1. Unoptimized version</a></li>
-<li><a href="#org4631aaf">5.2.2. HPC version</a></li>
-<li><a href="#org060799a">5.2.3. OpenMP offload</a></li>
-<li><a href="#org299b707">5.2.4. OpenACC offload</a></li>
-<li><a href="#org627a27e">5.2.5. Interfaces</a></li>
+<li><a href="#org033545e">4.1. General functions for Powers of \(x-X_i\)</a></li>
+<li><a href="#org78eb576">4.2. General functions for Value, Gradient and Laplacian of a polynomial</a></li>
+<li><a href="#orgf1f9340">4.3. OpenMP offload version</a></li>
+<li><a href="#org70322a9">4.4. OpenMP offload version</a></li>
+</ul>
+</li>
+<li><a href="#org2c07c51">5. Combining radial and polynomial parts</a>
+<ul>
+<li><a href="#org46cf4e1">5.1. Values only</a>
+<ul>
+<li><a href="#org4ce07e5">5.1.1. Unoptimized version</a></li>
+<li><a href="#org5b65f0f">5.1.2. HPC version</a></li>
+<li><a href="#org64c3e57">5.1.3. Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#orgde1bba8">5.2. Value, gradients, Laplacian</a>
+<ul>
+<li><a href="#org7d89a35">5.2.1. Unoptimized version</a></li>
+<li><a href="#org87cc596">5.2.2. HPC version</a></li>
+<li><a href="#orgffae94b">5.2.3. OpenMP offload</a></li>
+<li><a href="#org1709092">5.2.4. OpenACC offload</a></li>
+<li><a href="#orgbeb0966">5.2.5. Device pointers version</a></li>
+<li><a href="#orgc72cfa3">5.2.6. Interfaces</a></li>
 </ul>
 </li>
 </ul>
@@ -400,8 +401,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org5e1ba6e" class="outline-2">
-<h2 id="org5e1ba6e"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org8c93e32" class="outline-2">
+<h2 id="org8c93e32"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The atomic basis set is defined as a list of shells. Each shell \(s\) is
@@ -454,19 +455,19 @@ gradients and Laplacian of the atomic basis functions.
 </div>
 </div>
 
-<div id="outline-container-orgf2066f3" class="outline-2">
-<h2 id="orgf2066f3"><span class="section-number-2">2</span> Context</h2>
+<div id="outline-container-orga757c5f" class="outline-2">
+<h2 id="orga757c5f"><span class="section-number-2">2</span> Context</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgff58314" class="outline-3">
-<h3 id="orgff58314"><span class="section-number-3">2.1</span> Constant data</h3>
+<div id="outline-container-org46ca487" class="outline-3">
+<h3 id="org46ca487"><span class="section-number-3">2.1</span> Constant data</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The following arrays are stored in the context, and need to be set
 when initializing the library:
 </p>
 
-<table id="org880488b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org910e05a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -640,7 +641,7 @@ calling the functions:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org7fe5d10"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-C" id="orga45f42f"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                          <span style="color: #a020f0;">const</span> $type_of_V$ $V$);
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_ao_basis_$V$</span> ( <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -677,7 +678,7 @@ For array variables, use the rule:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orgd29c2e0"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-C" id="org249e650"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                          <span style="color: #a020f0;">const</span> $type_of_V$ $V$,
                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 
@@ -715,17 +716,17 @@ For array variables, use the rule:
 </div>
 </div>
 
-<div id="outline-container-orga0a972b" class="outline-4">
-<h4 id="orga0a972b"><span class="section-number-4">2.1.1</span> Initialization functions</h4>
+<div id="outline-container-org4cb4b65" class="outline-4">
+<h4 id="org4cb4b65"><span class="section-number-4">2.1.1</span> Initialization functions</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 <code>size_max</code> is the dimension of the input array, which should be
-equal of larger than the value given in the table of section <a href="#orgf2066f3">2</a>.
+equal of larger than the value given in the table of section <a href="#orga757c5f">2</a>.
 </p>
 </div>
 
-<div id="outline-container-org8beb173" class="outline-5">
-<h5 id="org8beb173"><span class="section-number-5">2.1.1.1</span> C interface</h5>
+<div id="outline-container-orga87ef53" class="outline-5">
+<h5 id="orga87ef53"><span class="section-number-5">2.1.1.1</span> C interface</h5>
 <div class="outline-text-5" id="text-2-1-1-1">
 <p>
 To set the basis set, all the following functions need to be
@@ -769,10 +770,32 @@ called.
 </div>
 
 <div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                         <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+                                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                             <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
@@ -785,10 +808,32 @@ called.
 </div>
 
 <div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                         <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                          <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
@@ -801,10 +846,32 @@ called.
 </div>
 
 <div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_index</span>,
+                                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                            <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_factor</span>,
                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_factor</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
@@ -817,10 +884,32 @@ called.
 </div>
 
 <div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_exponent_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">exponent</span>,
+                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_coefficient</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coefficient</span>,
                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_coefficient_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coefficient</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                       <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
@@ -833,10 +922,32 @@ called.
 </div>
 
 <div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">prim_factor</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                       <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                               <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
                               <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                     <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
@@ -849,8 +960,8 @@ called.
 </div>
 </div>
 
-<div id="outline-container-orgd34b021" class="outline-5">
-<h5 id="orgd34b021"><span class="section-number-5">2.1.1.2</span> Fortran interface</h5>
+<div id="outline-container-org6ae0c56" class="outline-5">
+<h5 id="org6ae0c56"><span class="section-number-5">2.1.1.2</span> Fortran interface</h5>
 <div class="outline-text-5" id="text-2-1-1-2">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #a020f0;">interface</span>
@@ -1033,17 +1144,17 @@ called.
 </div>
 </div>
 
-<div id="outline-container-orgd5f7c42" class="outline-4">
-<h4 id="orgd5f7c42"><span class="section-number-4">2.1.2</span> Access functions</h4>
+<div id="outline-container-org78efbb2" class="outline-4">
+<h4 id="org78efbb2"><span class="section-number-4">2.1.2</span> Access functions</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 <code>size_max</code> is the dimension of the input array, which should be
-equal of larger than the value given in the table of section <a href="#orgf2066f3">2</a>.
+equal of larger than the value given in the table of section <a href="#orga757c5f">2</a>.
 </p>
 </div>
 
-<div id="outline-container-orgb3c5ff9" class="outline-5">
-<h5 id="orgb3c5ff9"><span class="section-number-5">2.1.2.1</span> C interface</h5>
+<div id="outline-container-orge6264a7" class="outline-5">
+<h5 id="orge6264a7"><span class="section-number-5">2.1.2.1</span> C interface</h5>
 <div class="outline-text-5" id="text-2-1-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1165,8 +1276,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-orga49d5b4" class="outline-5">
-<h5 id="orga49d5b4"><span class="section-number-5">2.1.2.2</span> Fortran interface</h5>
+<div id="outline-container-org00a0a33" class="outline-5">
+<h5 id="org00a0a33"><span class="section-number-5">2.1.2.2</span> Fortran interface</h5>
 <div class="outline-text-5" id="text-2-1-2-2">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #a020f0;">interface</span>
@@ -1350,8 +1461,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org23c81b6" class="outline-3">
-<h3 id="org23c81b6"><span class="section-number-3">2.2</span> Computed data</h3>
+<div id="outline-container-orga6a9b8d" class="outline-3">
+<h3 id="orga6a9b8d"><span class="section-number-3">2.2</span> Computed data</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 The following data is computed as described in the next sections:
@@ -1426,8 +1537,8 @@ The following data is computed as described in the next sections:
 </table>
 </div>
 
-<div id="outline-container-org407e626" class="outline-4">
-<h4 id="org407e626"><span class="section-number-4">2.2.1</span> After initialization</h4>
+<div id="outline-container-orgc1cd432" class="outline-4">
+<h4 id="orgc1cd432"><span class="section-number-4">2.2.1</span> After initialization</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 When the basis set is completely entered, extra data structures may be
@@ -1441,8 +1552,8 @@ the context.
 </div>
 </div>
 
-<div id="outline-container-orgfefd9a2" class="outline-4">
-<h4 id="orgfefd9a2"><span class="section-number-4">2.2.2</span> <span class="todo TODO">TODO</span> HPC-specific data structures</h4>
+<div id="outline-container-org63b1988" class="outline-4">
+<h4 id="org63b1988"><span class="section-number-4">2.2.2</span> <span class="todo TODO">TODO</span> HPC-specific data structures</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 For faster access, we provide extra arrays for the shell information as:
@@ -1474,8 +1585,8 @@ which is a matrix-vector product.
 </div>
 </div>
 
-<div id="outline-container-orgc46e9e2" class="outline-4">
-<h4 id="orgc46e9e2"><span class="section-number-4">2.2.3</span> Access functions</h4>
+<div id="outline-container-org2b2bf51" class="outline-4">
+<h4 id="org2b2bf51"><span class="section-number-4">2.2.3</span> Access functions</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1488,7 +1599,7 @@ which is a matrix-vector product.
 <p>
 Returns the array of values, gradients an Laplacian of primitive
 basis functions evaluated at the current coordinates.
-See section <a href="#org5f3813d">3.2</a>.
+See section <a href="#orgd8162e2">3.2</a>.
 </p>
 
 <div class="org-src-container">
@@ -1501,7 +1612,7 @@ See section <a href="#org5f3813d">3.2</a>.
 
 <p>
 Returns the array of values, gradients an Laplacian of contracted shells
-evaluated at the current coordinates. See section <a href="#orga2d1ea3">3.3</a>.
+evaluated at the current coordinates. See section <a href="#org95a5741">3.3</a>.
 </p>
 
 <div class="org-src-container">
@@ -1515,7 +1626,7 @@ evaluated at the current coordinates. See section <a href="#orga2d1ea3">3.3</a>.
 <p>
 Returns the array of values, gradients an Laplacian of the atomic orbitals
 evaluated at the current coordinates.
-See section <a href="#orgc08127d">5</a>.
+See section <a href="#org2c07c51">5</a>.
 </p>
 
 <p>
@@ -1532,6 +1643,15 @@ Uses the given array to compute the VGL.
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_get_ao_basis_ao_vgl_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                  <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_ao_value</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                              <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_value</span>,
                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
@@ -1540,7 +1660,7 @@ Uses the given array to compute the VGL.
 
 <p>
 Returns the array of values of the atomic orbitals evaluated at
-the current coordinates. See section <a href="#orgc08127d">5</a>.
+the current coordinates. See section <a href="#org2c07c51">5</a>.
 </p>
 
 <p>
@@ -1559,12 +1679,12 @@ Uses the given array to compute the value.
 </div>
 </div>
 
-<div id="outline-container-org0601ced" class="outline-2">
-<h2 id="org0601ced"><span class="section-number-2">3</span> Radial part</h2>
+<div id="outline-container-org5fc9475" class="outline-2">
+<h2 id="org5fc9475"><span class="section-number-2">3</span> Radial part</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org391d92b" class="outline-3">
-<h3 id="org391d92b"><span class="section-number-3">3.1</span> General functions for Gaussian basis functions</h3>
+<div id="outline-container-org25e88a4" class="outline-3">
+<h3 id="org25e88a4"><span class="section-number-3">3.1</span> General functions for Gaussian basis functions</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <code>qmckl_ao_gaussian_vgl</code> computes the values, gradients and
@@ -1737,10 +1857,10 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org5f3813d" class="outline-3">
-<h3 id="org5f3813d"><span class="section-number-3">3.2</span> Computation of primitives</h3>
+<div id="outline-container-orgd8162e2" class="outline-3">
+<h3 id="orgd8162e2"><span class="section-number-3">3.2</span> Computation of primitives</h3>
 <div class="outline-text-3" id="text-3-2">
-<table id="orgda39569" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgb24ea7c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1899,10 +2019,10 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-orga2d1ea3" class="outline-3">
-<h3 id="orga2d1ea3"><span class="section-number-3">3.3</span> Computation of shells</h3>
+<div id="outline-container-org95a5741" class="outline-3">
+<h3 id="org95a5741"><span class="section-number-3">3.3</span> Computation of shells</h3>
 <div class="outline-text-3" id="text-3-3">
-<table id="orga1c9036" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgf1e55ba" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2154,8 +2274,8 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org9a97e54" class="outline-2">
-<h2 id="org9a97e54"><span class="section-number-2">4</span> Polynomial part</h2>
+<div id="outline-container-orge4bff1a" class="outline-2">
+<h2 id="orge4bff1a"><span class="section-number-2">4</span> Polynomial part</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Going from the atomic basis set to AOs implies a systematic
@@ -2175,8 +2295,8 @@ f & : & f_{xxx}, f_{xxy}, f_{xxz}, f_{xyy}, f_{xyz}, f_{xzz}, f_{yyy}, f_{yyz}, 
 \end{eqnarray}
 </div>
 
-<div id="outline-container-orge9bd815" class="outline-3">
-<h3 id="orge9bd815"><span class="section-number-3">4.1</span> General functions for Powers of \(x-X_i\)</h3>
+<div id="outline-container-org033545e" class="outline-3">
+<h3 id="org033545e"><span class="section-number-3">4.1</span> General functions for Powers of \(x-X_i\)</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 The <code>qmckl_ao_power</code> function computes all the powers of the <code>n</code>
@@ -2188,7 +2308,7 @@ the \(n\) points:
 \[ P_{ik} = X_i^k \]
 </p>
 
-<table id="org706c5a1" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org94e5e8d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2328,8 +2448,8 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-org8930f20" class="outline-3">
-<h3 id="org8930f20"><span class="section-number-3">4.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
+<div id="outline-container-org78eb576" class="outline-3">
+<h3 id="org78eb576"><span class="section-number-3">4.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 A polynomial is centered on a nucleus \(\mathbf{R}_i\)
@@ -2374,7 +2494,7 @@ Laplacians at a given point in space, of all polynomials with an
 angular momentum up to <code>lmax</code>.
 </p>
 
-<table id="org6ccf96d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org97f3151" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3139,13 +3259,12 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-orgbd159b0" class="outline-3">
-<h3 id="orgbd159b0"><span class="section-number-3">4.3</span> OpenMP offload version</h3>
+<div id="outline-container-orgf1f9340" class="outline-3">
+<h3 id="orgf1f9340"><span class="section-number-3">4.3</span> OpenMP offload version</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_OPENMP_OFFLOAD
 <span style="color: #483d8b;">#pragma</span> omp declare target
-<span style="color: #483d8b;">#endif</span>
 <span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_ao_polynomial_transp_vgl_hpc_omp_offload</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">X</span>,
@@ -3157,7 +3276,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ldv</span> )
 {
   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a0522d;">ctx</span> = (<span style="color: #228b22;">qmckl_context_struct</span>*) context;
-  assert (ctx != <span style="color: #008b8b;">NULL</span> &amp;&amp; X != <span style="color: #008b8b;">NULL</span> &amp;&amp; R != <span style="color: #008b8b;">NULL</span> &amp;&amp; n != <span style="color: #008b8b;">NULL</span> &amp;&amp; VGL != <span style="color: #008b8b;">NULL</span>);
+  // <span style="color: #b22222;">assert (ctx != NULL &amp;&amp; X != NULL &amp;&amp; R != NULL &amp;&amp; n != NULL &amp;&amp; VGL != NULL);</span>
   <span style="color: #a020f0;">if</span> (lmax &lt; 0) <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
   <span style="color: #a020f0;">if</span> (ldl &lt; 3) <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_7;
 
@@ -3259,7 +3378,6 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
   *n = m;
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
 }
-<span style="color: #483d8b;">#ifdef</span> HAVE_OPENMP_OFFLOAD
 <span style="color: #483d8b;">#pragma</span> omp end declare target
 <span style="color: #483d8b;">#endif</span>
 
@@ -3268,8 +3386,8 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-org29b9be4" class="outline-3">
-<h3 id="org29b9be4"><span class="section-number-3">4.4</span> OpenMP offload version</h3>
+<div id="outline-container-org70322a9" class="outline-3">
+<h3 id="org70322a9"><span class="section-number-3">4.4</span> OpenMP offload version</h3>
 <div class="outline-text-3" id="text-4-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_OPENACC_OFFLOAD
@@ -3394,18 +3512,18 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-orgc08127d" class="outline-2">
-<h2 id="orgc08127d"><span class="section-number-2">5</span> Combining radial and polynomial parts</h2>
+<div id="outline-container-org2c07c51" class="outline-2">
+<h2 id="org2c07c51"><span class="section-number-2">5</span> Combining radial and polynomial parts</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org1f662a5" class="outline-3">
-<h3 id="org1f662a5"><span class="section-number-3">5.1</span> Values only</h3>
+<div id="outline-container-org46cf4e1" class="outline-3">
+<h3 id="org46cf4e1"><span class="section-number-3">5.1</span> Values only</h3>
 <div class="outline-text-3" id="text-5-1">
 </div>
-<div id="outline-container-orgc9d73d8" class="outline-4">
-<h4 id="orgc9d73d8"><span class="section-number-4">5.1.1</span> Unoptimized version</h4>
+<div id="outline-container-org4ce07e5" class="outline-4">
+<h4 id="org4ce07e5"><span class="section-number-4">5.1.1</span> Unoptimized version</h4>
 <div class="outline-text-4" id="text-5-1-1">
-<table id="orgb4208c4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgda8a55c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3641,10 +3759,10 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-org1fc10e6" class="outline-4">
-<h4 id="org1fc10e6"><span class="section-number-4">5.1.2</span> HPC version</h4>
+<div id="outline-container-org5b65f0f" class="outline-4">
+<h4 id="org5b65f0f"><span class="section-number-4">5.1.2</span> HPC version</h4>
 <div class="outline-text-4" id="text-5-1-2">
-<table id="orgec18709" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgaa5a4fa" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3802,8 +3920,8 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-org866834b" class="outline-4">
-<h4 id="org866834b"><span class="section-number-4">5.1.3</span> Interfaces</h4>
+<div id="outline-container-org64c3e57" class="outline-4">
+<h4 id="org64c3e57"><span class="section-number-4">5.1.3</span> Interfaces</h4>
 <div class="outline-text-4" id="text-5-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_value_doc</span> (
@@ -3852,14 +3970,14 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-org7c48150" class="outline-3">
-<h3 id="org7c48150"><span class="section-number-3">5.2</span> Value, gradients, Laplacian</h3>
+<div id="outline-container-orgde1bba8" class="outline-3">
+<h3 id="orgde1bba8"><span class="section-number-3">5.2</span> Value, gradients, Laplacian</h3>
 <div class="outline-text-3" id="text-5-2">
 </div>
-<div id="outline-container-org8d31f96" class="outline-4">
-<h4 id="org8d31f96"><span class="section-number-4">5.2.1</span> Unoptimized version</h4>
+<div id="outline-container-org7d89a35" class="outline-4">
+<h4 id="org7d89a35"><span class="section-number-4">5.2.1</span> Unoptimized version</h4>
 <div class="outline-text-4" id="text-5-2-1">
-<table id="orgb8bf480" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org8ec01b3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4124,10 +4242,10 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 </div>
 
-<div id="outline-container-org4631aaf" class="outline-4">
-<h4 id="org4631aaf"><span class="section-number-4">5.2.2</span> HPC version</h4>
+<div id="outline-container-org87cc596" class="outline-4">
+<h4 id="org87cc596"><span class="section-number-4">5.2.2</span> HPC version</h4>
 <div class="outline-text-4" id="text-5-2-2">
-<table id="org6457fe0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orge9b14d8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4286,15 +4404,18 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 
 
-<div id="outline-container-org060799a" class="outline-4">
-<h4 id="org060799a"><span class="section-number-4">5.2.3</span> OpenMP offload</h4>
+<div id="outline-container-orgffae94b" class="outline-4">
+<h4 id="orgffae94b"><span class="section-number-4">5.2.3</span> OpenMP offload</h4>
 </div>
-<div id="outline-container-org299b707" class="outline-4">
-<h4 id="org299b707"><span class="section-number-4">5.2.4</span> OpenACC offload</h4>
+<div id="outline-container-org1709092" class="outline-4">
+<h4 id="org1709092"><span class="section-number-4">5.2.4</span> OpenACC offload</h4>
 </div>
-<div id="outline-container-org627a27e" class="outline-4">
-<h4 id="org627a27e"><span class="section-number-4">5.2.5</span> Interfaces</h4>
-<div class="outline-text-4" id="text-5-2-5">
+<div id="outline-container-orgbeb0966" class="outline-4">
+<h4 id="orgbeb0966"><span class="section-number-4">5.2.5</span> Device pointers version</h4>
+</div>
+<div id="outline-container-orgc72cfa3" class="outline-4">
+<h4 id="orgc72cfa3"><span class="section-number-4">5.2.6</span> Interfaces</h4>
+<div class="outline-text-4" id="text-5-2-6">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_doc</span> (
                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -4367,7 +4488,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-06-28 Tue 12:12</p>
+<p class="date">Created: 2022-07-20 Wed 14:42</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
