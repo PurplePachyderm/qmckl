@@ -6582,7 +6582,7 @@ qmckl_ao_polynomial_transp_vgl_hpc_omp_offload (const qmckl_context context,
 
         #+end_src
 
-** OpenMP offload version
+** OpenACC offload version
         #+begin_src c :tangle (eval c) :comments org
 #ifdef HAVE_OPENACC_OFFLOAD
 #pragma acc routine seq
