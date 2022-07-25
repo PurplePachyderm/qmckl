@@ -129,7 +129,11 @@ void* qmckl_malloc(qmckl_context context, const qmckl_memory_info_struct info) {
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
 
   /* Allocate memory and zero it */
+#ifdef HAVE_HPC
+  void * pointer = aligned_alloc(64, ((info.size+64) >> 6) << 6 );
+#else
   void * pointer = malloc(info.size);
+#endif
   if (pointer == NULL) {
     return NULL;
   }
@@ -235,7 +239,7 @@ void* qmckl_malloc_device(qmckl_context context, const qmckl_memory_info_struct 
 qmckl_context context = qmckl_context_create();
 
 qmckl_memory_info_struct info = qmckl_memory_info_struct_zero;
-info.size = (size_t) 3;
+info.size = (size_t) 3*sizeof(int);
 
 /* Allocate an array of ints */
 int *a = (int*) qmckl_malloc(context, info);

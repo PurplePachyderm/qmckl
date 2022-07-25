@@ -270,6 +270,7 @@ bool qmckl_mo_basis_provided(const qmckl_context context) {
 
 *** Fortran interfaces
 
+   #+begin_src f90 :tangle (eval fh_func) :comments org :exports none
 interface
   integer(c_int32_t) function qmckl_get_mo_basis_mo_num (context, &
        mo_num) bind(C)
@@ -289,7 +290,7 @@ interface
     implicit none
     integer (c_int64_t) , intent(in)  , value :: context
     double precision, intent(out)             :: coefficient(*)
-    integer (c_int64_t) , intent(int), value  :: size_max
+    integer (c_int64_t) , intent(in), value   :: size_max
   end function qmckl_get_mo_basis_coefficient
 end interface
 
@@ -301,12 +302,8 @@ end interface
    called.
 
    #+begin_src c :comments org :tangle (eval h_func)
-qmckl_exit_code  qmckl_set_mo_basis_mo_num             (qmckl_context context, const int64_t   mo_num);
-qmckl_exit_code  qmckl_set_mo_basis_coefficient        (qmckl_context context, const double  * coefficient);
-
-#ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, const double  * coefficient, int device_id);
-#endif
+qmckl_exit_code  qmckl_set_mo_basis_mo_num           (qmckl_context context, const int64_t   mo_num);
+qmckl_exit_code  qmckl_set_mo_basis_coefficient      (qmckl_context context, const double  * coefficient);
    #+end_src
 
    #+NAME:pre
@@ -316,6 +313,13 @@ if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
  }
 
 qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
+
+if (mask != 0 && !(ctx->mo_basis.uninitialized & mask)) {
+    return qmckl_failwith( context,
+                           QMCKL_ALREADY_SET,
+                           "qmckl_set_mo_*",
+                           NULL);
+ }
    #+end_src
 
    #+NAME:post
@@ -329,20 +333,11 @@ if (ctx->mo_basis.provided) {
 return QMCKL_SUCCESS;
    #+end_src
 
-   #+NAME:post_device
-   #+begin_src c  :exports none
-ctx->mo_basis.uninitialized &= ~mask;
-ctx->mo_basis.provided = (ctx->mo_basis.uninitialized == 0);
-if (ctx->mo_basis.provided) {
-  qmckl_exit_code rc_ = qmckl_finalize_mo_basis_device(context, device_id);
-  if (rc_ != QMCKL_SUCCESS) return rc_;
-}
-return QMCKL_SUCCESS;
-   #+end_src
-
-
    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
 qmckl_exit_code qmckl_set_mo_basis_mo_num(qmckl_context context, const int64_t mo_num) {
+
+  int32_t mask = 1 ;
+
   <<pre>>
 
   if (mo_num <= 0) {
@@ -352,16 +347,16 @@ qmckl_exit_code qmckl_set_mo_basis_mo_num(qmckl_context context, const int64_t m
                            "mo_num <= 0");
   }
 
-  int32_t mask = 1 ;
   ctx->mo_basis.mo_num = mo_num;
 
   <<post>>
 }
 
 qmckl_exit_code  qmckl_set_mo_basis_coefficient(qmckl_context context, const double* coefficient) {
-  <<pre>>
-
+  
   int32_t mask = 1 << 1;
+
+  <<pre>>
 
   if (ctx->mo_basis.coefficient != NULL) {
     qmckl_exit_code rc = qmckl_free(context, ctx->mo_basis.coefficient);
@@ -389,46 +384,6 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient(qmckl_context context, const dou
   <<post>>
 }
 
-#ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, const double* coefficient, int device_id) {
-  <<pre>>
-
-  // Accepts an host array and copies it on device
-
-  int32_t mask = 1 << 1;
-
-  if (ctx->mo_basis.coefficient != NULL) {
-    qmckl_exit_code rc = qmckl_free(context, ctx->mo_basis.coefficient);
-    if (rc != QMCKL_SUCCESS) {
-      return qmckl_failwith( context, rc,
-                             "qmckl_set_mo_basis_coefficient",
-                             NULL);
-    }
-  }
-
-  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
-  mem_info.size = ctx->ao_basis.ao_num * ctx->mo_basis.mo_num * sizeof(double);
-  double* new_array = (double*) qmckl_malloc_device(context, mem_info, device_id);
-  if (new_array == NULL) {
-    return qmckl_failwith( context,
-                           QMCKL_ALLOCATION_FAILED,
-                           "qmckl_set_mo_basis_coefficient",
-                           NULL);
-  }
-
-  omp_target_memcpy(
-    new_array, coefficient,
-    mem_info.size,
-    0, 0,
-    device_id, omp_get_initial_device()
-  );
-
-  ctx->mo_basis.coefficient_device = new_array;
-
-  <<post_device>>
-}
-#endif
-
    #+end_src
 
  When the basis set is completely entered, other data structures are
@@ -436,12 +391,6 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient_device(qmckl_context context, co
 
    #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
 qmckl_exit_code qmckl_finalize_mo_basis(qmckl_context context);
-   #+end_src
-
-   #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
-#ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code qmckl_finalize_mo_basis_device(qmckl_context context, int device_id);
-#endif
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
@@ -490,63 +439,6 @@ qmckl_exit_code qmckl_finalize_mo_basis(qmckl_context context) {
 }
    #+end_src
 
-   #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
-#ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code qmckl_finalize_mo_basis_device(qmckl_context context, int device_id) {
-
-  if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
-    return qmckl_failwith( context,
-                           QMCKL_INVALID_CONTEXT,
-                           "qmckl_finalize_mo_basis",
-                           NULL);
-  }
-
-  qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
-  assert (ctx != NULL);
-
-  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
-  mem_info.size = ctx->ao_basis.ao_num * ctx->mo_basis.mo_num * sizeof(double);
-  double* new_array = (double*) qmckl_malloc_device(context, mem_info, device_id);
-  if (new_array == NULL) {
-    return qmckl_failwith( context,
-                           QMCKL_ALLOCATION_FAILED,
-                           "qmckl_finalize_mo_basis",
-                           NULL);
-  }
-
-  assert (ctx->mo_basis.coefficient_device != NULL);
-
-  if (ctx->mo_basis.coefficient_t_device != NULL) {
-    qmckl_exit_code rc = qmckl_free_device(context, ctx->mo_basis.coefficient_device, device_id);
-    if (rc != QMCKL_SUCCESS) {
-      return qmckl_failwith( context, rc,
-                             "qmckl_finalize_mo_basis",
-                             NULL);
-    }
-  }
-
-  double * coefficient = ctx->mo_basis.coefficient_device;
-
-  int64_t ao_num = ctx->ao_basis.ao_num;
-  int64_t mo_num = ctx->mo_basis.mo_num;
-
-  #pragma omp target is_device_ptr(new_array, coefficient)
-  {
-  #pragma omp parallel for collapse(2)
-  for (int64_t i=0 ; i<ao_num ; ++i) {
-    for (int64_t j=0 ; j<mo_num ; ++j) {
-      new_array[i*mo_num + j] = coefficient[j*ao_num + i];
-    }
-  }
-  }
-
-  ctx->mo_basis.coefficient_t_device = new_array;
-  qmckl_exit_code rc = QMCKL_SUCCESS;
-  return rc;
-}
-#endif
-   #+end_src
-
 * Computation
 
 ** Computation of MOs: values only
@@ -573,7 +465,7 @@ qmckl_get_mo_basis_mo_value(qmckl_context context,
 
   qmckl_exit_code rc;
 
-  rc = qmckl_provide_ao_value(context);
+  rc = qmckl_provide_ao_basis_ao_value(context);
   if (rc != QMCKL_SUCCESS) return rc;
 
   rc = qmckl_provide_mo_value(context);
@@ -701,7 +593,7 @@ qmckl_exit_code qmckl_provide_mo_value(qmckl_context context)
                            NULL);
   }
 
-  rc = qmckl_provide_ao_value(context);
+  rc = qmckl_provide_ao_basis_ao_value(context);
   if (rc != QMCKL_SUCCESS) {
     return qmckl_failwith( context,
                            QMCKL_NOT_PROVIDED,
@@ -780,15 +672,15 @@ qmckl_exit_code qmckl_provide_mo_value(qmckl_context context)
    :END:
 
     #+NAME: qmckl_mo_basis_mo_value_args
-    | Variable            | Type                        | In/Out | Description                                     |
-    |---------------------+-----------------------------+--------+-------------------------------------------------|
-    | ~context~           | ~qmckl_context~             | in     | Global state                                    |
-    | ~ao_num~            | ~int64_t~                   | in     | Number of AOs                                   |
-    | ~mo_num~            | ~int64_t~                   | in     | Number of MOs                                   |
-    | ~point_num~         | ~int64_t~                   | in     | Number of points                                |
-    | ~coef_normalized_t~ | ~double[mo_num][ao_num]~    | in     | Transpose of the AO to MO transformation matrix |
-    | ~ao_value~          | ~double[point_num][ao_num]~ | in     | Value of the AOs                                |
-    | ~mo_value~          | ~double[point_num][mo_num]~ | out    | Value of the MOs                                |
+    | Variable        | Type                        | In/Out | Description                                     |
+    |-----------------+-----------------------------+--------+-------------------------------------------------|
+    | ~context~       | ~qmckl_context~             | in     | Global state                                    |
+    | ~ao_num~        | ~int64_t~                   | in     | Number of AOs                                   |
+    | ~mo_num~        | ~int64_t~                   | in     | Number of MOs                                   |
+    | ~point_num~     | ~int64_t~                   | in     | Number of points                                |
+    | ~coefficient_t~ | ~double[mo_num][ao_num]~    | in     | Transpose of the AO to MO transformation matrix |
+    | ~ao_value~      | ~double[point_num][ao_num]~ | in     | Value of the AOs                                |
+    | ~mo_value~      | ~double[point_num][mo_num]~ | out    | Value of the MOs                                |
 
 
     The matrix of AO values is very sparse, so we use a sparse-dense
@@ -800,7 +692,7 @@ qmckl_exit_code qmckl_provide_mo_value(qmckl_context context)
     #+begin_src f90 :comments org :tangle (eval f) :noweb yes
 integer function qmckl_compute_mo_basis_mo_value_doc_f(context, &
      ao_num, mo_num, point_num, &
-     coef_normalized_t, ao_value, mo_value) &
+     coefficient_t, ao_value, mo_value) &
      result(info)
   use qmckl
   implicit none
@@ -808,7 +700,7 @@ integer function qmckl_compute_mo_basis_mo_value_doc_f(context, &
   integer*8             , intent(in)  :: ao_num, mo_num
   integer*8             , intent(in)  :: point_num
   double precision      , intent(in)  :: ao_value(ao_num,point_num)
-  double precision      , intent(in)  :: coef_normalized_t(mo_num,ao_num)
+  double precision      , intent(in)  :: coefficient_t(mo_num,ao_num)
   double precision      , intent(out) :: mo_value(mo_num,point_num)
   integer*8 :: i,j,k
   double precision :: c1, c2, c3, c4, c5
@@ -823,7 +715,7 @@ integer function qmckl_compute_mo_basis_mo_value_doc_f(context, &
            if (ao_value(k,j) /= 0.d0) then
               c1 = ao_value(k,j)
               do i=1,mo_num
-                 mo_value(i,j) = mo_value(i,j) + coef_normalized_t(i,k) * c1
+                 mo_value(i,j) = mo_value(i,j) + coefficient_t(i,k) * c1
               end do
            end if
         end do
@@ -831,12 +723,12 @@ integer function qmckl_compute_mo_basis_mo_value_doc_f(context, &
      
   else ! dgemm
 
-    LDA = size(coef_normalized_t,1)
+    LDA = size(coefficient_t,1)
     LDB = size(ao_value,1) 
     LDC = size(mo_value,1)
 
     info = qmckl_dgemm(context,'N', 'N', mo_num, point_num, ao_num, 1.d0,     &
-                                    coef_normalized_t, LDA, ao_value, LDB, &
+                                    coefficient_t, LDA, ao_value, LDB, &
                                     0.d0, mo_value, LDC)
 
   end if
@@ -853,7 +745,7 @@ end function qmckl_compute_mo_basis_mo_value_doc_f
          const int64_t ao_num,
          const int64_t mo_num,
          const int64_t point_num,
-         const double* coef_normalized_t,
+         const double* coefficient_t,
          const double* ao_value,
          double* const mo_value );
    #+end_src
@@ -867,7 +759,7 @@ end function qmckl_compute_mo_basis_mo_value_doc_f
          const int64_t ao_num,
          const int64_t mo_num,
          const int64_t point_num,
-         const double* coef_normalized_t,
+         const double* coefficient_t,
          const double* ao_value,
          double* const mo_value );
    #+end_src
@@ -877,7 +769,7 @@ end function qmckl_compute_mo_basis_mo_value_doc_f
     #+RESULTS:
     #+begin_src f90 :tangle (eval f) :comments org :exports none
     integer(c_int32_t) function qmckl_compute_mo_basis_mo_value_doc &
-        (context, ao_num, mo_num, point_num, coef_normalized_t, ao_value, mo_value) &
+        (context, ao_num, mo_num, point_num, coefficient_t, ao_value, mo_value) &
         bind(C) result(info)
 
       use, intrinsic :: iso_c_binding
@@ -887,13 +779,13 @@ end function qmckl_compute_mo_basis_mo_value_doc_f
       integer (c_int64_t) , intent(in)  , value :: ao_num
       integer (c_int64_t) , intent(in)  , value :: mo_num
       integer (c_int64_t) , intent(in)  , value :: point_num
-      real    (c_double ) , intent(in)          :: coef_normalized_t(ao_num,mo_num)
+      real    (c_double ) , intent(in)          :: coefficient_t(ao_num,mo_num)
       real    (c_double ) , intent(in)          :: ao_value(ao_num,point_num)
       real    (c_double ) , intent(out)         :: mo_value(mo_num,point_num)
 
       integer(c_int32_t), external :: qmckl_compute_mo_basis_mo_value_doc_f
       info = qmckl_compute_mo_basis_mo_value_doc_f &
-             (context, ao_num, mo_num, point_num, coef_normalized_t, ao_value, mo_value)
+             (context, ao_num, mo_num, point_num, coefficient_t, ao_value, mo_value)
 
     end function qmckl_compute_mo_basis_mo_value_doc
     #+end_src
@@ -904,14 +796,14 @@ qmckl_compute_mo_basis_mo_value (const qmckl_context context,
                                  const int64_t ao_num,
                                  const int64_t mo_num,
                                  const int64_t point_num,
-                                 const double* coef_normalized_t,
+                                 const double* coefficient_t,
                                  const double* ao_value,
                                  double* const mo_value )
 {
 #ifdef HAVE_HPC
-  return qmckl_compute_mo_basis_mo_value_hpc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_value, mo_value);
+  return qmckl_compute_mo_basis_mo_value_hpc (context, ao_num, mo_num, point_num, coefficient_t, ao_value, mo_value);
 #else
-  return qmckl_compute_mo_basis_mo_value_doc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_value, mo_value);
+  return qmckl_compute_mo_basis_mo_value_doc (context, ao_num, mo_num, point_num, coefficient_t, ao_value, mo_value);
 #endif
 }
     #+end_src
@@ -926,7 +818,7 @@ qmckl_compute_mo_basis_mo_value_hpc (const qmckl_context context,
                                      const int64_t ao_num,
                                      const int64_t mo_num,
                                      const int64_t point_num,
-                                     const double* coef_normalized_t,
+                                     const double* coefficient_t,
                                      const double* ao_value,
                                      double* const mo_value );
 #endif
@@ -939,7 +831,7 @@ qmckl_compute_mo_basis_mo_value_hpc (const qmckl_context context,
                                      const int64_t ao_num,
                                      const int64_t mo_num,
                                      const int64_t point_num,
-                                     const double* restrict coef_normalized_t,
+                                     const double* restrict coefficient_t,
                                      const double* restrict ao_value,
                                      double* restrict const mo_value )
 {
@@ -970,10 +862,10 @@ qmckl_compute_mo_basis_mo_value_hpc (const qmckl_context context,
     int64_t n;
 
     for (n=0 ; n < nidx-4 ; n+=4) {
-      const double* restrict ck1 = coef_normalized_t + idx[n  ]*mo_num;
-      const double* restrict ck2 = coef_normalized_t + idx[n+1]*mo_num;
-      const double* restrict ck3 = coef_normalized_t + idx[n+2]*mo_num;
-      const double* restrict ck4 = coef_normalized_t + idx[n+3]*mo_num;
+      const double* restrict ck1 = coefficient_t + idx[n  ]*mo_num;
+      const double* restrict ck2 = coefficient_t + idx[n+1]*mo_num;
+      const double* restrict ck3 = coefficient_t + idx[n+2]*mo_num;
+      const double* restrict ck4 = coefficient_t + idx[n+3]*mo_num;
 
       const double a11 = av1[n  ];
       const double a21 = av1[n+1];
@@ -990,7 +882,7 @@ qmckl_compute_mo_basis_mo_value_hpc (const qmckl_context context,
 
     const int64_t n0 = n < 0 ? 0 : n;
     for (int64_t m=n0 ; m < nidx ; m+=1) {
-      const double* restrict ck = coef_normalized_t + idx[m]*mo_num;
+      const double* restrict ck = coefficient_t + idx[m]*mo_num;
       const double a1 = av1[m];
 
 #ifdef HAVE_OPENMP
@@ -1192,34 +1084,13 @@ qmckl_exit_code qmckl_provide_mo_vgl(qmckl_context context)
       ctx->mo_basis.mo_vgl = mo_vgl;
     }
 
-    #ifdef HAVE_OPENACC_OFFLOAD
-    rc = qmckl_compute_mo_basis_mo_vgl_offload_openACC(context,
+    rc = qmckl_compute_mo_basis_mo_vgl(context,
                                        ctx->ao_basis.ao_num,
                                        ctx->mo_basis.mo_num,
                                        ctx->point.num,
                                        ctx->mo_basis.coefficient_t,
                                        ctx->ao_basis.ao_vgl,
                                        ctx->mo_basis.mo_vgl);
-
-    #elif HAVE_OPENMP_OFFLOAD
-    rc = qmckl_compute_mo_basis_mo_vgl_offload_openmp(context,
-                                       ctx->ao_basis.ao_num,
-                                       ctx->mo_basis.mo_num,
-                                       ctx->point.num,
-                                       ctx->mo_basis.coefficient_t,
-                                       ctx->ao_basis.ao_vgl,
-                                      ctx->mo_basis.mo_vgl);
-
-     #else
-     rc = qmckl_compute_mo_basis_mo_vgl(context,
-                                       ctx->ao_basis.ao_num,
-                                       ctx->mo_basis.mo_num,
-                                       ctx->point.num,
-                                       ctx->mo_basis.coefficient_t,
-                                       ctx->ao_basis.ao_vgl,
-                                       ctx->mo_basis.mo_vgl);
-
-    #endif
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
@@ -1245,7 +1116,7 @@ qmckl_exit_code qmckl_provide_mo_vgl(qmckl_context context)
     | ~ao_num~            | ~int64_t~                      | in     | Number of AOs                                   |
     | ~mo_num~            | ~int64_t~                      | in     | Number of MOs                                   |
     | ~point_num~         | ~int64_t~                      | in     | Number of points                                |
-    | ~coef_normalized_t~ | ~double[mo_num][ao_num]~       | in     | Transpose of the AO to MO transformation matrix |
+    | ~coefficient_t~     | ~double[mo_num][ao_num]~       | in     | Transpose of the AO to MO transformation matrix |
     | ~ao_vgl~            | ~double[point_num][5][ao_num]~ | in     | Value, gradients and Laplacian of the AOs       |
     | ~mo_vgl~            | ~double[point_num][5][mo_num]~ | out    | Value, gradients and Laplacian of the MOs       |
 
@@ -1259,7 +1130,7 @@ qmckl_exit_code qmckl_provide_mo_vgl(qmckl_context context)
     #+begin_src f90 :comments org :tangle (eval f) :noweb yes
 integer function qmckl_compute_mo_basis_mo_vgl_doc_f(context, &
      ao_num, mo_num, point_num, &
-     coef_normalized_t, ao_vgl, mo_vgl) &
+     coefficient_t, ao_vgl, mo_vgl) &
      result(info)
   use qmckl
   implicit none
@@ -1267,46 +1138,36 @@ integer function qmckl_compute_mo_basis_mo_vgl_doc_f(context, &
   integer*8             , intent(in)  :: ao_num, mo_num
   integer*8             , intent(in)  :: point_num
   double precision      , intent(in)  :: ao_vgl(ao_num,5,point_num)
-  double precision      , intent(in)  :: coef_normalized_t(mo_num,ao_num)
+  double precision      , intent(in)  :: coefficient_t(mo_num,ao_num)
   double precision      , intent(out) :: mo_vgl(mo_num,5,point_num)
   integer*8 :: i,j,k
   double precision :: c1, c2, c3, c4, c5
 
-  integer*8 :: LDA, LDB, LDC
-
-  info = QMCKL_SUCCESS
-  if (.True.)  then    ! fast algorithm
-     do j=1,point_num
-        mo_vgl(:,:,j) = 0.d0
-        do k=1,ao_num
-           if (ao_vgl(k,1,j) /= 0.d0) then
-              c1 = ao_vgl(k,1,j)
-              c2 = ao_vgl(k,2,j)
-              c3 = ao_vgl(k,3,j)
-              c4 = ao_vgl(k,4,j)
-              c5 = ao_vgl(k,5,j)
-              do i=1,mo_num
-                 mo_vgl(i,1,j) = mo_vgl(i,1,j) + coef_normalized_t(i,k) * c1
-                 mo_vgl(i,2,j) = mo_vgl(i,2,j) + coef_normalized_t(i,k) * c2
-                 mo_vgl(i,3,j) = mo_vgl(i,3,j) + coef_normalized_t(i,k) * c3
-                 mo_vgl(i,4,j) = mo_vgl(i,4,j) + coef_normalized_t(i,k) * c4
-                 mo_vgl(i,5,j) = mo_vgl(i,5,j) + coef_normalized_t(i,k) * c5
-              end do
-           end if
-        end do
+  do j=1,point_num
+     mo_vgl(:,:,j) = 0.d0
+     do k=1,ao_num
+        if (ao_vgl(k,1,j) /= 0.d0) then
+           c1 = ao_vgl(k,1,j)
+           c2 = ao_vgl(k,2,j)
+           c3 = ao_vgl(k,3,j)
+           c4 = ao_vgl(k,4,j)
+           c5 = ao_vgl(k,5,j)
+           do i=1,mo_num
+              mo_vgl(i,1,j) = mo_vgl(i,1,j) + coefficient_t(i,k) * c1
+              mo_vgl(i,2,j) = mo_vgl(i,2,j) + coefficient_t(i,k) * c2
+              mo_vgl(i,3,j) = mo_vgl(i,3,j) + coefficient_t(i,k) * c3
+              mo_vgl(i,4,j) = mo_vgl(i,4,j) + coefficient_t(i,k) * c4
+              mo_vgl(i,5,j) = mo_vgl(i,5,j) + coefficient_t(i,k) * c5
+           end do
+        end if
      end do
-     
-  else ! dgemm
+  end do
+  info = QMCKL_SUCCESS
 
-    LDA = size(coef_normalized_t,1)
-    LDB = size(ao_vgl,1) 
-    LDC = size(mo_vgl,1)
-
-    info = qmckl_dgemm(context,'N', 'N', mo_num, point_num*5_8, ao_num*1_8, 1.d0,     &
-                                    coef_normalized_t, LDA, ao_vgl, LDB, &
-                                    0.d0, mo_vgl, LDC)
-
-  end if
+! info = qmckl_dgemm(context,'N', 'N', mo_num, point_num, ao_num, 1.d0, &
+!      coefficient_t, int(size(coefficient_t,1),8),      &
+!      ao_vgl, int(size(ao_vgl,1),8), 0.d0,                  &
+!      mo_vgl, int(size(mo_vgl,1),8))
 
 end function qmckl_compute_mo_basis_mo_vgl_doc_f
     #+end_src
@@ -1320,7 +1181,7 @@ end function qmckl_compute_mo_basis_mo_vgl_doc_f
          const int64_t ao_num,
          const int64_t mo_num,
          const int64_t point_num,
-         const double* coef_normalized_t,
+         const double* coefficient_t,
          const double* ao_vgl,
          double* const mo_vgl );
    #+end_src
@@ -1334,7 +1195,7 @@ end function qmckl_compute_mo_basis_mo_vgl_doc_f
          const int64_t ao_num,
          const int64_t mo_num,
          const int64_t point_num,
-         const double* coef_normalized_t,
+         const double* coefficient_t,
          const double* ao_vgl,
          double* const mo_vgl );
    #+end_src
@@ -1344,7 +1205,7 @@ end function qmckl_compute_mo_basis_mo_vgl_doc_f
     #+RESULTS:
     #+begin_src f90 :tangle (eval f) :comments org :exports none
     integer(c_int32_t) function qmckl_compute_mo_basis_mo_vgl_doc &
-        (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl) &
+        (context, ao_num, mo_num, point_num, coefficient_t, ao_vgl, mo_vgl) &
         bind(C) result(info)
 
       use, intrinsic :: iso_c_binding
@@ -1354,13 +1215,13 @@ end function qmckl_compute_mo_basis_mo_vgl_doc_f
       integer (c_int64_t) , intent(in)  , value :: ao_num
       integer (c_int64_t) , intent(in)  , value :: mo_num
       integer (c_int64_t) , intent(in)  , value :: point_num
-      real    (c_double ) , intent(in)          :: coef_normalized_t(ao_num,mo_num)
+      real    (c_double ) , intent(in)          :: coefficient_t(ao_num,mo_num)
       real    (c_double ) , intent(in)          :: ao_vgl(ao_num,5,point_num)
       real    (c_double ) , intent(out)         :: mo_vgl(mo_num,5,point_num)
 
       integer(c_int32_t), external :: qmckl_compute_mo_basis_mo_vgl_doc_f
       info = qmckl_compute_mo_basis_mo_vgl_doc_f &
-             (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl)
+             (context, ao_num, mo_num, point_num, coefficient_t, ao_vgl, mo_vgl)
 
     end function qmckl_compute_mo_basis_mo_vgl_doc
     #+end_src
@@ -1371,368 +1232,18 @@ qmckl_compute_mo_basis_mo_vgl (const qmckl_context context,
                             const int64_t ao_num,
                             const int64_t mo_num,
                             const int64_t point_num,
-                            const double* coef_normalized_t,
+                            const double* coefficient_t,
                             const double* ao_vgl,
                             double* const mo_vgl )
 {
-#ifdef HAVE_OPENMP_OFFLOAD
-  return qmckl_compute_mo_basis_mo_vgl_offload_openmp( context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
-#elif HAVE_HPC
-  return qmckl_compute_mo_basis_mo_vgl_hpc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
+#ifdef HAVE_HPC
+  return qmckl_compute_mo_basis_mo_vgl_hpc (context, ao_num, mo_num, point_num, coefficient_t, ao_vgl, mo_vgl);
 #else
-  return qmckl_compute_mo_basis_mo_vgl_doc (context, ao_num, mo_num, point_num, coef_normalized_t, ao_vgl, mo_vgl);
+  return qmckl_compute_mo_basis_mo_vgl_doc (context, ao_num, mo_num, point_num, coefficient_t, ao_vgl, mo_vgl);
 #endif
 }
     #+end_src
 
-*** GPU version
-
-
-    #+begin_src c :tangle (eval h_func) :comments org
-#ifdef HAVE_OPENMP_OFFLOAD
-qmckl_exit_code
-qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
-                                   const int64_t ao_num,
-                                   const int64_t mo_num,
-                                   const int64_t point_num,
-                                   const double* coef_normalized_t,
-                                   const double* ao_vgl,
-                                   double* const mo_vgl );
-#endif
-    #+end_src
-
-    #+begin_src c :tangle (eval c) :comments org
-#ifdef HAVE_OPENMP_OFFLOAD
-qmckl_exit_code
-qmckl_compute_mo_basis_mo_vgl_offload_openmp (const qmckl_context context,
-                                   const int64_t ao_num,
-                                   const int64_t mo_num,
-                                   const int64_t point_num,
-                                   const double* restrict coef_normalized_t,
-                                   const double* restrict ao_vgl,
-                                   double* restrict const mo_vgl )
-{
-
-
-    int64_t * idx = malloc(sizeof(int64_t)*ao_num*point_num);
-    double * av1 = malloc(sizeof(double)*ao_num*point_num);
-    double * av2 = malloc(sizeof(double)*ao_num*point_num);
-    double * av3 = malloc(sizeof(double)*ao_num*point_num);
-    double * av4 = malloc(sizeof(double)*ao_num*point_num);
-    double * av5 = malloc(sizeof(double)*ao_num*point_num);
-
-
-  #pragma omp target enter data map(to:coef_normalized_t[0:ao_num*mo_num],\
-                                    ao_vgl[0:point_num*5*ao_num],\
-                                    mo_vgl[0:point_num*5*mo_num])\
-                                map(alloc:\
-                                    idx[0:ao_num*point_num],\
-                                    av1[0:ao_num*point_num],\
-                                    av2[0:ao_num*point_num],\
-                                    av3[0:ao_num*point_num],\
-                                    av4[0:ao_num*point_num],\
-                                    av5[0:ao_num*point_num]\
-                                    )
-	{
-  #pragma omp target teams distribute parallel for simd
-  for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
-
-    double* vgl1 ;
-    double* vgl2 ;
-    double* vgl3 ;
-    double* vgl4 ;
-    double* vgl5 ;
-
-    vgl1 = &(mo_vgl[ipoint*5*mo_num]);
-    vgl2 =  vgl1 + mo_num;
-    vgl3 =  vgl1 + (mo_num << 1);
-    vgl4 =  vgl1 + (mo_num << 1) + mo_num;
-    vgl5 =  vgl1 + (mo_num << 2);
-    const double * avgl1 = &(ao_vgl[ipoint*5*ao_num]);
-    const double * avgl2 = avgl1 + ao_num;
-    const double * avgl3 = avgl1 + (ao_num << 1);
-    const double * avgl4 = avgl1 + (ao_num << 1) + ao_num;
-    const double * avgl5 = avgl1 + (ao_num << 2);
-
-    for (int64_t i=0 ; i<mo_num ; ++i) {
-      vgl1[i] = 0.;
-      vgl2[i] = 0.;
-      vgl3[i] = 0.;
-      vgl4[i] = 0.;
-      vgl5[i] = 0.;
-    }
-
-    int64_t nidx=0;
-
-    for (int64_t k=0 ; k<ao_num ; ++k) {
-      if (avgl1[k] != 0.) {
-        idx[ipoint*ao_num + nidx] = k;
-        av1[ipoint*ao_num + nidx] = avgl1[k];
-        av2[ipoint*ao_num + nidx] = avgl2[k];
-        av3[ipoint*ao_num + nidx] = avgl3[k];
-        av4[ipoint*ao_num + nidx] = avgl4[k];
-        av5[ipoint*ao_num + nidx] = avgl5[k];
-        ++nidx;
-      }
-    }
-
-    int64_t n;
-
-    for (n=0 ; n < nidx-4 ; n+=4) {
-      const double * ck1 = coef_normalized_t + idx[ipoint*ao_num + n  ]*mo_num;
-      const double * ck2 = coef_normalized_t + idx[ipoint*ao_num + n+1]*mo_num;
-      const double * ck3 = coef_normalized_t + idx[ipoint*ao_num + n+2]*mo_num;
-      const double * ck4 = coef_normalized_t + idx[ipoint*ao_num + n+3]*mo_num;
-
-      double a11 = av1[ipoint*ao_num + n  ];
-      double a21 = av1[ipoint*ao_num + n+1];
-      double a31 = av1[ipoint*ao_num + n+2];
-      double a41 = av1[ipoint*ao_num + n+3];
-
-      double a12 = av2[ipoint*ao_num + n  ];
-      double a22 = av2[ipoint*ao_num + n+1];
-      double a32 = av2[ipoint*ao_num + n+2];
-      double a42 = av2[ipoint*ao_num + n+3];
-
-      double a13 = av3[ipoint*ao_num + n  ];
-      double a23 = av3[ipoint*ao_num + n+1];
-      double a33 = av3[ipoint*ao_num + n+2];
-      double a43 = av3[ipoint*ao_num + n+3];
-
-      double a14 = av4[ipoint*ao_num + n  ];
-      double a24 = av4[ipoint*ao_num + n+1];
-      double a34 = av4[ipoint*ao_num + n+2];
-      double a44 = av4[ipoint*ao_num + n+3];
-
-      double a15 = av5[ipoint*ao_num + n  ];
-      double a25 = av5[ipoint*ao_num + n+1];
-      double a35 = av5[ipoint*ao_num + n+2];
-      double a45 = av5[ipoint*ao_num + n+3];
-
-      //#pragma omp parallel for
-      for (int64_t i=0 ; i<mo_num ; ++i) {
-        vgl1[i] = vgl1[i] + ck1[i] * a11 + ck2[i] * a21 + ck3[i] * a31 + ck4[i] * a41;
-        vgl2[i] = vgl2[i] + ck1[i] * a12 + ck2[i] * a22 + ck3[i] * a32 + ck4[i] * a42;
-        vgl3[i] = vgl3[i] + ck1[i] * a13 + ck2[i] * a23 + ck3[i] * a33 + ck4[i] * a43;
-        vgl4[i] = vgl4[i] + ck1[i] * a14 + ck2[i] * a24 + ck3[i] * a34 + ck4[i] * a44;
-        vgl5[i] = vgl5[i] + ck1[i] * a15 + ck2[i] * a25 + ck3[i] * a35 + ck4[i] * a45;
-      }
-    }
-
-
-    const int64_t n0 = n < 0 ? 0 : n;
-    for (int64_t m=n0 ; m < nidx ; m+=1) {
-      const double * ck = coef_normalized_t + idx[ipoint*ao_num + m]*mo_num;
-      double a1 = av1[ipoint*ao_num + m];
-      double a2 = av2[ipoint*ao_num + m];
-      double a3 = av3[ipoint*ao_num + m];
-      double a4 = av4[ipoint*ao_num + m];
-      double a5 = av5[ipoint*ao_num + m];
-
-      //#pragma omp distribute parallel for
-      for (int64_t i=0 ; i<mo_num ; ++i) {
-        vgl1[i] += ck[i] * a1;
-        vgl2[i] += ck[i] * a2;
-        vgl3[i] += ck[i] * a3;
-        vgl4[i] += ck[i] * a4;
-        vgl5[i] += ck[i] * a5;
-      }
-    }
-  }
-
-  #pragma omp target update from(mo_vgl[0:point_num*5*mo_num])
-  }
-
-  free(idx);
-  free(av1);
-  free(av2);
-  free(av3);
-  free(av4);
-  free(av5);
-
-  return QMCKL_SUCCESS;
-}
-#endif
-    #+end_src
-
-
-     #+begin_src c :tangle (eval h_func) :comments org
-#ifdef HAVE_OPENACC_OFFLOAD
-qmckl_exit_code
-qmckl_compute_mo_basis_mo_vgl_offload_openACC (const qmckl_context context,
-                                   const int64_t ao_num,
-                                   const int64_t mo_num,
-                                   const int64_t point_num,
-                                   const double* coef_normalized_t,
-                                   const double* ao_vgl,
-                                   double* const mo_vgl );
-#endif
-    #+end_src
-
-    #+begin_src c :tangle (eval c) :comments org
-#ifdef HAVE_OPENACC_OFFLOAD
-qmckl_exit_code
-qmckl_compute_mo_basis_mo_vgl_offload_openACC (const qmckl_context context,
-                                   const int64_t ao_num,
-                                   const int64_t mo_num,
-                                   const int64_t point_num,
-                                   const double* restrict coef_normalized_t,
-                                   const double* restrict ao_vgl,
-                                   double* restrict const mo_vgl )
-{
-
-
-    int64_t * idx = malloc(sizeof(int64_t)*ao_num*point_num);
-    double * av1 = malloc(sizeof(double)*ao_num*point_num);
-    double * av2 = malloc(sizeof(double)*ao_num*point_num);
-    double * av3 = malloc(sizeof(double)*ao_num*point_num);
-    double * av4 = malloc(sizeof(double)*ao_num*point_num);
-    double * av5 = malloc(sizeof(double)*ao_num*point_num);
-
-  #pragma acc data copyin(coef_normalized_t[0:ao_num*mo_num],\
-                          ao_vgl[0:point_num*5*ao_num])\
-	                 copy(mo_vgl[0:point_num*5*mo_num])\
-                   create(idx[0:ao_num*point_num],\
-                          av1[0:ao_num*point_num],\
-                          av2[0:ao_num*point_num],\
-                          av3[0:ao_num*point_num],\
-                          av4[0:ao_num*point_num],\
-                          av5[0:ao_num*point_num])
-	{
-
-  #pragma acc parallel loop independent gang worker vector
-  for (int64_t ipoint=0 ; ipoint < point_num ; ++ipoint) {
-    double* vgl1 ;
-    double* avgl1 ;
-    double* vgl2 ;
-    double* vgl3 ;
-    double* vgl4 ;
-    double* vgl5 ;
-    double* avgl2 ;
-    double* avgl3 ;
-    double* avgl4 ;
-    double* avgl5 ;
-
-	  double* ck1 ;
-    double* ck2 ;
-    double* ck3 ;
-    double* ck4 ;
-
-    double* ck ;
-
-
-    vgl1 = &(mo_vgl[ipoint*5*mo_num]);
-    avgl1 = &(ao_vgl[ipoint*5*ao_num]);
-    vgl2 =  vgl1 + mo_num;
-    vgl3 =  vgl1 + (mo_num << 1);
-    vgl4 =  vgl1 + (mo_num << 1) + mo_num;
-    vgl5 =  vgl1 + (mo_num << 2);
-    avgl2 = avgl1 + ao_num;
-    avgl3 = avgl1 + (ao_num << 1);
-    avgl4 = avgl1 + (ao_num << 1) + ao_num;
-    avgl5 = avgl1 + (ao_num << 2);
-
-    for (int64_t i=0 ; i<mo_num ; ++i) {
-      vgl1[i] = 0.;
-      vgl2[i] = 0.;
-      vgl3[i] = 0.;
-      vgl4[i] = 0.;
-      vgl5[i] = 0.;
-    }
-
-    int64_t nidx=0;
-
-    for (int64_t k=0 ; k<ao_num ; ++k) {
-      if (avgl1[k] != 0.) {
-        idx[ipoint*ao_num + nidx] = k;
-        av1[ipoint*ao_num + nidx] = avgl1[k];
-        av2[ipoint*ao_num + nidx] = avgl2[k];
-        av3[ipoint*ao_num + nidx] = avgl3[k];
-        av4[ipoint*ao_num + nidx] = avgl4[k];
-        av5[ipoint*ao_num + nidx] = avgl5[k];
-        ++nidx;
-      }
-    }
-
-    int64_t n;
-
-    for (n=0 ; n < nidx-4 ; n+=4) {
-      ck1 = coef_normalized_t + idx[ipoint*ao_num + n  ]*mo_num;
-      ck2 = coef_normalized_t + idx[ipoint*ao_num + n+1]*mo_num;
-      ck3 = coef_normalized_t + idx[ipoint*ao_num + n+2]*mo_num;
-      ck4 = coef_normalized_t + idx[ipoint*ao_num + n+3]*mo_num;
-
-      double a11 = av1[ipoint*ao_num + n  ];
-      double a21 = av1[ipoint*ao_num + n+1];
-      double a31 = av1[ipoint*ao_num + n+2];
-      double a41 = av1[ipoint*ao_num + n+3];
-
-      double a12 = av2[ipoint*ao_num + n  ];
-      double a22 = av2[ipoint*ao_num + n+1];
-      double a32 = av2[ipoint*ao_num + n+2];
-      double a42 = av2[ipoint*ao_num + n+3];
-
-      double a13 = av3[ipoint*ao_num + n  ];
-      double a23 = av3[ipoint*ao_num + n+1];
-      double a33 = av3[ipoint*ao_num + n+2];
-      double a43 = av3[ipoint*ao_num + n+3];
-
-      double a14 = av4[ipoint*ao_num + n  ];
-      double a24 = av4[ipoint*ao_num + n+1];
-      double a34 = av4[ipoint*ao_num + n+2];
-      double a44 = av4[ipoint*ao_num + n+3];
-
-      double a15 = av5[ipoint*ao_num + n  ];
-      double a25 = av5[ipoint*ao_num + n+1];
-      double a35 = av5[ipoint*ao_num + n+2];
-      double a45 = av5[ipoint*ao_num + n+3];
-
-      //#pragma omp parallel for
-      for (int64_t i=0 ; i<mo_num ; ++i) {
-        vgl1[i] = vgl1[i] + ck1[i] * a11 + ck2[i] * a21 + ck3[i] * a31 + ck4[i] * a41;
-        vgl2[i] = vgl2[i] + ck1[i] * a12 + ck2[i] * a22 + ck3[i] * a32 + ck4[i] * a42;
-        vgl3[i] = vgl3[i] + ck1[i] * a13 + ck2[i] * a23 + ck3[i] * a33 + ck4[i] * a43;
-        vgl4[i] = vgl4[i] + ck1[i] * a14 + ck2[i] * a24 + ck3[i] * a34 + ck4[i] * a44;
-        vgl5[i] = vgl5[i] + ck1[i] * a15 + ck2[i] * a25 + ck3[i] * a35 + ck4[i] * a45;
-      }
-    }
-
-
-    const int64_t n0 = n < 0 ? 0 : n;
-    for (int64_t m=n0 ; m < nidx ; m+=1) {
-      ck = coef_normalized_t + idx[ipoint*ao_num + m]*mo_num;
-      double a1 = av1[ipoint*ao_num + m];
-      double a2 = av2[ipoint*ao_num + m];
-      double a3 = av3[ipoint*ao_num + m];
-      double a4 = av4[ipoint*ao_num + m];
-      double a5 = av5[ipoint*ao_num + m];
-
-      //#pragma omp distribute parallel for
-      for (int64_t i=0 ; i<mo_num ; ++i) {
-        vgl1[i] += ck[i] * a1;
-        vgl2[i] += ck[i] * a2;
-        vgl3[i] += ck[i] * a3;
-        vgl4[i] += ck[i] * a4;
-        vgl5[i] += ck[i] * a5;
-      }
-    }
-  }
-  }
-
-	free(idx);
-	free(av1);
-	free(av2);
-	free(av3);
-	free(av4);
-	free(av5);
-
-  return QMCKL_SUCCESS;
-}
-#endif
-    #+end_src
-
-  
-    
 *** HPC version
 
 
@@ -1743,7 +1254,7 @@ qmckl_compute_mo_basis_mo_vgl_hpc (const qmckl_context context,
                                    const int64_t ao_num,
                                    const int64_t mo_num,
                                    const int64_t point_num,
-                                   const double* coef_normalized_t,
+                                   const double* coefficient_t,
                                    const double* ao_vgl,
                                    double* const mo_vgl );
 #endif
@@ -1756,7 +1267,7 @@ qmckl_compute_mo_basis_mo_vgl_hpc (const qmckl_context context,
                                    const int64_t ao_num,
                                    const int64_t mo_num,
                                    const int64_t point_num,
-                                   const double* restrict coef_normalized_t,
+                                   const double* restrict coefficient_t,
                                    const double* restrict ao_vgl,
                                    double* restrict const mo_vgl )
 {
@@ -1808,10 +1319,10 @@ qmckl_compute_mo_basis_mo_vgl_hpc (const qmckl_context context,
     int64_t n;
 
     for (n=0 ; n < nidx-4 ; n+=4) {
-      const double* restrict ck1 = coef_normalized_t + idx[n  ]*mo_num;
-      const double* restrict ck2 = coef_normalized_t + idx[n+1]*mo_num;
-      const double* restrict ck3 = coef_normalized_t + idx[n+2]*mo_num;
-      const double* restrict ck4 = coef_normalized_t + idx[n+3]*mo_num;
+      const double* restrict ck1 = coefficient_t + idx[n  ]*mo_num;
+      const double* restrict ck2 = coefficient_t + idx[n+1]*mo_num;
+      const double* restrict ck3 = coefficient_t + idx[n+2]*mo_num;
+      const double* restrict ck4 = coefficient_t + idx[n+3]*mo_num;
 
       const double a11 = av1[n  ];
       const double a21 = av1[n+1];
@@ -1852,7 +1363,7 @@ qmckl_compute_mo_basis_mo_vgl_hpc (const qmckl_context context,
 
     const int64_t n0 = n < 0 ? 0 : n;
     for (int64_t m=n0 ; m < nidx ; m+=1) {
-      const double* restrict ck = coef_normalized_t + idx[m]*mo_num;
+      const double* restrict ck = coefficient_t + idx[m]*mo_num;
       const double a1 = av1[m];
       const double a2 = av2[m];
       const double a3 = av3[m];

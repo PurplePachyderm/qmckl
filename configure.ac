@@ -35,7 +35,7 @@
 
 AC_PREREQ([2.69])
 
-AC_INIT([qmckl],[0.1.1],[https://github.com/TREX-CoE/qmckl/issues],[],[https://trex-coe.github.io/qmckl/index.html])
+AC_INIT([qmckl],[0.2.1],[https://github.com/TREX-CoE/qmckl/issues],[],[https://trex-coe.github.io/qmckl/index.html])
 AC_CONFIG_AUX_DIR([tools])
 AM_INIT_AUTOMAKE([subdir-objects color-tests parallel-tests silent-rules 1.11])
 
@@ -332,9 +332,6 @@ AS_IF([test "$HAVE_CUBLAS_OFFLOAD" = "yes"], [
 
 
 # Device pointers
-# BUG Even if the AC_DEFINE should execute only when gpu=openmp and device-pointers are set,
-# the device pointers will appear as defined in the output if only device_pointers is set
-# Maybe this could be related to autoconf vars being cached ?
 AC_ARG_WITH(device-pointers, [AS_HELP_STRING([--with-device-pointers],[Use device pointers on offloaded functions to optimize memory transfers])], HAVE_DEVICE_POINTERS=$withval, HAVE_DEVICE_POINTERS=no)
 AS_IF([test "$HAVE_DEVICE_POINTERS" = "yes" && test "$enable_gpu" = "openmp"], [
   AC_DEFINE([HAVE_DEVICE_POINTERS], [1], [If defined, use device pointers with offloaded routines])
@@ -366,8 +363,10 @@ if test "$ok" = "yes"; then
         if test "$GCC" = "yes"; then
 	        CFLAGS="$CFLAGS \
 -g -Wall -W -Wbad-function-cast -Wcast-qual -Warray-bounds -Wdisabled-optimization \
+-fsanitize=address -fno-omit-frame-pointer \
 -Wpointer-arith -Wcast-align -Wpedantic -Wextra -Walloc-zero -Werror \
 "
+		LDFLAGS="$LDFLAGS -fsanitize=address"
         fi
         if test "$GFC" = "yes"; then
 	        FCFLAGS="$FCFLAGS \
@@ -433,6 +432,8 @@ if test "x${QMCKL_DEVEL}" != "x"; then
   if test x${HAS_CPPCHECK} != xno ; then
         HAS_CPPCHECK=1
   fi
+
+  AX_PKG_SWIG(4.0.0, [], AC_MSG_WARN([SWIG is required to build Python API.]) )
 
 fi
 
