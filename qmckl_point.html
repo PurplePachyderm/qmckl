@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-07-25 Mon 11:28 -->
+<!-- 2022-07-28 Thu 14:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Point</title>
@@ -333,25 +333,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org21a1c6b">1. Context</a>
+<li><a href="#org217fce3">1. Context</a>
 <ul>
-<li><a href="#orgb7c4371">1.1. Data structure</a></li>
-<li><a href="#org57a4c69">1.2. Access functions</a>
+<li><a href="#orge4a6be5">1.1. Data structure</a></li>
+<li><a href="#org246bf2a">1.2. Access functions</a>
 <ul>
-<li><a href="#orgbb2ed96">1.2.1. Number of points</a></li>
-<li><a href="#orgcf6f76e">1.2.2. Point coordinates</a></li>
+<li><a href="#org5a5f996">1.2.1. Number of points</a></li>
+<li><a href="#org55fb700">1.2.2. Point coordinates</a></li>
 </ul>
 </li>
-<li><a href="#orge868cc9">1.3. Initialization functions</a></li>
-<li><a href="#org778bb71">1.4. Test</a></li>
+<li><a href="#org798bdc5">1.3. Initialization functions</a></li>
+<li><a href="#org34d20fd">1.4. Test</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org21a1c6b" class="outline-2">
-<h2 id="org21a1c6b"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-org217fce3" class="outline-2">
+<h2 id="org217fce3"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following data stored in the context:
@@ -413,8 +413,8 @@ corresponds to the 3 &times; <code>num</code> matrix.
 </p>
 </div>
 
-<div id="outline-container-orgb7c4371" class="outline-3">
-<h3 id="orgb7c4371"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-orge4a6be5" class="outline-3">
+<h3 id="orge4a6be5"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_point_struct</span> {
@@ -452,8 +452,8 @@ corresponds to the 3 &times; <code>num</code> matrix.
 </div>
 </div>
 
-<div id="outline-container-org57a4c69" class="outline-3">
-<h3 id="org57a4c69"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-org246bf2a" class="outline-3">
+<h3 id="org246bf2a"><span class="section-number-3">1.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Access functions return <code>QMCKL_SUCCESS</code> when the data has been
@@ -464,8 +464,8 @@ contains the requested data. Otherwise, this variable is untouched.
 </p>
 </div>
 
-<div id="outline-container-orgbb2ed96" class="outline-4">
-<h4 id="orgbb2ed96"><span class="section-number-4">1.2.1</span> Number of points</h4>
+<div id="outline-container-org5a5f996" class="outline-4">
+<h4 id="org5a5f996"><span class="section-number-4">1.2.1</span> Number of points</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 Returns the number of points stored in the context.
@@ -487,8 +487,8 @@ Returns the number of points stored in the context.
 </div>
 </div>
 
-<div id="outline-container-orgcf6f76e" class="outline-4">
-<h4 id="orgcf6f76e"><span class="section-number-4">1.2.2</span> Point coordinates</h4>
+<div id="outline-container-org55fb700" class="outline-4">
+<h4 id="org55fb700"><span class="section-number-4">1.2.2</span> Point coordinates</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
 Returns the point coordinates as sequences of (x,y,z).
@@ -516,8 +516,8 @@ The pointer is assumed to point on a memory block of size
 </div>
 
 
-<div id="outline-container-orge868cc9" class="outline-3">
-<h3 id="orge868cc9"><span class="section-number-3">1.3</span> Initialization functions</h3>
+<div id="outline-container-org798bdc5" class="outline-3">
+<h3 id="org798bdc5"><span class="section-number-3">1.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 When the data is set in the context, if the arrays are large
@@ -774,8 +774,8 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
 </div>
 
 
-<div id="outline-container-org778bb71" class="outline-3">
-<h3 id="org778bb71"><span class="section-number-3">1.4</span> Test</h3>
+<div id="outline-container-org34d20fd" class="outline-3">
+<h3 id="org34d20fd"><span class="section-number-3">1.4</span> Test</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -834,7 +834,7 @@ rc = qmckl_get_point (context, <span style="color: #8b2252;">'N'</span>, coord3,
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-07-25 Mon 11:28</p>
+<p class="date">Created: 2022-07-28 Thu 14:54</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
