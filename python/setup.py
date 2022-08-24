@@ -46,7 +46,7 @@ qmckl_module   =  Extension(name                 = "._" + MODULE_NAME,
 
 
 setup(name             = MODULE_NAME,
-      version          = "0.2.0",
+      version          = "0.3.1",
       author           = "TREX-CoE",
       author_email     = "posenitskiy@irsamc.ups-tlse.fr",
       description      = """Python API of the QMCkl library""",
@@ -71,5 +71,7 @@ setup(name             = MODULE_NAME,
          "Operating System :: MacOS"
       ],
       python_requires = ">=3.0",
-      install_requires = ["numpy>=1.17.3"]
+      # The ABI incompatibility of numpy is a pain, for now set the 
+      # min numpy version such that we have wheels for CPython 3.5 & 3.6
+      install_requires = ["numpy>=1.13.3"]
       )
