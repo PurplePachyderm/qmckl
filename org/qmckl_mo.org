@@ -160,6 +160,10 @@ qmckl_exit_code qmckl_init_mo_basis(qmckl_context context) {
    #+begin_src c :comments org :tangle (eval h_func)
 qmckl_exit_code  qmckl_set_mo_basis_mo_num           (qmckl_context context, const int64_t   mo_num);
 qmckl_exit_code  qmckl_set_mo_basis_coefficient      (qmckl_context context, const double  * coefficient);
+
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, const double  * coefficient, int device_id);
+#endif
    #+end_src
 
    #+NAME:pre
@@ -209,7 +213,7 @@ qmckl_exit_code qmckl_set_mo_basis_mo_num(qmckl_context context, const int64_t m
 }
 
 qmckl_exit_code  qmckl_set_mo_basis_coefficient(qmckl_context context, const double* coefficient) {
-  
+
   int32_t mask = 1 << 1;
 
   <<pre>>
@@ -240,6 +244,45 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient(qmckl_context context, const dou
   <<post>>
 }
 
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, const double  * coefficient, int device_id)
+{
+
+  int32_t mask = 1 << 1;
+
+  <<pre>>
+
+  if (ctx->mo_basis.coefficient_device != NULL) {
+    qmckl_exit_code rc = qmckl_free_device(context, ctx->mo_basis.coefficient_device, device_id);
+    if (rc != QMCKL_SUCCESS) {
+      return qmckl_failwith( context, rc,
+                             "qmckl_set_mo_basis_coefficient_device",
+                             NULL);
+    }
+  }
+
+  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+  mem_info.size = ctx->ao_basis.ao_num * ctx->mo_basis.mo_num * sizeof(double);
+  double* new_array = (double*) qmckl_malloc_device(context, mem_info, device_id);
+  if (new_array == NULL) {
+    return qmckl_failwith( context,
+                           QMCKL_ALLOCATION_FAILED,
+                           "qmckl_set_mo_basis_coefficient_device",
+                           NULL);
+  }
+
+  omp_target_memcpy(
+    new_array, coefficient,
+    mem_info.size,
+    0, 0,
+    device_id, omp_get_initial_device()
+  );
+
+  ctx->mo_basis.coefficient_device = new_array;
+
+  <<post>>
+}
+#endif
    #+end_src
 
  When the basis set is completely entered, other data structures are

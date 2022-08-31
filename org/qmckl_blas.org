@@ -29,6 +29,10 @@
 #include <inttypes.h>
 #endif
 
+#ifdef HAVE_DEVICE_POINTERS
+#include <omp.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -785,6 +789,16 @@ double qmckl_ten5(qmckl_tensor t, int64_t i, int64_t j, int64_t k, int64_t l, in
 #define qmckl_ten3(t, i, j, k) t.data[(i) + t.size[0]*((j) + t.size[1]*(k))]
 #define qmckl_ten4(t, i, j, k, l) t.data[(i) + t.size[0]*((j) + t.size[1]*((k) + t.size[2]*(l)))]
 #define qmckl_ten5(t, i, j, k, l, m) t.data[(i) + t.size[0]*((j) + t.size[1]*((k) + t.size[2]*((l) + t.size[3]*(m))))]
+
+
+#ifdef HAVE_DEVICE_POINTERS
+#define qmckl_vec_device(v, i) v.data_device[i]
+#define qmckl_mat_device(m, i, j) m.data_device[(i) + (j)*m.size[0]]
+
+#define qmckl_ten3_device(t, i, j, k) t.data_device[(i) + t.size[0]*((j) + t.size[1]*(k))]
+#define qmckl_ten4_device(t, i, j, k, l) t.data_device[(i) + t.size[0]*((j) + t.size[1]*((k) + t.size[2]*(l)))]
+#define qmckl_ten5_device(t, i, j, k, l, m) t.data_device[(i) + t.size[0]*((j) + t.size[1]*((k) + t.size[2]*((l) + t.size[3]*(m))))]
+#endif
     #+end_src
 
     For example:
