@@ -193,6 +193,18 @@ if (ctx->mo_basis.provided) {
 return QMCKL_SUCCESS;
    #+end_src
 
+   #+NAME:post_device
+   #+begin_src c  :exports none
+ctx->mo_basis.uninitialized &= ~mask;
+ctx->mo_basis.provided = (ctx->mo_basis.uninitialized == 0);
+if (ctx->mo_basis.provided) {
+  qmckl_exit_code rc_ = qmckl_finalize_mo_basis_device(context, device_id);
+  if (rc_ != QMCKL_SUCCESS) return rc_;
+}
+return QMCKL_SUCCESS;
+   #+end_src
+
+
    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
 qmckl_exit_code qmckl_set_mo_basis_mo_num(qmckl_context context, const int64_t mo_num) {
 
@@ -280,7 +292,7 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, c
 
   ctx->mo_basis.coefficient_device = new_array;
 
-  <<post>>
+  <<post_device>>
 }
 #endif
    #+end_src
@@ -290,6 +302,12 @@ qmckl_exit_code  qmckl_set_mo_basis_coefficient_device (qmckl_context context, c
 
    #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
 qmckl_exit_code qmckl_finalize_mo_basis(qmckl_context context);
+   #+end_src
+
+   #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_finalize_mo_basis_device(qmckl_context context, int device_id);
+#endif
    #+end_src
 
    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
@@ -352,6 +370,64 @@ qmckl_exit_code qmckl_finalize_mo_basis(qmckl_context context) {
   return QMCKL_SUCCESS;
 }
    #+end_src
+
+   #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_finalize_mo_basis_device(qmckl_context context, int device_id) {
+
+  if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
+    return qmckl_failwith( context,
+                           QMCKL_INVALID_CONTEXT,
+                           "qmckl_finalize_mo_basis",
+                           NULL);
+  }
+
+  qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
+  assert (ctx != NULL);
+
+  qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+  mem_info.size = ctx->ao_basis.ao_num * ctx->mo_basis.mo_num * sizeof(double);
+  double* new_array = (double*) qmckl_malloc_device(context, mem_info, device_id);
+  if (new_array == NULL) {
+    return qmckl_failwith( context,
+                           QMCKL_ALLOCATION_FAILED,
+                           "qmckl_finalize_mo_basis",
+                           NULL);
+  }
+
+  assert (ctx->mo_basis.coefficient_device != NULL);
+
+  if (ctx->mo_basis.coefficient_t_device != NULL) {
+    qmckl_exit_code rc = qmckl_free_device(context, ctx->mo_basis.coefficient_device, device_id);
+    if (rc != QMCKL_SUCCESS) {
+      return qmckl_failwith( context, rc,
+                             "qmckl_finalize_mo_basis",
+                             NULL);
+    }
+  }
+
+  double * coefficient = ctx->mo_basis.coefficient_device;
+
+  int64_t ao_num = ctx->ao_basis.ao_num;
+  int64_t mo_num = ctx->mo_basis.mo_num;
+
+  #pragma omp target is_device_ptr(new_array, coefficient)
+  {
+  #pragma omp parallel for collapse(2)
+  for (int64_t i=0 ; i<ao_num ; ++i) {
+    for (int64_t j=0 ; j<mo_num ; ++j) {
+      new_array[i*mo_num + j] = coefficient[j*ao_num + i];
+    }
+  }
+  }
+
+  ctx->mo_basis.coefficient_t_device = new_array;
+  qmckl_exit_code rc = QMCKL_SUCCESS;
+  return rc;
+}
+#endif
+   #+end_src
+
 
 ** Access functions
 

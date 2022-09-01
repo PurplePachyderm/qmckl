@@ -760,7 +760,7 @@ qmckl_trexio_read_ao_X(qmckl_context context, trexio_t* const file)
     for (int i=0 ; i<shell_num ; ++i) {
       shell_prim_num[i] = 0;
     }
-    
+
     for (int i=0 ; i<prim_num ; ++i) {
       const int k = tmp_array[i];
       if (k < 0 || k >= shell_num) {
@@ -1130,12 +1130,12 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
   if (rc != QMCKL_SUCCESS)
     return rc;
-
    #+end_src
 
 *** Number of shells
 
    #+begin_src c :tangle (eval c)
+
   int64_t shell_num = 0L;
 
   rcio = trexio_read_basis_shell_num_64(file, &shell_num);
@@ -1151,7 +1151,6 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
   if (rc != QMCKL_SUCCESS)
     return rc;
-
    #+end_src
 
 *** Number of primitives
@@ -1172,7 +1171,6 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
   if (rc != QMCKL_SUCCESS)
     return rc;
-
    #+end_src
 
 *** Number of atomic orbitals
@@ -1193,7 +1191,6 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
   if (rc != QMCKL_SUCCESS)
     return rc;
-
    #+end_src
 
 *** Nucleus_index array
@@ -1601,6 +1598,7 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
    #+begin_src c :tangle (eval c)
   {
+
     qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
 
     /* Allocate array for data */
@@ -1767,7 +1765,6 @@ qmckl_trexio_read_ao_X_device(qmckl_context context, trexio_t* const file, int d
 
 
    #+begin_src c :tangle (eval c)
-
   return QMCKL_SUCCESS;
 }
 #endif

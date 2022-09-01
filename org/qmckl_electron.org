@@ -500,7 +500,7 @@ qmckl_exit_code qmckl_set_electron_rescale_factor_en (qmckl_context context, con
 
    #+begin_src c :comments org :tangle (eval h_func)
 #ifdef HAVE_DEVICE_POINTERS
-qmckl_exit_code qmckl_set_electron_coord_device    (qmckl_context context, const char transp, const int64_t walk_num, const double* coord, const int64_t size_max, int device_id);
+qmckl_exit_code qmckl_set_electron_coord_device(qmckl_context context, const char transp, const int64_t walk_num, const double* coord, const int64_t size_max, int device_id);
 #endif
    #+end_src
 
@@ -704,7 +704,7 @@ qmckl_set_electron_coord_device(qmckl_context context,
                                 const int64_t walk_num,
                                 const double* coord,
                                 const int64_t size_max,
-								const int32_t device_id
+                                const int32_t device_id
 )
 {
 

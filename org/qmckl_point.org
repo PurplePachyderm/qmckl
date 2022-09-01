@@ -423,23 +423,24 @@ qmckl_exit_code qmckl_set_point_device (qmckl_context context,
 
   ctx->point.num = num;
 
+  double *a = ctx->point.coord.data_device;
+  int size_0 = ctx->point.coord.size[0];
   if (transp == 'T') {
-    double *a = ctx->point.coord.data_device;
-    #ifdef HAVE_DEVICE_POINTERS
 	#pragma omp target is_device_ptr(a, coord)
-    #endif
+	{
     for (int64_t i=0 ; i<3*num ; ++i) {
       a[i] = coord[i];
     }
+	}
   } else {
-    #ifdef HAVE_DEVICE_POINTERS
-    #pragma omp target is_device_ptr(coord)
-    #endif
+    #pragma omp target is_device_ptr(a, coord)
+	{
     for (int64_t i=0 ; i<num ; ++i) {
-      qmckl_mat_device(ctx->point.coord, i, 0) = coord[3*i  ];
-      qmckl_mat_device(ctx->point.coord, i, 1) = coord[3*i+1];
-      qmckl_mat_device(ctx->point.coord, i, 2) = coord[3*i+2];
+	  a[i] = coord[3*i];
+	  a[i + size_0] = coord[3*i + 1];
+	  a[i + 2*size_0] = coord[3*i + 1];
     }
+	}
   }
 
   /* Increment the date of the context */
