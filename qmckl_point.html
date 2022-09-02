@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-07-28 Thu 14:54 -->
+<!-- 2022-09-02 Fri 11:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Point</title>
@@ -333,25 +333,25 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org217fce3">1. Context</a>
+<li><a href="#org1cd393a">1. Context</a>
 <ul>
-<li><a href="#orge4a6be5">1.1. Data structure</a></li>
-<li><a href="#org246bf2a">1.2. Access functions</a>
+<li><a href="#orgb7c70e0">1.1. Data structure</a></li>
+<li><a href="#orgf3ddb0f">1.2. Access functions</a>
 <ul>
-<li><a href="#org5a5f996">1.2.1. Number of points</a></li>
-<li><a href="#org55fb700">1.2.2. Point coordinates</a></li>
+<li><a href="#org42a1b21">1.2.1. Number of points</a></li>
+<li><a href="#orgabef804">1.2.2. Point coordinates</a></li>
 </ul>
 </li>
-<li><a href="#org798bdc5">1.3. Initialization functions</a></li>
-<li><a href="#org34d20fd">1.4. Test</a></li>
+<li><a href="#org701ac2f">1.3. Initialization functions</a></li>
+<li><a href="#orgd2d607c">1.4. Test</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org217fce3" class="outline-2">
-<h2 id="org217fce3"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-org1cd393a" class="outline-2">
+<h2 id="org1cd393a"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following data stored in the context:
@@ -382,21 +382,9 @@ The following data stored in the context:
 </tr>
 
 <tr>
-<td class="org-left"><code>alloc_num</code></td>
-<td class="org-left"><code>int64_t</code></td>
-<td class="org-left">Numer of allocated number of points</td>
-</tr>
-
-<tr>
 <td class="org-left"><code>date</code></td>
 <td class="org-left"><code>uint64_t</code></td>
 <td class="org-left">Last modification date of the coordinates</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>alloc_date</code></td>
-<td class="org-left"><code>uint64_t</code></td>
-<td class="org-left">Last modification date of the allocation</td>
 </tr>
 
 <tr>
@@ -413,15 +401,13 @@ corresponds to the 3 &times; <code>num</code> matrix.
 </p>
 </div>
 
-<div id="outline-container-orge4a6be5" class="outline-3">
-<h3 id="orge4a6be5"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-orgb7c70e0" class="outline-3">
+<h3 id="orgb7c70e0"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_point_struct</span> {
   <span style="color: #228b22;">int64_t</span>      <span style="color: #a0522d;">num</span>;
-  <span style="color: #228b22;">int64_t</span>      <span style="color: #a0522d;">alloc_num</span>;
   <span style="color: #228b22;">uint64_t</span>     <span style="color: #a0522d;">date</span>;
-  <span style="color: #228b22;">uint64_t</span>     <span style="color: #a0522d;">alloc_date</span>;
   <span style="color: #228b22;">qmckl_matrix</span> <span style="color: #a0522d;">coord</span>;
 } <span style="color: #228b22;">qmckl_point_struct</span>;
 
@@ -452,8 +438,8 @@ corresponds to the 3 &times; <code>num</code> matrix.
 </div>
 </div>
 
-<div id="outline-container-org246bf2a" class="outline-3">
-<h3 id="org246bf2a"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-orgf3ddb0f" class="outline-3">
+<h3 id="orgf3ddb0f"><span class="section-number-3">1.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Access functions return <code>QMCKL_SUCCESS</code> when the data has been
@@ -464,8 +450,8 @@ contains the requested data. Otherwise, this variable is untouched.
 </p>
 </div>
 
-<div id="outline-container-org5a5f996" class="outline-4">
-<h4 id="org5a5f996"><span class="section-number-4">1.2.1</span> Number of points</h4>
+<div id="outline-container-org42a1b21" class="outline-4">
+<h4 id="org42a1b21"><span class="section-number-4">1.2.1</span> Number of points</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 Returns the number of points stored in the context.
@@ -487,8 +473,8 @@ Returns the number of points stored in the context.
 </div>
 </div>
 
-<div id="outline-container-org55fb700" class="outline-4">
-<h4 id="org55fb700"><span class="section-number-4">1.2.2</span> Point coordinates</h4>
+<div id="outline-container-orgabef804" class="outline-4">
+<h4 id="orgabef804"><span class="section-number-4">1.2.2</span> Point coordinates</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <p>
 Returns the point coordinates as sequences of (x,y,z).
@@ -516,8 +502,8 @@ The pointer is assumed to point on a memory block of size
 </div>
 
 
-<div id="outline-container-org798bdc5" class="outline-3">
-<h3 id="org798bdc5"><span class="section-number-3">1.3</span> Initialization functions</h3>
+<div id="outline-container-org701ac2f" class="outline-3">
+<h3 id="org701ac2f"><span class="section-number-3">1.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 When the data is set in the context, if the arrays are large
@@ -543,8 +529,9 @@ points to set.
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_point_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">char</span> <span style="color: #a0522d;">transp</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">num</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
+                                                                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
                                         <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
 <span style="color: #483d8b;">#endif</span>
 </pre>
@@ -593,7 +580,7 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
   assert (ctx != <span style="color: #008b8b;">NULL</span>);
 
   <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #a0522d;">rc</span>;
-  <span style="color: #a020f0;">if</span> (num &gt; ctx-&gt;point.alloc_num) {
+  <span style="color: #a020f0;">if</span> (num != ctx-&gt;point.num) {
 
     <span style="color: #a020f0;">if</span> (ctx-&gt;point.coord.data != <span style="color: #008b8b;">NULL</span>) {
       rc = qmckl_matrix_free(context, &amp;(ctx-&gt;point.coord));
@@ -634,11 +621,6 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
   rc = qmckl_context_touch(context);
   assert (rc == QMCKL_SUCCESS);
 
-  <span style="color: #a020f0;">if</span> (num &gt; ctx-&gt;point.alloc_num) {
-    ctx-&gt;point.alloc_num = num;
-    ctx-&gt;point.alloc_date = ctx-&gt;point.date;
-  };
-
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
 
 }
@@ -647,38 +629,45 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_point_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">char</span> <span style="color: #a0522d;">transp</span>,
-                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
-                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">num</span>,
-                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>)
+<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_point_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">char</span> <span style="color: #a0522d;">transp</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">num</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
+                                                                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>)
 {
 
   <span style="color: #a020f0;">if</span> (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     <span style="color: #a020f0;">return</span> QMCKL_NULL_CONTEXT;
   }
 
+  <span style="color: #a020f0;">if</span> (size_max &lt; 3*num) {
+      <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                             QMCKL_INVALID_ARG_4,
+                             <span style="color: #8b2252;">"qmckl_set_point_device"</span>,
+                             <span style="color: #8b2252;">"Array too small"</span>);
+  }
+
   <span style="color: #a020f0;">if</span> (transp != <span style="color: #8b2252;">'N'</span> &amp;&amp; transp != <span style="color: #8b2252;">'T'</span>) {
     <span style="color: #a020f0;">return</span> qmckl_failwith( context,
                            QMCKL_INVALID_ARG_2,
-                           <span style="color: #8b2252;">"qmckl_set_point"</span>,
+                           <span style="color: #8b2252;">"qmckl_set_point_device"</span>,
                            <span style="color: #8b2252;">"transp should be 'N' or 'T'"</span>);
   }
 
   <span style="color: #a020f0;">if</span> (coord == <span style="color: #008b8b;">NULL</span>) {
     <span style="color: #a020f0;">return</span> qmckl_failwith( context,
                            QMCKL_INVALID_ARG_3,
-                           <span style="color: #8b2252;">"qmckl_set_point"</span>,
+                           <span style="color: #8b2252;">"qmckl_set_point_device"</span>,
                            <span style="color: #8b2252;">"coord is a NULL pointer"</span>);
   }
 
   <span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ctx</span> = (<span style="color: #228b22;">qmckl_context_struct</span>*) context;
   assert (ctx != <span style="color: #008b8b;">NULL</span>);
 
-
   <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #a0522d;">rc</span>;
-  //<span style="color: #b22222;">if (ctx-&gt;point.num &lt; num) {</span>
+  <span style="color: #a020f0;">if</span> (num != ctx-&gt;point.num) {
+
     <span style="color: #a020f0;">if</span> (ctx-&gt;point.coord.data_device != <span style="color: #008b8b;">NULL</span>) {
       rc = qmckl_matrix_free_device(context, &amp;(ctx-&gt;point.coord), device_id);
       assert (rc == QMCKL_SUCCESS);
@@ -691,36 +680,28 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
                              <span style="color: #8b2252;">"qmckl_set_point"</span>,
                              <span style="color: #008b8b;">NULL</span>);
     }
-
-  //<span style="color: #b22222;">};</span>
+  };
 
   ctx-&gt;point.num = num;
 
+  <span style="color: #228b22;">double</span> *<span style="color: #a0522d;">a</span> = ctx-&gt;point.coord.data_device;
+  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">size_0</span> = ctx-&gt;point.coord.size[0];
   <span style="color: #a020f0;">if</span> (transp == <span style="color: #8b2252;">'T'</span>) {
-
-    <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">a</span> = ctx-&gt;point.coord.data_device;
-
-    // <span style="color: #b22222;">DEVICE POINTER</span>
-<span style="color: #483d8b;">    #pragma</span> omp target is_device_ptr(a, coord)
-    {
+<span style="color: #483d8b;">        #pragma</span> omp target is_device_ptr(a, coord)
+        {
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;3*num ; ++i) {
       a[i] = coord[i];
     }
-    }
-
+        }
   } <span style="color: #a020f0;">else</span> {
-
-    // <span style="color: #b22222;">DEVICE POINTER</span>
-        // <span style="color: #b22222;">TODO Remove macro to support offload</span>
-<span style="color: #483d8b;">    #pragma</span> omp target is_device_ptr(coord)
-    {
+<span style="color: #483d8b;">    #pragma</span> omp target is_device_ptr(a, coord)
+        {
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;num ; ++i) {
-      qmckl_mat(ctx-&gt;point.coord, i, 0) = coord[3*i  ];
-      qmckl_mat(ctx-&gt;point.coord, i, 1) = coord[3*i+1];
-      qmckl_mat(ctx-&gt;point.coord, i, 2) = coord[3*i+2];
+          a[i] = coord[3*i];
+          a[i + size_0] = coord[3*i + 1];
+          a[i + 2*size_0] = coord[3*i + 1];
     }
         }
-
   }
 
   /* <span style="color: #b22222;">Increment the date of the context </span>*/
@@ -756,16 +737,17 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
 <pre class="src src-f90"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
 <span style="color: #a020f0;">interface</span>
   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_point_device(context, </span><span style="color: #a020f0;">&amp;</span>
-       transp, coord, num) <span style="color: #a020f0;">bind</span>(C)
+       transp, num, coord, size_max, device_id) <span style="color: #a020f0;">bind</span>(C)
     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
     <span style="color: #a020f0;">import</span>
     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
 
     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
     <span style="color: #228b22;">character</span>(<span style="color: #008b8b;">c_char</span>)   , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> transp</span>
-    <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span> ) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> coord(*)</span>
     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
-  <span style="color: #a020f0;">end function</span>
+    <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span> ) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> coord(*)</span>
+    <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+    <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int32_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> device_id</span>
 <span style="color: #a020f0;">end interface</span>
 <span style="color: #483d8b;">#endif</span>
 </pre>
@@ -774,8 +756,8 @@ Copy a sequence of <code>num</code> points \((x,y,z)\) into the context.
 </div>
 
 
-<div id="outline-container-org34d20fd" class="outline-3">
-<h3 id="org34d20fd"><span class="section-number-3">1.4</span> Test</h3>
+<div id="outline-container-orgd2d607c" class="outline-3">
+<h3 id="orgd2d607c"><span class="section-number-3">1.4</span> Test</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -834,7 +816,7 @@ rc = qmckl_get_point (context, <span style="color: #8b2252;">'N'</span>, coord3,
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-07-28 Thu 14:54</p>
+<p class="date">Created: 2022-09-02 Fri 11:39</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

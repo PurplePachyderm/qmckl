@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-07-28 Thu 14:53 -->
+<!-- 2022-09-02 Fri 11:38 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Molecular Orbitals</title>
@@ -311,44 +311,49 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd2b558e">1. Context</a>
+<li><a href="#org533ae26">1. Context</a>
 <ul>
-<li><a href="#org9605b2a">1.1. Data structure</a></li>
-<li><a href="#orge8bbb7e">1.2. Access functions</a>
+<li><a href="#orgc3998b1">1.1. Data structure</a></li>
+<li><a href="#orgc08513b">1.2. Initialization functions</a></li>
+<li><a href="#orga1328fb">1.3. Access functions</a>
 <ul>
-<li><a href="#org013a14a">1.2.1. Fortran interfaces</a></li>
+<li><a href="#org4b2abb8">1.3.1. Fortran interfaces</a></li>
 </ul>
 </li>
-<li><a href="#orgae87d6d">1.3. Initialization functions</a></li>
+<li><a href="#org57b7c04">1.4. Update</a>
+<ul>
+<li><a href="#org0770b54">1.4.1. Fortran interface</a></li>
 </ul>
 </li>
-<li><a href="#orgf5fc80b">2. Computation</a>
-<ul>
-<li><a href="#org2d2a0bc">2.1. Computation of MOs: values only</a>
-<ul>
-<li><a href="#org9056d56">2.1.1. Get</a></li>
-<li><a href="#orgd750df4">2.1.2. Provide</a></li>
-<li><a href="#org6a1b278">2.1.3. Compute</a></li>
-<li><a href="#org822fc7a">2.1.4. HPC version</a></li>
 </ul>
 </li>
-<li><a href="#org9eb5af3">2.2. Computation of MOs: values, gradient, Laplacian</a>
+<li><a href="#org4e7ef2e">2. Computation</a>
 <ul>
-<li><a href="#org27f411b">2.2.1. Get</a></li>
-<li><a href="#org7f41f42">2.2.2. Provide</a></li>
-<li><a href="#org6fb7e99">2.2.3. Compute</a></li>
-<li><a href="#org9cd6be8">2.2.4. HPC version</a></li>
+<li><a href="#org6910fb6">2.1. Computation of MOs: values only</a>
+<ul>
+<li><a href="#org724ae5b">2.1.1. Get</a></li>
+<li><a href="#org205ec18">2.1.2. Provide</a></li>
+<li><a href="#org25ceb65">2.1.3. Compute</a></li>
+<li><a href="#org64eec96">2.1.4. HPC version</a></li>
 </ul>
 </li>
-<li><a href="#org941bb0d">2.3. Test</a></li>
+<li><a href="#org09531d1">2.2. Computation of MOs: values, gradient, Laplacian</a>
+<ul>
+<li><a href="#org1682dbe">2.2.1. Get</a></li>
+<li><a href="#org4f6ee6b">2.2.2. Provide</a></li>
+<li><a href="#orgdaf7765">2.2.3. Compute</a></li>
+<li><a href="#org31c0459">2.2.4. HPC version</a></li>
+</ul>
+</li>
+<li><a href="#org93a40ca">2.3. Test</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd2b558e" class="outline-2">
-<h2 id="orgd2b558e"><span class="section-number-2">1</span> Context</h2>
+<div id="outline-container-org533ae26" class="outline-2">
+<h2 id="org533ae26"><span class="section-number-2">1</span> Context</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The following arrays are stored in the context:
@@ -375,7 +380,7 @@ The following arrays are stored in the context:
 <tr>
 <td class="org-left"><code>coefficient</code></td>
 <td class="org-left"><code>[mo_num][ao_num]</code></td>
-<td class="org-left">Orbital coefficients</td>
+<td class="org-left">MO coefficients</td>
 </tr>
 
 <tr>
@@ -428,12 +433,12 @@ Computed data:
 </table>
 </div>
 
-<div id="outline-container-org9605b2a" class="outline-3">
-<h3 id="org9605b2a"><span class="section-number-3">1.1</span> Data structure</h3>
+<div id="outline-container-orgc3998b1" class="outline-3">
+<h3 id="orgc3998b1"><span class="section-number-3">1.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_mo_basis_struct</span> {
-  <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">mo_num</span>;
+  <span style="color: #228b22;">int64_t</span>  <span style="color: #a0522d;">mo_num</span>;
   <span style="color: #228b22;">double</span> * <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">coefficient</span>;
   <span style="color: #228b22;">double</span> * <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">coefficient_t</span>;
 
@@ -489,9 +494,34 @@ this mechanism.
 </div>
 </div>
 
-<div id="outline-container-orge8bbb7e" class="outline-3">
-<h3 id="orge8bbb7e"><span class="section-number-3">1.2</span> Access functions</h3>
+<div id="outline-container-orgc08513b" class="outline-3">
+<h3 id="orgc08513b"><span class="section-number-3">1.2</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-1-2">
+<p>
+To set the basis set, all the following functions need to be
+called.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_mo_num</span>           (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">mo_num</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_coefficient</span>      (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>);
+
+<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_coefficient_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<p>
+When the basis set is completely entered, other data structures are
+computed to accelerate the calculations.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga1328fb" class="outline-3">
+<h3 id="orga1328fb"><span class="section-number-3">1.3</span> Access functions</h3>
+<div class="outline-text-3" id="text-1-3">
 <p>
 When all the data for the AOs have been provided, the following
 function returns <code>true</code>.
@@ -503,43 +533,49 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org013a14a" class="outline-4">
-<h4 id="org013a14a"><span class="section-number-4">1.2.1</span> Fortran interfaces</h4>
+<div id="outline-container-org4b2abb8" class="outline-4">
+<h4 id="org4b2abb8"><span class="section-number-4">1.3.1</span> Fortran interfaces</h4>
 </div>
 </div>
 
-<div id="outline-container-orgae87d6d" class="outline-3">
-<h3 id="orgae87d6d"><span class="section-number-3">1.3</span> Initialization functions</h3>
-<div class="outline-text-3" id="text-1-3">
+<div id="outline-container-org57b7c04" class="outline-3">
+<h3 id="org57b7c04"><span class="section-number-3">1.4</span> Update</h3>
+<div class="outline-text-3" id="text-1-4">
 <p>
-To set the basis set, all the following functions need to be
-called.
+Useless MOs can be removed, for instance virtual MOs in a single
+determinant calculation.
+</p>
+
+<p>
+To select a subset of MOs that will be kept, create an array of
+integers of size <code>mo_num</code>. If the integer is zero, the MO is dropped,
+otherwise it is kept.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_mo_num</span>           (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">mo_num</span>);
-<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_mo_basis_coefficient</span>      (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>  * <span style="color: #a0522d;">coefficient</span>);
+<pre class="src src-c"><span style="color: #228b22;">bool</span> <span style="color: #0000ff;">qmckl_mo_basis_select_mo</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                               <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">keep</span>,
+                               <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
-
-<p>
-When the basis set is completely entered, other data structures are
-computed to accelerate the calculations.
-</p>
-</div>
-</div>
 </div>
 
-<div id="outline-container-orgf5fc80b" class="outline-2">
-<h2 id="orgf5fc80b"><span class="section-number-2">2</span> Computation</h2>
+<div id="outline-container-org0770b54" class="outline-4">
+<h4 id="org0770b54"><span class="section-number-4">1.4.1</span> Fortran interface</h4>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4e7ef2e" class="outline-2">
+<h2 id="org4e7ef2e"><span class="section-number-2">2</span> Computation</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org2d2a0bc" class="outline-3">
-<h3 id="org2d2a0bc"><span class="section-number-3">2.1</span> Computation of MOs: values only</h3>
+<div id="outline-container-org6910fb6" class="outline-3">
+<h3 id="org6910fb6"><span class="section-number-3">2.1</span> Computation of MOs: values only</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-org9056d56" class="outline-4">
-<h4 id="org9056d56"><span class="section-number-4">2.1.1</span> Get</h4>
+<div id="outline-container-org724ae5b" class="outline-4">
+<h4 id="org724ae5b"><span class="section-number-4">2.1.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -563,14 +599,96 @@ Uses the given array to compute the values.
 </div>
 </div>
 
-<div id="outline-container-orgd750df4" class="outline-4">
-<h4 id="orgd750df4"><span class="section-number-4">2.1.2</span> Provide</h4>
+<div id="outline-container-org205ec18" class="outline-4">
+<h4 id="org205ec18"><span class="section-number-4">2.1.2</span> Provide</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_provide_mo_basis_mo_value</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>);
+</pre>
 </div>
 
-<div id="outline-container-org6a1b278" class="outline-4">
-<h4 id="org6a1b278"><span class="section-number-4">2.1.3</span> Compute</h4>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_provide_mo_basis_mo_value</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>)
+        {
+
+          <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #a0522d;">rc</span> = QMCKL_SUCCESS;
+
+          <span style="color: #a020f0;">if</span> (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
+            <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                                   QMCKL_INVALID_CONTEXT,
+                                   <span style="color: #8b2252;">"qmckl_provide_mo_basis_mo_value"</span>,
+                                   <span style="color: #008b8b;">NULL</span>);
+          }
+
+          <span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ctx</span> = (<span style="color: #228b22;">qmckl_context_struct</span>*) context;
+          assert (ctx != <span style="color: #008b8b;">NULL</span>);
+
+          <span style="color: #a020f0;">if</span> (!ctx-&gt;mo_basis.provided) {
+            <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                                   QMCKL_NOT_PROVIDED,
+                                   <span style="color: #8b2252;">"qmckl_provide_mo_basis_mo_value"</span>,
+                                   <span style="color: #008b8b;">NULL</span>);
+          }
+
+          /* <span style="color: #b22222;">Compute if necessary </span>*/
+          <span style="color: #a020f0;">if</span> (ctx-&gt;point.date &gt; ctx-&gt;mo_basis.mo_value_date) {
+
+            <span style="color: #228b22;">qmckl_memory_info_struct</span> <span style="color: #a0522d;">mem_info</span> = qmckl_memory_info_struct_zero;
+            mem_info.size = ctx-&gt;mo_basis.mo_num * ctx-&gt;point.num * <span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>);
+
+            <span style="color: #a020f0;">if</span> (ctx-&gt;mo_basis.mo_value != <span style="color: #008b8b;">NULL</span>) {
+              <span style="color: #228b22;">qmckl_memory_info_struct</span> <span style="color: #a0522d;">mem_info_test</span> = qmckl_memory_info_struct_zero;
+              rc = qmckl_get_malloc_info(context, ctx-&gt;mo_basis.mo_value, &amp;mem_info_test);
+
+              /* <span style="color: #b22222;">if rc != QMCKL_SUCCESS, we are maybe in an _inplace function because the</span>
+<span style="color: #b22222;">                 memory was not allocated with qmckl_malloc </span>*/
+
+              <span style="color: #a020f0;">if</span> ((rc == QMCKL_SUCCESS) &amp;&amp; (mem_info_test.size != mem_info.size)) {
+                rc = qmckl_free(context, ctx-&gt;mo_basis.mo_value);
+                assert (rc == QMCKL_SUCCESS);
+                ctx-&gt;mo_basis.mo_value = <span style="color: #008b8b;">NULL</span>;
+              }
+            }
+
+            /* <span style="color: #b22222;">Allocate array </span>*/
+            <span style="color: #a020f0;">if</span> (ctx-&gt;mo_basis.mo_value == <span style="color: #008b8b;">NULL</span>) {
+
+              <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">mo_value</span> = (<span style="color: #228b22;">double</span>*) qmckl_malloc(context, mem_info);
+
+              <span style="color: #a020f0;">if</span> (mo_value == <span style="color: #008b8b;">NULL</span>) {
+                <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                                       QMCKL_ALLOCATION_FAILED,
+                                       <span style="color: #8b2252;">"qmckl_mo_basis_mo_value"</span>,
+                                       <span style="color: #008b8b;">NULL</span>);
+              }
+              ctx-&gt;mo_basis.mo_value = mo_value;
+            }
+
+
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a020f0;">if</span> (rc != QMCKL_SUCCESS) {
+          <span style="color: #a020f0;">return</span> rc;
+        }
+
+        ctx-&gt;mo_basis.mo_value_date = ctx-&gt;date;
+      }
+
+      <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+    }
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org25ceb65" class="outline-4">
+<h4 id="org25ceb65"><span class="section-number-4">2.1.3</span> Compute</h4>
 <div class="outline-text-4" id="text-2-1-3">
-<table id="org7d1ef3b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgd194d59" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -674,8 +792,8 @@ matrix multiplication instead of a dgemm, as exposed in
      <span style="color: #a020f0;">do</span> j=1,point_num
         mo_value(:,j) = 0.d0
         <span style="color: #a020f0;">do</span> k=1,ao_num
-           <span style="color: #a020f0;">if</span> (ao_value(k,j) /= 0.d0) <span style="color: #a020f0;">then</span>
-              c1 = ao_value(k,j)
+           c1 = ao_value(k,j)
+           <span style="color: #a020f0;">if</span> (c1 /= 0.d0) <span style="color: #a020f0;">then</span>
               <span style="color: #a020f0;">do</span> i=1,mo_num
                  mo_value(i,j) = mo_value(i,j) + coefficient_t(i,k) * c1
               <span style="color: #a020f0;">end do</span>
@@ -683,7 +801,7 @@ matrix multiplication instead of a dgemm, as exposed in
         <span style="color: #a020f0;">end do</span>
      <span style="color: #a020f0;">end do</span>
 
-  <span style="color: #a020f0;">else</span> ! <span style="color: #b22222;">dgemm</span>
+  <span style="color: #a020f0;">else</span> ! <span style="color: #b22222;">dgemm for checking</span>
 
     LDA = <span style="color: #a020f0;">size</span>(coefficient_t,1)
     LDB = <span style="color: #a020f0;">size</span>(ao_value,1) 
@@ -744,8 +862,8 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-org822fc7a" class="outline-4">
-<h4 id="org822fc7a"><span class="section-number-4">2.1.4</span> HPC version</h4>
+<div id="outline-container-org64eec96" class="outline-4">
+<h4 id="org64eec96"><span class="section-number-4">2.1.4</span> HPC version</h4>
 <div class="outline-text-4" id="text-2-1-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_HPC
@@ -796,7 +914,7 @@ matrix multiplication instead of a dgemm, as exposed in
       }
     }
 
-    <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>;
+    <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>=0;
 
     <span style="color: #a020f0;">for</span> (n=0 ; n &lt; nidx-4 ; n+=4) {
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">ck1</span> = coefficient_t + idx[n  ]*mo_num;
@@ -817,8 +935,7 @@ matrix multiplication instead of a dgemm, as exposed in
       }
     }
 
-    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n0</span> = n &lt; 0 ? 0 : n;
-    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">m</span>=n0 ; m &lt; nidx ; m+=1) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">m</span>=n ; m &lt; nidx ; m+=1) {
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">ck</span> = coefficient_t + idx[m]*mo_num;
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a1</span> = av1[m];
 
@@ -839,12 +956,12 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-org9eb5af3" class="outline-3">
-<h3 id="org9eb5af3"><span class="section-number-3">2.2</span> Computation of MOs: values, gradient, Laplacian</h3>
+<div id="outline-container-org09531d1" class="outline-3">
+<h3 id="org09531d1"><span class="section-number-3">2.2</span> Computation of MOs: values, gradient, Laplacian</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-org27f411b" class="outline-4">
-<h4 id="org27f411b"><span class="section-number-4">2.2.1</span> Get</h4>
+<div id="outline-container-org1682dbe" class="outline-4">
+<h4 id="org1682dbe"><span class="section-number-4">2.2.1</span> Get</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -868,14 +985,95 @@ Uses the given array to compute the VGL.
 </div>
 </div>
 
-<div id="outline-container-org7f41f42" class="outline-4">
-<h4 id="org7f41f42"><span class="section-number-4">2.2.2</span> Provide</h4>
+<div id="outline-container-org4f6ee6b" class="outline-4">
+<h4 id="org4f6ee6b"><span class="section-number-4">2.2.2</span> Provide</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_provide_mo_basis_mo_vgl</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>);
+</pre>
 </div>
 
-<div id="outline-container-org6fb7e99" class="outline-4">
-<h4 id="org6fb7e99"><span class="section-number-4">2.2.3</span> Compute</h4>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_provide_mo_basis_mo_vgl</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>)
+        {
+
+          <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #a0522d;">rc</span> = QMCKL_SUCCESS;
+
+          <span style="color: #a020f0;">if</span> (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
+            <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                                   QMCKL_INVALID_CONTEXT,
+                                   <span style="color: #8b2252;">"qmckl_provide_mo_basis_mo_vgl"</span>,
+                                   <span style="color: #008b8b;">NULL</span>);
+          }
+
+          <span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ctx</span> = (<span style="color: #228b22;">qmckl_context_struct</span>*) context;
+          assert (ctx != <span style="color: #008b8b;">NULL</span>);
+
+          <span style="color: #a020f0;">if</span> (!ctx-&gt;mo_basis.provided) {
+            <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                                   QMCKL_NOT_PROVIDED,
+                                   <span style="color: #8b2252;">"qmckl_provide_mo_basis_mo_vgl"</span>,
+                                   <span style="color: #008b8b;">NULL</span>);
+          }
+
+          /* <span style="color: #b22222;">Compute if necessary </span>*/
+          <span style="color: #a020f0;">if</span> (ctx-&gt;point.date &gt; ctx-&gt;mo_basis.mo_vgl_date) {
+
+            <span style="color: #228b22;">qmckl_memory_info_struct</span> <span style="color: #a0522d;">mem_info</span> = qmckl_memory_info_struct_zero;
+            mem_info.size = 5 * ctx-&gt;mo_basis.mo_num * ctx-&gt;point.num * <span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>);
+
+            <span style="color: #a020f0;">if</span> (ctx-&gt;mo_basis.mo_vgl != <span style="color: #008b8b;">NULL</span>) {
+              <span style="color: #228b22;">qmckl_memory_info_struct</span> <span style="color: #a0522d;">mem_info_test</span> = qmckl_memory_info_struct_zero;
+              rc = qmckl_get_malloc_info(context, ctx-&gt;mo_basis.mo_vgl, &amp;mem_info_test);
+
+              /* <span style="color: #b22222;">if rc != QMCKL_SUCCESS, we are maybe in an _inplace function because the</span>
+<span style="color: #b22222;">                 memory was not allocated with qmckl_malloc </span>*/
+
+              <span style="color: #a020f0;">if</span> ((rc == QMCKL_SUCCESS) &amp;&amp; (mem_info_test.size != mem_info.size)) {
+                rc = qmckl_free(context, ctx-&gt;mo_basis.mo_vgl);
+                assert (rc == QMCKL_SUCCESS);
+                ctx-&gt;mo_basis.mo_vgl = <span style="color: #008b8b;">NULL</span>;
+              }
+            }
+
+            /* <span style="color: #b22222;">Allocate array </span>*/
+            <span style="color: #a020f0;">if</span> (ctx-&gt;mo_basis.mo_vgl == <span style="color: #008b8b;">NULL</span>) {
+
+              <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">mo_vgl</span> = (<span style="color: #228b22;">double</span>*) qmckl_malloc(context, mem_info);
+
+              <span style="color: #a020f0;">if</span> (mo_vgl == <span style="color: #008b8b;">NULL</span>) {
+                <span style="color: #a020f0;">return</span> qmckl_failwith( context,
+                                       QMCKL_ALLOCATION_FAILED,
+                                       <span style="color: #8b2252;">"qmckl_mo_basis_mo_vgl"</span>,
+                                       <span style="color: #008b8b;">NULL</span>);
+              }
+              ctx-&gt;mo_basis.mo_vgl = mo_vgl;
+            }
+
+
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #a020f0;">if</span> (rc != QMCKL_SUCCESS) {
+          <span style="color: #a020f0;">return</span> rc;
+        }
+
+        ctx-&gt;mo_basis.mo_vgl_date = ctx-&gt;date;
+      }
+
+      <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+    }
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdaf7765" class="outline-4">
+<h4 id="orgdaf7765"><span class="section-number-4">2.2.3</span> Compute</h4>
 <div class="outline-text-4" id="text-2-2-3">
-<table id="orgbf7b857" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orga76e6e3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1047,8 +1245,8 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-org9cd6be8" class="outline-4">
-<h4 id="org9cd6be8"><span class="section-number-4">2.2.4</span> HPC version</h4>
+<div id="outline-container-org31c0459" class="outline-4">
+<h4 id="org31c0459"><span class="section-number-4">2.2.4</span> HPC version</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_HPC
@@ -1120,7 +1318,7 @@ matrix multiplication instead of a dgemm, as exposed in
       }
     }
 
-    <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>;
+    <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n</span>=0;
 
     <span style="color: #a020f0;">for</span> (n=0 ; n &lt; nidx-4 ; n+=4) {
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">ck1</span> = coefficient_t + idx[n  ]*mo_num;
@@ -1165,8 +1363,7 @@ matrix multiplication instead of a dgemm, as exposed in
       }
     }
 
-    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">n0</span> = n &lt; 0 ? 0 : n;
-    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">m</span>=n0 ; m &lt; nidx ; m+=1) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">m</span>=n ; m &lt; nidx ; m+=1) {
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">ck</span> = coefficient_t + idx[m]*mo_num;
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a1</span> = av1[m];
       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">a2</span> = av2[m];
@@ -1195,14 +1392,14 @@ matrix multiplication instead of a dgemm, as exposed in
 </div>
 </div>
 
-<div id="outline-container-org941bb0d" class="outline-3">
-<h3 id="org941bb0d"><span class="section-number-3">2.3</span> Test</h3>
+<div id="outline-container-org93a40ca" class="outline-3">
+<h3 id="org93a40ca"><span class="section-number-3">2.3</span> Test</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-07-28 Thu 14:53</p>
+<p class="date">Created: 2022-09-02 Fri 11:38</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
