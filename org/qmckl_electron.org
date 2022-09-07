@@ -957,6 +957,8 @@ qmckl_exit_code qmckl_get_electron_ee_distance(qmckl_context context, double* co
 
 *** Provide                                                        :noexport:
 
+**** CPU
+
     #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
 qmckl_exit_code qmckl_provide_ee_distance(qmckl_context context);
     #+end_src
@@ -1015,7 +1017,77 @@ qmckl_exit_code qmckl_provide_ee_distance(qmckl_context context)
 }
     #+end_src
 
+
+**** Device pointers
+
+    #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_provide_ee_distance_device(qmckl_context context, int device_pointers);
+#endif
+    #+end_src
+
+    #+begin_src c :comments org :tangle (eval c) :noweb yes  :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_provide_ee_distance_device(qmckl_context context, int device_id)
+{
+
+  if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
+    return QMCKL_NULL_CONTEXT;
+  }
+
+  qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
+  assert (ctx != NULL);
+
+
+  /* Compute if necessary */
+  if (ctx->electron.walker.point.date > ctx->electron.ee_distance_date) {
+
+    if (ctx->electron.walker.num > ctx->electron.walker_old.num) {
+      omp_target_free(ctx->electron.ee_distance_device, device_id);
+      ctx->electron.ee_distance_device = NULL;
+    }
+
+    /* Allocate array */
+    if (ctx->electron.ee_distance == NULL) {
+
+      qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
+      mem_info.size = ctx->electron.num * ctx->electron.num *
+        ctx->electron.walker.num * sizeof(double);
+      double* ee_distance = (double*) qmckl_malloc_device(context, mem_info, device_id);
+
+      if (ee_distance == NULL) {
+        return qmckl_failwith( context,
+                               QMCKL_ALLOCATION_FAILED,
+                               "qmckl_ee_distance",
+                               NULL);
+      }
+      ctx->electron.ee_distance_device = ee_distance;
+    }
+
+    qmckl_exit_code rc =
+      qmckl_compute_ee_distance_device(context,
+                                ctx->electron.num,
+                                ctx->electron.walker.num,
+                                ctx->electron.walker.point.coord.data_device,
+                                ctx->electron.ee_distance_device,
+                                device_id);
+    if (rc != QMCKL_SUCCESS) {
+      return rc;
+    }
+
+    ctx->electron.ee_distance_date = ctx->date;
+  }
+
+  return QMCKL_SUCCESS;
+}
+#endif
+    #+end_src
+
+
 *** Compute
+
+**** CPU
+
    :PROPERTIES:
    :Name:     qmckl_compute_ee_distance
    :CRetType: qmckl_exit_code
@@ -1107,6 +1179,69 @@ qmckl_exit_code qmckl_compute_ee_distance (
 
     end function qmckl_compute_ee_distance
     #+end_src
+
+
+**** Device pointers
+
+    #+begin_src c :tangle (eval h_private_func) :comments org :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_compute_ee_distance_device (
+          const qmckl_context context,
+          const int64_t elec_num,
+          const int64_t walk_num,
+          const double* coord,
+          double* const ee_distance,
+          int device_id );
+#endif
+    #+end_src
+
+    #+begin_src c :comments org :tangle (eval c) :noweb yes
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_compute_ee_distance_device (
+          const qmckl_context context,
+          const int64_t elec_num,
+          const int64_t walk_num,
+          const double* coord,
+          double* const ee_distance,
+          int device_id )
+{
+    qmckl_exit_code rc = QMCKL_SUCCESS;
+
+    if(context == QMCKL_NULL_CONTEXT) {
+        return QMCKL_INVALID_CONTEXT;
+    }
+
+    if(elec_num <= 0) {
+        return QMCKL_INVALID_ARG_2;
+    }
+
+    if(walk_num <= 0) {
+        return QMCKL_INVALID_ARG_3;
+    }
+
+
+    for(int k=0; k<walk_num; k++) {
+        rc = qmckl_distance_device(
+            context,
+            'T', 'T',
+            elec_num, elec_num,
+            coord+k*elec_num, elec_num*walk_num,
+            coord+k*elec_num, elec_num*walk_num,
+            ee_distance+k*3, elec_num,
+            device_id
+        );
+
+        if(rc != QMCKL_SUCCESS) {
+            return rc;
+        }
+    }
+
+    return rc;
+
+}
+#endif
+    #+end_src
+
 
 *** Test
 
