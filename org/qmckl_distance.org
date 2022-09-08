@@ -719,7 +719,7 @@ qmckl_exit_code qmckl_distance_device (
   int i, j, transab;
   double x, y, z;
 
-  qmckl_exit_code info = QMCKL_SUCCESS;
+  qmckl_exit_code rc = QMCKL_SUCCESS;
 
   if (context == QMCKL_NULL_CONTEXT) {
      return QMCKL_INVALID_CONTEXT;
@@ -730,7 +730,7 @@ qmckl_exit_code qmckl_distance_device (
   }
 
   if (n <= 0) {
-     return QMCKL_INVALID_ARG_5
+     return QMCKL_INVALID_ARG_5;
   }
 
   if (transa == 'N' || transa == 'n') {
@@ -741,10 +741,8 @@ qmckl_exit_code qmckl_distance_device (
      transab = -100;
   }
 
-  if (transb == 'N' || transb == 'n') {
-     continue
-  } else if (transb == 'T' || transb == 't') {
-     transab = transab + 2
+  if (transb == 'T' || transb == 't') {
+     transab = transab + 2;
   } else {
      transab = -100;
   }
@@ -755,41 +753,41 @@ qmckl_exit_code qmckl_distance_device (
 
 
   // check for LDA
-  if ( (transab & 1) == 0 && LDA < 3 ) {
+  if ( (transab & 1) == 0 && lda < 3 ) {
      return QMCKL_INVALID_ARG_7;
   }
 
-  if ( (transab & 1) == 1 && LDA < m ) {
+  if ( (transab & 1) == 1 && lda < m ) {
      return QMCKL_INVALID_ARG_7;
   }
 
-  if ( (transab & 2) == 0 && LDA < 3 ) {
+  if ( (transab & 2) == 0 && lda < 3 ) {
      return QMCKL_INVALID_ARG_7;
   }
 
-  if ( (transab & 2) == 2 && LDA < m ) {
+  if ( (transab & 2) == 2 && lda < m ) {
      return QMCKL_INVALID_ARG_7;
   }
 
   // check for LDB
-  if ( (transab,1) == 0 && LDB < 3 ) {
-     return info = QMCKL_INVALID_ARG_9;
-  }
-
-  if ( (transab,1) == 1 && LDB < n) {
+  if ( (transab & 1) == 0 && ldb < 3 ) {
      return QMCKL_INVALID_ARG_9;
   }
 
-  if ( (transab,2) == 0 && LDB < 3) {
+  if ( (transab & 1) == 1 && ldb < n) {
      return QMCKL_INVALID_ARG_9;
   }
 
-  if ( (transab,2) == 2 && LDB < n) {
+  if ( (transab & 2) == 0 && ldb < 3) {
+     return QMCKL_INVALID_ARG_9;
+  }
+
+  if ( (transab & 2) == 2 && ldb < n) {
      return QMCKL_INVALID_ARG_9;
   }
 
   // check for LDC
-  if (LDC < m) {
+  if (ldc < m) {
      return QMCKL_INVALID_ARG_11;
   }
 
@@ -801,7 +799,7 @@ qmckl_exit_code qmckl_distance_device (
   real*8     , intent(out) :: C(ldc,*)
 ,*/
 
-  #pragma omp target(A, B, C)
+  #pragma omp target is_device_ptr(A, B, C)
   {
 
   // TODO Parallelize this stuff
@@ -809,8 +807,8 @@ qmckl_exit_code qmckl_distance_device (
   switch(transab) {
 
   case 0:
-     for(int j=0; j<n; n++) {
-        for(int i=0, i<m; m++) {
+     for(int j=0; j<n; j++) {
+        for(int i=0; i<m; i++) {
 		   x = A[i*lda] - B[j*ldb];
            y = A[i*lda + 1] - B[j*ldb + 1];
            z = A[i*lda + 2] - B[j*ldb + 2];
@@ -820,8 +818,8 @@ qmckl_exit_code qmckl_distance_device (
      break;
 
   case 1:
-     for(int j=0, j<n; j++) {
-        for(int i=1, i<m; i++) {
+     for(int j=0; j<n; j++) {
+        for(int i=1; i<m; i++) {
            x = A[i]         - B[j * ldb];
            y = A[i + lda ]  - B[1 + j*ldb];
            z = A[i + 2*lda] - B[2 + j*ldb];
@@ -831,8 +829,8 @@ qmckl_exit_code qmckl_distance_device (
      break;
 
   case 2:
-     for(int j=1, j<n; j++) {
-        for(int i=1, i<m; i++) {
+     for(int j=1; j<n; j++) {
+        for(int i=1; i<m; i++) {
            x = A[i*lda]     - B[j];
            y = A[1 + i*lda] - B[j + ldb];
            z = A[2 + i*lda] - B[j +2*ldb];
@@ -842,12 +840,12 @@ qmckl_exit_code qmckl_distance_device (
      break;
 
   case 3:
-     for(int j=1, j<n; j++) {
-        for(int i=1, i<m; i++) {
+     for(int j=1; j<n; j++) {
+        for(int i=1; i<m; i++) {
            x = A[i]       - B[j];
            y = A[i+lda]   - B[j+ldb];
            z = A[i+2*lda] - B[j+2*lda];
-           C[i,j] = sqrt(x*x + y*y + z*z);
+           C[i + j*ldc] = sqrt(x*x + y*y + z*z);
         }
      }
      break;

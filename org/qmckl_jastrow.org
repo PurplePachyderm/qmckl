@@ -4884,7 +4884,136 @@ end function qmckl_compute_factor_een_rescaled_e_deriv_e_f
 
 **** Device pointers
 
-TODO Version C
+
+    #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
+         const qmckl_context context,
+         const int64_t walk_num,
+         const int64_t elec_num,
+         const int64_t cord_num,
+         const double rescale_factor_kappa_ee,
+         const double* coord_new,
+         const double* ee_distance,
+         const double* een_rescaled_e,
+         double* const een_rescaled_e_deriv_e,
+         int device_id
+);
+#endif
+   #+end_src
+
+
+
+    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
+  const qmckl_context context,
+  const int64_t walk_num,
+  const int64_t elec_num,
+  const int64_t cord_num,
+  const double rescale_factor_kappa_ee,
+  const double* coord_new,
+  const double* ee_distance,
+  const double* een_rescaled_e,
+  double* const een_rescaled_e_deriv_e,
+  int device_id
+){
+
+  double rij_inv, kappa_l;
+
+  double* elec_dist_deriv_e = omp_target_alloc(sizeof(double*) * elec_num * elec_num * 4, device_id);
+
+
+  if (context == QMCKL_NULL_CONTEXT){
+    return QMCKL_INVALID_CONTEXT;
+  }
+
+  if (walk_num <= 0){
+    return QMCKL_INVALID_ARG_2;
+  }
+
+
+  if(elec_num <= 0){
+    return QMCKL_INVALID_ARG_3;
+  }
+
+  if(cord_num <= 0){
+    return QMCKL_INVALID_ARG_4;
+  }
+
+  #pragma omp target is_device_ptr(elec_dist_deriv_e, coord_new, ee_distance, een_rescaled_e, een_rescaled_e_deriv_e)
+  {
+
+  for(int nw = 0; nw < walk_num; nw++){
+    for(int j = 0; j < elec_num; j++){
+      for(int i = 0; i < elec_num; i++){
+        rij_inv = 1/ee_distance[nw * elec_num * elec_num + j *elec_num + i];
+        for(int ii=0; ii < 3; ii++){
+          elec_dist_deriv_e[j*elec_num * 4 + i * 4 + ii] = (coord_new[nw * 3 *elec_num + ii * elec_num + i] - coord_new[nw * 3 *elec_num + ii * elec_num + j]) * rij_inv;
+
+        }
+        elec_dist_deriv_e[j*elec_num*4 + i*4 + 3] = 2 * rij_inv;
+      }
+      elec_dist_deriv_e[j*elec_num*4 + j*4 + 0] = 0;
+      elec_dist_deriv_e[j*elec_num*4 + j*4 + 1] = 0;
+      elec_dist_deriv_e[j*elec_num*4 + j*4 + 2] = 0;
+      elec_dist_deriv_e[j*elec_num*4 + j*4 + 3] = 0;
+    }
+
+
+    for(int l=1; l < cord_num+1; l++){
+      kappa_l = - l * rescale_factor_kappa_ee;
+      for(int j=0; j < elec_num; j++){
+        for(int i=0; i < elec_num ; i++){
+
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 0 * elec_num + i] = kappa_l * elec_dist_deriv_e[j * elec_num * 4 + i * 4 + 0];
+
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 1 * elec_num + i] = \
+            kappa_l * elec_dist_deriv_e[j * elec_num * 4 + i * 4 + 1];
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 2 * elec_num + i] = \
+            kappa_l * elec_dist_deriv_e[j * elec_num * 4 + i * 4 + 2];
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 3 * elec_num + i] = \
+            kappa_l * elec_dist_deriv_e[j * elec_num * 4 + i * 4 + 3];
+
+
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 3 * elec_num + i] = \
+            een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 3 * elec_num + i] \
+             + een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 0 * elec_num + i] * een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 0 * elec_num + i] \
+             + een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 1 * elec_num + i] * een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 1 * elec_num + i] \
+             + een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 2 * elec_num + i] * een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 2 * elec_num + i];
+
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 0 * elec_num + i] = een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 0 * elec_num + i] * een_rescaled_e[nw * ((cord_num+1)) * elec_num * elec_num + l * elec_num * elec_num + j * elec_num + i];
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 1 * elec_num + i] = een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 1 * elec_num + i] * een_rescaled_e[nw * ((cord_num+1)) * elec_num * elec_num + l * elec_num * elec_num + j * elec_num + i];
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 2 * elec_num + i] = een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 2 * elec_num + i] * een_rescaled_e[nw * ((cord_num+1)) * elec_num * elec_num + l * elec_num * elec_num + j * elec_num + i];
+
+          een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 3 * elec_num + i] = een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 3 * elec_num + i] * een_rescaled_e[nw * ((cord_num+1)) * elec_num * elec_num + l * elec_num * elec_num + j * elec_num + i];
+        }
+      }
+    }
+  }
+
+  }
+
+  omp_target_free(elec_dist_deriv_e, device_id);
+
+  return QMCKL_SUCCESS;
+
+}
+#endif
+   #+end_src
+
+
+    #+end_src
+
+
 *** Test
 #+name: een_e_deriv_e
     #+begin_src python :results output :exports none :noweb yes
@@ -5881,7 +6010,147 @@ end function qmckl_compute_factor_een_rescaled_n_deriv_e_f
 
 **** Device pointers
 
-TODO C + GPU version
+    #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+    qmckl_exit_code qmckl_compute_factor_een_rescaled_n_deriv_e_device (
+          qmckl_context context,
+          int64_t walk_num,
+          int64_t elec_num,
+          int64_t nucl_num,
+          int64_t cord_num,
+          double rescale_factor_kappa_en,
+          double* coord_ee,
+          double* coord_en,
+          double* en_distance,
+          double* een_rescaled_n,
+          double* een_rescaled_n_deriv_e,
+          int device_id );
+#endif
+    #+end_src
+
+
+    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+    qmckl_exit_code qmckl_compute_factor_een_rescaled_n_deriv_e_device (
+          qmckl_context context,
+          int64_t walk_num,
+          int64_t elec_num,
+          int64_t nucl_num,
+          int64_t cord_num,
+          double rescale_factor_kappa_en,
+          double* coord_ee,
+          double* coord_en,
+          double* en_distance,
+          double* een_rescaled_n,
+          double* een_rescaled_n_deriv_e,
+          int device_id )
+{
+
+  qmckl_exit_code rc = QMCKL_SUCCESS;
+
+  double * elnuc_dist_deriv_e = (double*) omp_target_alloc(4*elec_num*nucl_num, device_id);
+
+  if (context == QMCKL_NULL_CONTEXT) {
+     return QMCKL_INVALID_CONTEXT;
+  }
+
+  if (walk_num <= 0) {
+     return QMCKL_INVALID_ARG_2;
+  }
+
+  if (elec_num <= 0) {
+     return QMCKL_INVALID_ARG_3;
+  }
+
+  if (nucl_num <= 0) {
+     return QMCKL_INVALID_ARG_4;
+  }
+
+  if (cord_num <= 0) {
+     return QMCKL_INVALID_ARG_5;
+  }
+
+  /*
+  double precision      , intent(in)  :: coord_ee(elec_num,3,walk_num)
+  double precision      , intent(in)  :: coord_en(nucl_num,3)
+  double precision      , intent(in)  :: en_distance(elec_num,nucl_num,walk_num)
+  double precision      , intent(in)  :: een_rescaled_n(elec_num,nucl_num,0:cord_num,walk_num)
+  double precision      , intent(out) :: een_rescaled_n_deriv_e(elec_num,4,nucl_num,0:cord_num,walk_num)
+  double precision,dimension(4,elec_num,nucl_num),allocatable :: elnuc_dist_deriv_e
+  ,*/
+
+  // Pre-compute offsets for large dimensions arrays
+  // For een_rescaled_n :
+  int r_offset_1 = elec_num;
+  int r_offset_2 = r_offset_1 * nucl_num;
+  int r_offset_3 = r_offset_2 * (cord_num+1);
+  // For een_rescaled_n_deriv_e:
+  int rd_offset_1 = elec_num;
+  int rd_offset_2 = rd_offset_1 * 4;
+  int rd_offset_3 = rd_offset_2 * nucl_num;
+  int rd_offset_4 = rd_offset_3 * (cord_num+1);
+
+  #pragma omp target is_device_ptr(coord_ee, coord_en, en_distance, een_rescaled_n, een_rescaled_n_deriv_e, elnuc_dist_deriv_e)
+  {
+
+  // TODO Parallelize this stuff
+
+  // Prepare table of exponentiated distances raised to appropriate power
+
+  for(int i=0; i<elec_num*4*nucl_num*(cord_num+1)*walk_num; i++) {
+    een_rescaled_n_deriv_e[i] = 0.0;
+  }
+
+  for(int nw=0; nw<walk_num; nw++) {
+
+  // prepare the actual een table
+  for(int a=0; a<nucl_num; a++) {
+    for(int i=0; i<elec_num; i++) {
+      double ria_inv = 1.0 / en_distance[i + a+ nw];
+      for(int ii=0; ii<3; ii++) {
+        elnuc_dist_deriv_e[ii + i*(4) + a*(4*elec_num)] = (coord_ee[i + ii*(elec_num) + nw*(elec_num*3)] - coord_en[a + ii*(nucl_num)]) * ria_inv;
+      }
+      elnuc_dist_deriv_e[3 + i*(4) + a*(4*elec_num)] = 2.0 * ria_inv;
+    }
+  }
+
+  for(int l=0; l<(cord_num+1); l++) {
+    double kappa_l = - ((double) l) * rescale_factor_kappa_en;
+    for(int a=0; nucl_num; a++) {
+      for(int i=0; elec_num; i++) {
+
+        een_rescaled_n_deriv_e[0] = 1.0;
+        een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[0 + i*4 + a*4*elec_num];
+
+        een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[1 + i*4 + a*4*elec_num];
+
+        een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[2 + i*4 + a*4*elec_num];
+
+        een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[3 + i*4 + a*4*elec_num];
+
+        een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] + een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] + een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] + een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4];
+
+        een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
+
+        een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
+
+        een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
+
+        een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
+      }
+    }
+  }
+
+  }
+
+  }
+
+  omp_target_free(elnuc_dist_deriv_e, device_id);
+  return rc;
+}
+#endif
+    #+end_src
+
 
 
 *** Test
@@ -10037,7 +10306,114 @@ end function qmckl_compute_factor_een_deriv_e_f
 
 **** Device pointers
 
-TODO C + GPU version
+    #+begin_src c :comments org :tangle (eval h_private_func) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+    qmckl_exit_code qmckl_compute_factor_een_deriv_e_device (
+      const qmckl_context context,
+      const int64_t walk_num,
+      const int64_t elec_num,
+      const int64_t nucl_num,
+      const int64_t cord_num,
+      const int64_t dim_cord_vect,
+      const double* cord_vect_full,
+      const int64_t* lkpm_combined_index,
+      const double* tmp_c,
+      const double* dtmp_c,
+      const double* een_rescaled_n,
+      const double* een_rescaled_n_deriv_e,
+      double* const factor_een_deriv_e,
+	  int device_id );
+#endif
+    #+end_src
+
+    #+begin_src c :comments org :tangle (eval c) :noweb yes :exports none
+#ifdef HAVE_DEVICE_POINTERS
+    qmckl_exit_code qmckl_compute_factor_een_deriv_e_device (
+      const qmckl_context context,
+      const int64_t walk_num,
+      const int64_t elec_num,
+      const int64_t nucl_num,
+      const int64_t cord_num,
+      const int64_t dim_cord_vect,
+      const double* cord_vect_full,
+      const int64_t* lkpm_combined_index,
+      const double* tmp_c,
+      const double* dtmp_c,
+      const double* een_rescaled_n,
+      const double* een_rescaled_n_deriv_e,
+      double* const factor_een_deriv_e,
+      int device_id ){
+
+      qmckl_exit_code rc = QMCKL_SUCCESS;
+
+      int l,k,p,m;
+      double accu, accu2, cn;
+
+      if(context == QMCKL_NULL_CONTEXT){
+        return QMCKL_INVALID_CONTEXT;
+      }
+
+      if(walk_num < 0){
+        return QMCKL_INVALID_ARG_2;
+      }
+
+      if(elec_num < 0){
+        return QMCKL_INVALID_ARG_3;
+      }
+
+      if(nucl_num < 0){
+        return QMCKL_INVALID_ARG_4;
+      }
+
+      if(cord_num < 0){
+        return QMCKL_INVALID_ARG_5;
+      }
+
+
+
+      #pragma omp target is_device_ptr(cord_vect_full, lkpm_combined_index, tmp_c, dtmp_c, een_rescaled_n, een_rescaled_n_deriv_e, factor_een_deriv_e)
+      {
+
+      for(int nw = 0; nw < walk_num; nw++){
+        for(int n =0; n < dim_cord_vect; n++){
+          l = lkpm_combined_index[0 * dim_cord_vect + n];
+          k = lkpm_combined_index[1 * dim_cord_vect + n];
+          p = lkpm_combined_index[2 * dim_cord_vect + n];
+          m = lkpm_combined_index[3 * dim_cord_vect + n];
+
+
+          for(int a = 1; a < nucl_num; a++){
+            cn = cord_vect_full[n * dim_cord_vect + a];
+            if (cn != 0){
+             for(int ii = 0; ii < 4; ii++){
+               for(int j = 0; j < elec_num; j++){
+                 factor_een_deriv_e[nw * 4 * elec_num + ii * elec_num + j] = factor_een_deriv_e[nw * 4 * elec_num + ii * elec_num + j] \
+                   + tmp_c[nw * cord_num * (cord_num + 1) * nucl_num * elec_num + k * (cord_num + 1) * nucl_num * elec_num + m * nucl_num * elec_num + a * elec_num + j]    * een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + ii * elec_num + j]    + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + ii * elec_num + j]    * een_rescaled_n[nw * (cord_num + 1) * nucl_num * elec_num + m * nucl_num * elec_num + a * elec_num + j]    + tmp_c[nw * cord_num * (cord_num + 1) * nucl_num * elec_num + k * (cord_num + 1) * nucl_num * elec_num + m * nucl_num * elec_num + a * elec_num + j] *    een_rescaled_n[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + m * nucl_num * 4 * elec_num + a * 4 * elec_num + ii * elec_num + j] * cn;
+               }
+             }
+
+             cn = cn + cn;
+             for(int j=0; j < elec_num ; j++){
+               factor_een_deriv_e[nw * 4 * elec_num + 4 * elec_num + j] = factor_een_deriv_e[nw * 4 * elec_num + 4 * elec_num + j] \
+                   + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j]\
+                   + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j]\
+                   + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j]\
+                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j]\
+                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j]\
+                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j] * cn;
+              }
+            }
+          }
+        }
+      }
+
+      }
+
+      return rc;
+      }
+#endif
+    #+end_src
+
 
 *** Test
     #+begin_src python :results output :exports none :noweb yes
