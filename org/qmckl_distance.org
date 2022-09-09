@@ -714,146 +714,148 @@ qmckl_exit_code qmckl_distance_device (
     const int64_t ldc,
     int device_id
 ) {
+  uint64_t transab;
+  double x,y,z;
 
-
-  int i, j, transab;
-  double x, y, z;
-
-  qmckl_exit_code rc = QMCKL_SUCCESS;
-
-  if (context == QMCKL_NULL_CONTEXT) {
-     return QMCKL_INVALID_CONTEXT;
+  if (context == QMCKL_NULL_CONTEXT){
+    return QMCKL_INVALID_CONTEXT;
   }
 
-  if (m <= 0) {
-     return QMCKL_INVALID_ARG_4;
+  if(m <= 1e-5){
+    return QMCKL_INVALID_ARG_4;
   }
 
-  if (n <= 0) {
-     return QMCKL_INVALID_ARG_5;
+  if(n <= 1e-5){
+    return QMCKL_INVALID_ARG_5;
   }
 
-  if (transa == 'N' || transa == 'n') {
-     transab = 0;
-  } else if (transa == 'T' || transa == 't') {
-     transab = 1;
-  } else {
-     transab = -100;
+
+  if (transa == 'N' || transa == 'n'){
+    transab = 0;
+  }
+  else if (transa == 'T' || transa == 't'){
+    transab = 1;
+  }else{
+    transab = -100;
   }
 
-  if (transb == 'T' || transb == 't') {
-     transab = transab + 2;
-  } else {
-     transab = -100;
+  if (transb == 'N' || transb == 'n'){
+    transab = transab;
   }
-
-  if (transab < 0) {
-     return QMCKL_INVALID_ARG_1;
+  else if (transa == 'T' || transa == 't'){
+    transab = transab + 2;
+  }else{
+    transab = -100;
   }
-
 
   // check for LDA
-  if ( (transab & 1) == 0 && lda < 3 ) {
-     return QMCKL_INVALID_ARG_7;
+  if (transab & 1 == 0 && lda < 3) {
+    return QMCKL_INVALID_ARG_7;
   }
 
-  if ( (transab & 1) == 1 && lda < m ) {
-     return QMCKL_INVALID_ARG_7;
+  if (transab & 1 == 1 && lda < m) {
+    return QMCKL_INVALID_ARG_7;
   }
 
-  if ( (transab & 2) == 0 && lda < 3 ) {
-     return QMCKL_INVALID_ARG_7;
+  if (transab & 2 == 0 && lda < 3) {
+    return QMCKL_INVALID_ARG_7;
   }
 
-  if ( (transab & 2) == 2 && lda < m ) {
-     return QMCKL_INVALID_ARG_7;
+  if (transab & 2 == 2 && lda < m) {
+    return QMCKL_INVALID_ARG_7;
   }
 
   // check for LDB
-  if ( (transab & 1) == 0 && ldb < 3 ) {
-     return QMCKL_INVALID_ARG_9;
+  if (transab & 1 == 0 && ldb < 3) {
+    return QMCKL_INVALID_ARG_9;
   }
 
-  if ( (transab & 1) == 1 && ldb < n) {
-     return QMCKL_INVALID_ARG_9;
+  if (transab & 1 == 1 && ldb < n) {
+    return QMCKL_INVALID_ARG_9;
   }
 
-  if ( (transab & 2) == 0 && ldb < 3) {
-     return QMCKL_INVALID_ARG_9;
+  if (transab & 2 == 0 && ldb < 3) {
+    return QMCKL_INVALID_ARG_9;
   }
 
-  if ( (transab & 2) == 2 && ldb < n) {
-     return QMCKL_INVALID_ARG_9;
+  if (transab & 2 == 2 && ldb < n) {
+    return QMCKL_INVALID_ARG_9;
   }
-
   // check for LDC
   if (ldc < m) {
-     return QMCKL_INVALID_ARG_11;
+    return QMCKL_INVALID_ARG_11;
   }
 
-/*
-  real*8     , intent(in)  :: A(lda,*)
-  integer*8  , intent(in)  :: ldb
-  real*8     , intent(in)  :: B(ldb,*)
-  integer*8  , intent(in)  :: ldc
-  real*8     , intent(out) :: C(ldc,*)
-,*/
+  switch(transab)
+    {
+    case(0):
+      #pragma omp target is_device_ptr(A, B, C)
+      {
+      #pragma omp teams distribute parallel for simd
+      for(int j = 0; j < n; j++){
+        for(int i = 0; j < m; i++){
+          x = A[i * 3 + 0] - B[j * 3 + 0];
+          y = A[i * 3 + 1] - B[j * 3 + 1];
+          z = A[i * 3 + 2] - B[j * 3 + 2];
 
-  #pragma omp target is_device_ptr(A, B, C)
-  {
-
-  // TODO Parallelize this stuff
-
-  switch(transab) {
-
-  case 0:
-     for(int j=0; j<n; j++) {
-        for(int i=0; i<m; i++) {
-		   x = A[i*lda] - B[j*ldb];
-           y = A[i*lda + 1] - B[j*ldb + 1];
-           z = A[i*lda + 2] - B[j*ldb + 2];
-		   C[i + j*ldc] = sqrt(x*x + y*y + z*z);
+          C[j * n + i] = sqrt(x*x + y*y + z*z);
         }
-     }
-     break;
+      }
+      }
+      break;
 
-  case 1:
-     for(int j=0; j<n; j++) {
-        for(int i=1; i<m; i++) {
-           x = A[i]         - B[j * ldb];
-           y = A[i + lda ]  - B[1 + j*ldb];
-           z = A[i + 2*lda] - B[2 + j*ldb];
-           C[i + j*ldc] = sqrt(x*x + y*y + z*z);
+    case(1):
+     #pragma omp target is_device_ptr(A, B, C)
+     {
+     #pragma omp teams distribute parallel for simd
+     for(int j = 0; j < n; j++){
+        for(int i = 0; i < m; i++){
+          x = A[0 * lda + i] - B[j * 3 + 0];
+          y = A[1 * lda + i] - B[j * 3 + 1];
+          z = A[2 * lda + i] - B[j * 3 + 2];
+
+          C[j * n + i] = sqrt(x*x + y*y + z*z);
         }
-     }
-     break;
+      }
+      }
+      break;
 
-  case 2:
-     for(int j=1; j<n; j++) {
-        for(int i=1; i<m; i++) {
-           x = A[i*lda]     - B[j];
-           y = A[1 + i*lda] - B[j + ldb];
-           z = A[2 + i*lda] - B[j +2*ldb];
-           C[i + j*ldc] = sqrt(x*x + y*y + z*z);
+    case(2):
+      #pragma omp target is_device_ptr(A, B, C)
+      {
+      #pragma omp teams distribute parallel for simd
+      for(int j = 0; j < n; j++){
+        for(int i = 0; i < m; i++){
+          x = A[i * 3 + 0] - B[0 * ldb + j];
+          y = A[i * 3 + 1] - B[1 * ldb + j];
+          z = A[i * 3 + 2] - B[2 * ldb + j];
+
+          C[j * n + i] = sqrt(x*x + y*y + z*z);
         }
-     }
-     break;
+      }
+      }
+      break;
 
-  case 3:
-     for(int j=1; j<n; j++) {
-        for(int i=1; i<m; i++) {
-           x = A[i]       - B[j];
-           y = A[i+lda]   - B[j+ldb];
-           z = A[i+2*lda] - B[j+2*lda];
-           C[i + j*ldc] = sqrt(x*x + y*y + z*z);
+    case(3):
+      #pragma omp target is_device_ptr(A, B, C)
+      {
+      #pragma omp teams distribute parallel for simd
+      for(int j = 0; j < n; j++){
+        for(int i = 0; i < m; i++){
+          x = A[0 * lda + i] - B[0 * ldb + j];
+          y = A[1 * lda + i] - B[1 * ldb + j];
+          z = A[2 * lda + i] - B[2 * ldb + j];
+
+          C[j * n + i] = sqrt((x*x) + (y*y) + (z*z));
         }
-     }
-     break;
+      }
+      }
+      break;
+    }
 
-  }
-  }
 
-  return rc;
+  return QMCKL_SUCCESS;
+
 }
 #endif
     #+end_src

@@ -425,8 +425,6 @@ qmckl_exit_code qmckl_init_jastrow(qmckl_context context);
 
    #+begin_src c :comments org :tangle (eval c)
 qmckl_exit_code qmckl_init_jastrow(qmckl_context context) {
-
-  printf("[qmckl_init_jastrow] In\n");
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return false;
   }
@@ -437,8 +435,6 @@ qmckl_exit_code qmckl_init_jastrow(qmckl_context context) {
   ctx->jastrow.uninitialized = (1 << 6) - 1;
 
   /* Default values */
-
-  printf("[qmckl_init_jastrow] Out\n");
   return QMCKL_SUCCESS;
 }
    #+end_src
@@ -772,15 +768,12 @@ qmckl_exit_code  qmckl_set_jastrow_cord_vector       (qmckl_context context, con
    #+NAME:pre2
    #+begin_src c  :exports none
 if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
-	printf("QMCKL_NULL_CONTEXT\n");
   return QMCKL_NULL_CONTEXT;
  }
 
 qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
 
 
-printf("Mask = %d\n", mask);
-printf("uninitialized=%d\n", ctx->jastrow.uninitialized);
 if (mask != 0 && !(ctx->jastrow.uninitialized & mask)) {
     printf("Mask error\n");
     printf("%d %d\n", mask, ctx->jastrow.uninitialized );
@@ -814,8 +807,6 @@ qmckl_set_jastrow_ord_num(qmckl_context context,
                           const int64_t cord_num)
 {
 
-  printf("[qmckl_set_jastrow_ord_num] In\n");
-
   int32_t mask = 1;
 
 <<pre2>>
@@ -846,7 +837,6 @@ qmckl_set_jastrow_ord_num(qmckl_context context,
   ctx->jastrow.cord_num = cord_num;
 
   <<post2>>
-  printf("[qmckl_set_jastrow_ord_num] Out\n");
 }
 
 
@@ -854,7 +844,6 @@ qmckl_exit_code
 qmckl_set_jastrow_type_nucl_num(qmckl_context context, const int64_t type_nucl_num)
 {
 
-  printf("[qmckl_set_jastrow_type_nucl_num] In\n");
   int32_t mask = 1 << 1;
 
 <<pre2>>
@@ -869,7 +858,6 @@ qmckl_set_jastrow_type_nucl_num(qmckl_context context, const int64_t type_nucl_n
   ctx->jastrow.type_nucl_num = type_nucl_num;
 
   <<post2>>
-  printf("[qmckl_set_jastrow_type_nucl_num] Out\n");
 }
 
 
@@ -1164,27 +1152,12 @@ qmckl_set_jastrow_type_nucl_vector_device(qmckl_context context,
                                           int device_id)
 {
 
-  printf("[qmckl_set_jastrow_type_nucl_vector_device] In\n");
   int32_t mask = 1 << 2;
 
   <<pre2>>
 
-  #pragma omp target is_device_ptr(type_nucl_vector)
-  {
-  printf("type_nucl_vect adr %p, type nuc first = %d\n", type_nucl_vector, type_nucl_vector[2]);
-  }
-
-
   int64_t type_nucl_num;
   qmckl_exit_code rc = qmckl_get_jastrow_type_nucl_num(context, &type_nucl_num);
-
-  #pragma omp target is_device_ptr(type_nucl_vector)
-  {
-  printf("type_nucl_vect size %d, type nuc first = %ld\n", sizeof(type_nucl_vector), type_nucl_vector[2]);
-  }
-
-
-
 
   if (rc != QMCKL_SUCCESS) return rc;
 
@@ -1210,20 +1183,10 @@ qmckl_set_jastrow_type_nucl_vector_device(qmckl_context context,
                              NULL);
     }
   }
-#pragma omp target is_device_ptr(type_nucl_vector)
-  {
-  printf("type_nucl_vect size %d, type nuc first = %ld\n", sizeof(type_nucl_vector), type_nucl_vector[2]);
-  }
-
 
   qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
   mem_info.size = nucl_num * sizeof(int64_t);
   int64_t* new_array = (int64_t*)qmckl_malloc_device(context, mem_info, device_id);
-#pragma omp target is_device_ptr(type_nucl_vector, new_array)
-  {
-  printf("type_nucl_vect size %d, type nuc first = %ld\n", sizeof(type_nucl_vector), type_nucl_vector[2]);
-  }
-
 
   if(new_array == NULL) {
     return qmckl_failwith( context,
@@ -1240,7 +1203,6 @@ qmckl_set_jastrow_type_nucl_vector_device(qmckl_context context,
   ctx->jastrow.type_nucl_vector = new_array;
 
   <<post2_device>>
-  printf("[qmckl_set_jastrow_type_nucl_vector_device] Out\n");
 }
 
 
@@ -1250,7 +1212,6 @@ qmckl_set_jastrow_aord_vector_device(qmckl_context context,
                                      const int64_t size_max,
                                      int device_id)
 {
-  printf("[qmckl_set_jastrow_aord_vector_device] In\n");
   int32_t mask = 1 << 3;
 
   <<pre2>>
@@ -1295,11 +1256,9 @@ qmckl_set_jastrow_aord_vector_device(qmckl_context context,
                            "qmckl_set_jastrow_aord_vector",
                            "Array too small. Expected (aord_num+1)*type_nucl_num");
   }
-	printf("[qmckl_set_jastrow_aord_vector_device] 6\n");
 
   double* new_array = (double*) qmckl_malloc_device(context, mem_info, device_id);
 
-	printf("[qmckl_set_jastrow_aord_vector_device] 7\n");
 
   if(new_array == NULL) {
     return qmckl_failwith( context,
@@ -1307,7 +1266,6 @@ qmckl_set_jastrow_aord_vector_device(qmckl_context context,
                            "qmckl_set_jastrow_coefficient",
                            NULL);
   }
-	printf("[qmckl_set_jastrow_aord_vector_device] 8\n");
 
   omp_target_memcpy(
     new_array, aord_vector, mem_info.size,
@@ -1316,10 +1274,8 @@ qmckl_set_jastrow_aord_vector_device(qmckl_context context,
   );
 
   ctx->jastrow.aord_vector_device = new_array;
-  printf("[qmckl_set_jastrow_aord_vector_device] 9\n");
 
   <<post2_device>>
-  printf("[qmckl_set_jastrow_aord_vector_device] Out\n");
 }
 
 
@@ -1329,7 +1285,6 @@ qmckl_set_jastrow_bord_vector_device(qmckl_context context,
                                      const int64_t size_max,
                                      int device_id)
 {
-  printf("[qmckl_set_jastrow_bord_vector_device] In\n");
   int32_t mask = 1 << 4;
 
   <<pre2>>
@@ -1389,7 +1344,6 @@ qmckl_set_jastrow_bord_vector_device(qmckl_context context,
   ctx->jastrow.bord_vector_device = new_array;
 
   <<post2_device>>
-  printf("[qmckl_set_jastrow_bord_vector_device] Out\n");
 }
 
 
@@ -1400,7 +1354,6 @@ qmckl_set_jastrow_cord_vector_device(qmckl_context context,
                                      int device_id)
 {
 
-  printf("[qmckl_set_jastrow_cord_vector_device] In\n");
   int32_t mask = 1 << 5;
 
   <<pre2>>
@@ -1467,9 +1420,7 @@ qmckl_set_jastrow_cord_vector_device(qmckl_context context,
 
   ctx->jastrow.cord_vector_device = new_array;
 
-  printf("[qmckl_set_jastrow_cord_vector_device] About to post2_device\n");
   <<post2_device>>
-  printf("[qmckl_set_jastrow_cord_vector_device] Out\n");
 }
 #endif
    #+end_src
@@ -1538,14 +1489,12 @@ qmckl_exit_code qmckl_finalize_jastrow(qmckl_context context) {
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code qmckl_finalize_jastrow_device(qmckl_context context) {
 
-  printf("[qmckl_finalize_jastrow_device] In\n");
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_INVALID_CONTEXT;
   }
 
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   assert (ctx != NULL);
-  printf("[qmckl_finalize_jastrow_device] 1\n");
 
   /* ----------------------------------- */
   /* Check for the necessary information */
@@ -1561,7 +1510,6 @@ qmckl_exit_code qmckl_finalize_jastrow_device(qmckl_context context) {
                            "qmckl_electron",
                            NULL);
   }
-  printf("[qmckl_finalize_jastrow_device] 2\n");
 
   /* Check for the nucleus data
      1. nucl_num
@@ -1573,9 +1521,7 @@ qmckl_exit_code qmckl_finalize_jastrow_device(qmckl_context context) {
                            "qmckl_nucleus",
                            NULL);
   }
-  printf("[qmckl_finalize_jastrow_device] 3\n");
 
-  printf("[qmckl_finalize_jastrow_device] Out\n");
   qmckl_exit_code rc = QMCKL_SUCCESS;
   return rc;
 
@@ -3831,6 +3777,8 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
 qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int device_id)
 {
 
+  printf("[qmckl_provide_een_rescaled_e_device] In\n");
+
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
   }
@@ -3841,6 +3789,7 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
   /* Check if ee distance is provided */
   qmckl_exit_code rc = qmckl_provide_ee_distance_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_een_rescaled_e_device] 1\n");
 
   /* Compute if necessary */
   if (ctx->date > ctx->jastrow.een_rescaled_e_date) {
@@ -3856,7 +3805,7 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
       qmckl_memory_info_struct mem_info = qmckl_memory_info_struct_zero;
       mem_info.size = ctx->electron.num * ctx->electron.num *
         ctx->electron.walker.num * (ctx->jastrow.cord_num + 1) * sizeof(double);
-      double* een_rescaled_e = (double*) qmckl_malloc(context, mem_info);
+      double* een_rescaled_e = (double*) qmckl_malloc_device(context, mem_info, device_id);
 
       if (een_rescaled_e == NULL) {
         return qmckl_failwith( context,
@@ -3866,6 +3815,7 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
       }
       ctx->jastrow.een_rescaled_e_device = een_rescaled_e;
     }
+    printf("[qmckl_provide_een_rescaled_e_device] 2\n");
 
     rc = qmckl_compute_een_rescaled_e_device(context,
                                       ctx->electron.walker.num,
@@ -3875,6 +3825,7 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
                                       ctx->electron.ee_distance_device,
                                       ctx->jastrow.een_rescaled_e_device,
                                       device_id);
+    printf("[qmckl_provide_een_rescaled_e_device] 3\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
@@ -3882,6 +3833,7 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
     ctx->jastrow.een_rescaled_e_date = ctx->date;
   }
 
+  printf("[qmckl_provide_een_rescaled_e_device] Out\n");
   return QMCKL_SUCCESS;
 }
 #endif
@@ -4225,6 +4177,8 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
   double* const een_rescaled_e,
   int device_id ) {
 
+  printf("[qmckl_compute_een_rescaled_e_device] In\n");
+
   double   *een_rescaled_e_ij;
   double   x;
   const int64_t   elec_pairs = (elec_num * (elec_num - 1)) / 2;
@@ -4256,17 +4210,20 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
   // Prepare table of exponentiated distances raised to appropriate power
   // init
 
-  #pragma omp target is_device_ptr(ee_distance, een_rescaled_e, een_rescaled_e_ij)
+  // TODO Parallelism can probably be heavily optimized
+
+  #pragma omp target is_device_ptr(een_rescaled_e)
   {
-
-  // TODO Parallelize this stuff
-
+  #pragma omp teams distribute parallel for simd
   for (int kk = 0; kk < walk_num*(cord_num+1)*elec_num*elec_num; ++kk) {
     een_rescaled_e[kk]= 0.0;
   }
+  }
 
+  #pragma omp target is_device_ptr(ee_distance, een_rescaled_e, een_rescaled_e_ij)
+  {
   for (int nw = 0; nw < walk_num; ++nw) {
-
+    #pragma omp parallel for
     for (int kk = 0; kk < len_een_ij; ++kk) {
       // this array initialized at 0 except een_rescaled_e_ij(:, 1) = 1.0d0
       // and the arrangement of indices is [cord_num+1, ne*(ne-1)/2]
@@ -4274,6 +4231,7 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
     }
 
     k = 0;
+    #pragma omp parallel for collapse(2)
     for (int i = 0; i < elec_num; ++i) {
       for (int j = 0; j < i; ++j) {
         // een_rescaled_e_ij(k, 2) = dexp(-rescale_factor_kappa_ee * ee_distance(i, j, nw));
@@ -4283,7 +4241,7 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
       }
     }
 
-
+    #pragma omp parallel for collapse(2)
     for (int l = 2; l < (cord_num+1); ++l) {
       for (int k = 0; k < elec_pairs; ++k) {
       // een_rescaled_e_ij(k, l + 1) = een_rescaled_e_ij(k, l + 1 - 1) * een_rescaled_e_ij(k, 2)
@@ -4292,7 +4250,7 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
       }
     }
 
-
+  #pragma omp parallel for collapse(2)
   // prepare the actual een table
   for (int i = 0; i < elec_num; ++i){
     for (int j = 0; j < elec_num; ++j) {
@@ -4301,18 +4259,20 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
   }
 
     // Up to here it should work.
+  #pragma omp parallel for collapse(3)
   for ( int l = 1; l < (cord_num+1); ++l) {
-    k = 0;
+    //k = 0;
     for (int i = 0; i < elec_num; ++i) {
       for (int j = 0; j < i; ++j) {
-        x = een_rescaled_e_ij[k + l*elec_pairs];
+        x = een_rescaled_e_ij[i*elec_num+j + l*elec_pairs];
         een_rescaled_e[j + i*elec_num + l*elec_num*elec_num + nw*elec_num*elec_num*(cord_num+1)] = x;
         een_rescaled_e[i + j*elec_num + l*elec_num*elec_num + nw*elec_num*elec_num*(cord_num+1)] = x;
-        k = k + 1;
+        //k = k + 1;
       }
     }
   }
 
+  #pragma omp parallel for collapse(2)
   for (int l = 0; l < (cord_num + 1); ++l) {
     for (int j = 0; j < elec_num; ++j) {
       een_rescaled_e[j + j*elec_num + l*elec_num*elec_num + nw*elec_num*elec_num*(cord_num+1)] = 0.0;
@@ -4320,7 +4280,6 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
   }
 
   }
-
   }
 
   omp_target_free(een_rescaled_e_ij, device_id);
@@ -4650,6 +4609,8 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
 qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context context, int device_id)
 {
 
+  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] In\n");
+
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
   }
@@ -4658,9 +4619,11 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
   assert (ctx != NULL);
 
   /* Check if ee distance is provided */
+  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] Need ee distance ?\n");
   qmckl_exit_code rc = qmckl_provide_een_rescaled_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
 
+  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] 1\n");
   /* Compute if necessary */
   if (ctx->date > ctx->jastrow.een_rescaled_e_deriv_e_date) {
 
@@ -4686,6 +4649,7 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
       ctx->jastrow.een_rescaled_e_deriv_e_device = een_rescaled_e_deriv_e;
     }
 
+    printf("[qmckl_provide_een_rescaled_e_deriv_e_device] About to compute\n");
     rc = qmckl_compute_factor_een_rescaled_e_deriv_e_device(context,
                                                      ctx->electron.walker.num,
                                                      ctx->electron.num,
@@ -4696,12 +4660,15 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
                                                      ctx->jastrow.een_rescaled_e_device,
                                                      ctx->jastrow.een_rescaled_e_deriv_e_device,
                                                      device_id);
+    printf("[qmckl_provide_een_rescaled_e_deriv_e_device] Done computing\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
 
     ctx->jastrow.een_rescaled_e_deriv_e_date = ctx->date;
   }
+
+  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] In\n");
 
   return QMCKL_SUCCESS;
 }
@@ -4919,6 +4886,8 @@ qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
   int device_id
 ){
 
+  printf("[qmckl_compute_factor_een_rescaled_e_deriv_e_device] In\n");
+
   double rij_inv, kappa_l;
 
   double* elec_dist_deriv_e = omp_target_alloc(sizeof(double*) * elec_num * elec_num * 4, device_id);
@@ -4941,10 +4910,13 @@ qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
     return QMCKL_INVALID_ARG_4;
   }
 
+
+  for(int nw = 0; nw < walk_num; nw++){
+
   #pragma omp target is_device_ptr(elec_dist_deriv_e, coord_new, ee_distance, een_rescaled_e, een_rescaled_e_deriv_e)
   {
 
-  for(int nw = 0; nw < walk_num; nw++){
+    #pragma omp teams distribute parallel for simd
     for(int j = 0; j < elec_num; j++){
       for(int i = 0; i < elec_num; i++){
         rij_inv = 1/ee_distance[nw * elec_num * elec_num + j *elec_num + i];
@@ -4960,12 +4932,17 @@ qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
       elec_dist_deriv_e[j*elec_num*4 + j*4 + 3] = 0;
     }
 
+  }
 
+  #pragma omp target is_device_ptr(elec_dist_deriv_e, coord_new, ee_distance, een_rescaled_e, een_rescaled_e_deriv_e)
+  {
+
+    #pragma omp teams distribute parallel for simd collapse (3)
     for(int l=1; l < cord_num+1; l++){
-      kappa_l = - l * rescale_factor_kappa_ee;
       for(int j=0; j < elec_num; j++){
         for(int i=0; i < elec_num ; i++){
 
+          kappa_l = - l * rescale_factor_kappa_ee;
 
           een_rescaled_e_deriv_e[nw * (cord_num+1) * elec_num * 4 *elec_num + l * elec_num * 4 * elec_num + j * 4 * elec_num + 0 * elec_num + i] = kappa_l * elec_dist_deriv_e[j * elec_num * 4 + i * 4 + 0];
 
@@ -5004,6 +4981,7 @@ qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
 
   omp_target_free(elec_dist_deriv_e, device_id);
 
+  printf("[qmckl_compute_factor_een_rescaled_e_deriv_e_device] Out\n");
   return QMCKL_SUCCESS;
 
 }
@@ -5243,6 +5221,8 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
 qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int device_id)
 {
 
+  printf("[qmckl_provide_een_rescaled_n_device] In\n");
+
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
   }
@@ -5276,9 +5256,10 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
                                "qmckl_een_rescaled_n_device",
                                NULL);
       }
-      ctx->jastrow.een_rescaled_n = een_rescaled_n;
+      ctx->jastrow.een_rescaled_n_device = een_rescaled_n;
     }
 
+    printf("[qmckl_provide_een_rescaled_n_device] About to compute\n");
     rc = qmckl_compute_een_rescaled_n_device(context,
                                       ctx->electron.walker.num,
                                       ctx->electron.num,
@@ -5288,12 +5269,15 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
                                       ctx->electron.en_distance_device,
                                       ctx->jastrow.een_rescaled_n_device,
                                       device_id);
+    printf("[qmckl_provide_een_rescaled_n_device] Done computing\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
 
     ctx->jastrow.een_rescaled_n_date = ctx->date;
   }
+
+  printf("[qmckl_provide_een_rescaled_n_device] Out\n");
 
   return QMCKL_SUCCESS;
 }
@@ -5485,6 +5469,7 @@ qmckl_exit_code qmckl_compute_een_rescaled_n_device (
       double* const een_rescaled_n,
       int device_id ) {
 
+  printf("[qmckl_compute_een_rescaled_n_device] In\n");
 
   if (context == QMCKL_NULL_CONTEXT) {
     return QMCKL_INVALID_CONTEXT;
@@ -5507,22 +5492,29 @@ qmckl_exit_code qmckl_compute_een_rescaled_n_device (
   }
 
 
-  #pragma omp target is_device_ptr(en_distance, een_rescaled_n)
-  {
-
   // TODO Parallelize this stuff
 
+  #pragma omp target is_device_ptr(en_distance, een_rescaled_n)
+  {
   // Prepare table of exponentiated distances raised to appropriate power
+  #pragma omp teams distribute parallel for simd
   for (int i = 0; i < (walk_num*(cord_num+1)*nucl_num*elec_num); ++i) {
     een_rescaled_n[i] = 17.0;
   }
+  }
 
+
+  #pragma omp target is_device_ptr(en_distance, een_rescaled_n)
+  {
+
+  #pragma omp teams distribute parallel for simd
   for (int nw = 0; nw < walk_num; ++nw) {
+
     for (int a = 0; a < nucl_num; ++a) {
       for (int i = 0; i < elec_num; ++i) {
         // prepare the actual een table
         //een_rescaled_n(:, :, 0, nw) = 1.0d0
-        een_rescaled_n[i + a * elec_num + 0 + nw * elec_num*nucl_num*(cord_num+1)] = 1.0;
+        een_rescaled_n[i + a * elec_num + nw * elec_num*nucl_num*(cord_num+1)] = 1.0;
         //een_rescaled_n(i, a, 1, nw) = dexp(-rescale_factor_kappa_en * en_distance(i, a, nw))
         een_rescaled_n[i + a*elec_num + elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] = exp(-rescale_factor_kappa_en * \
                                                                               en_distance[i + a*elec_num + nw*elec_num*nucl_num]);
@@ -5540,6 +5532,8 @@ qmckl_exit_code qmckl_compute_een_rescaled_n_device (
   }
 
   }
+
+  printf("[qmckl_compute_een_rescaled_n_device] Out\n");
 
   return QMCKL_SUCCESS;
 }
@@ -6046,6 +6040,8 @@ end function qmckl_compute_factor_een_rescaled_n_deriv_e_f
           int device_id )
 {
 
+  printf("[qmckl_compute_factor_een_rescaled_n_deriv_e_device] In\n");
+
   qmckl_exit_code rc = QMCKL_SUCCESS;
 
   double * elnuc_dist_deriv_e = (double*) omp_target_alloc(4*elec_num*nucl_num, device_id);
@@ -6090,20 +6086,24 @@ end function qmckl_compute_factor_een_rescaled_n_deriv_e_f
   int rd_offset_3 = rd_offset_2 * nucl_num;
   int rd_offset_4 = rd_offset_3 * (cord_num+1);
 
+  // TODO Improve parallelism ?
+
   #pragma omp target is_device_ptr(coord_ee, coord_en, en_distance, een_rescaled_n, een_rescaled_n_deriv_e, elnuc_dist_deriv_e)
   {
-
-  // TODO Parallelize this stuff
-
   // Prepare table of exponentiated distances raised to appropriate power
-
+  #pragma omp teams distribute parallel for simd
   for(int i=0; i<elec_num*4*nucl_num*(cord_num+1)*walk_num; i++) {
     een_rescaled_n_deriv_e[i] = 0.0;
   }
+  }
+
+  #pragma omp target is_device_ptr(coord_ee, coord_en, en_distance, een_rescaled_n, een_rescaled_n_deriv_e, elnuc_dist_deriv_e)
+  {
 
   for(int nw=0; nw<walk_num; nw++) {
 
   // prepare the actual een table
+  #pragma omp parallel for collapse (2)
   for(int a=0; a<nucl_num; a++) {
     for(int i=0; i<elec_num; i++) {
       double ria_inv = 1.0 / en_distance[i + a+ nw];
@@ -6114,38 +6114,38 @@ end function qmckl_compute_factor_een_rescaled_n_deriv_e_f
     }
   }
 
+  #pragma omp parallel for
   for(int l=0; l<(cord_num+1); l++) {
-    double kappa_l = - ((double) l) * rescale_factor_kappa_en;
     for(int a=0; nucl_num; a++) {
       for(int i=0; elec_num; i++) {
 
-        een_rescaled_n_deriv_e[0] = 1.0;
-        een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[0 + i*4 + a*4*elec_num];
+        double kappa_l = - ((double) l) * rescale_factor_kappa_en;
 
-        een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[1 + i*4 + a*4*elec_num];
+        // WIP Fortran to C
+/*
+        een_rescaled_n_deriv_e(i, 0, a, l, nw) = kappa_l * elnuc_dist_deriv_e(0, i, a);
+        een_rescaled_n_deriv_e(i, 1, a, l, nw) = kappa_l * elnuc_dist_deriv_e(1, i, a);
+        een_rescaled_n_deriv_e(i, 2, a, l, nw) = kappa_l * elnuc_dist_deriv_e(2, i, a);
+        een_rescaled_n_deriv_e(i, 3, a, l, nw) = kappa_l * elnuc_dist_deriv_e(3, i, a);
 
-        een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[2 + i*4 + a*4*elec_num];
+        een_rescaled_n_deriv_e(i, 3, a, l, nw) = een_rescaled_n_deriv_e(i, 3, a, l, nw) + een_rescaled_n_deriv_e(i, 0, a, l, nw) * een_rescaled_n_deriv_e(i, 0, a, l, nw) + een_rescaled_n_deriv_e(i, 1, a, l, nw) * een_rescaled_n_deriv_e(i, 1, a, l, nw) + een_rescaled_n_deriv_e(i, 2, a, l, nw) * een_rescaled_n_deriv_e(i, 2, a, l, nw);
 
-        een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = kappa_l * elnuc_dist_deriv_e[3 + i*4 + a*4*elec_num];
-
-        een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] + een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] + een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] + een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4];
-
-        een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 0*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
-
-        een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 1*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
-
-        een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 2*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
-
-        een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] = een_rescaled_n_deriv_e[i + 3*rd_offset_1 + a*rd_offset_2 + l*rd_offset_3 + nw*rd_offset_4] * een_rescaled_n[i + a*r_offset_1 + l*r_offset_2 + nw*r_offset_3];
+        een_rescaled_n_deriv_e(i, 0, a, l, nw) = een_rescaled_n_deriv_e(i, 0, a, l, nw) * een_rescaled_n(i, a, l, nw);
+        een_rescaled_n_deriv_e(i, 1, a, l, nw) = een_rescaled_n_deriv_e(i, 1, a, l, nw) * een_rescaled_n(i, a, l, nw);
+        een_rescaled_n_deriv_e(i, 2, a, l, nw) = een_rescaled_n_deriv_e(i, 2, a, l, nw) * een_rescaled_n(i, a, l, nw);
+        een_rescaled_n_deriv_e(i, 3, a, l, nw) = een_rescaled_n_deriv_e(i, 3, a, l, nw) * een_rescaled_n(i, a, l, nw);
+*/
       }
     }
   }
+  printf("[qmckl_compute_factor_een_rescaled_n_deriv_e_device] 4\n");
 
   }
 
   }
 
   omp_target_free(elnuc_dist_deriv_e, device_id);
+  printf("[qmckl_compute_factor_een_rescaled_n_deriv_e_device] Out\n");
   return rc;
 }
 #endif
@@ -9672,6 +9672,9 @@ qmckl_get_jastrow_factor_een_deriv_e_device(
   int device_id
 )
 {
+
+  printf("[qmckl_get_jastrow_factor_een_deriv_e_device] In\n");
+
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
   }
@@ -9692,12 +9695,14 @@ qmckl_get_jastrow_factor_een_deriv_e_device(
                            "Array too small. Expected 4*walk_num*elec_num");
   }
   // memcpy(factor_een_deriv_e, ctx->jastrow.factor_een_deriv_e, sze*sizeof(double));
-  omp_target_memcpy(factor_een_deriv_e, ctx->jastrow.factor_een_deriv_e,
+  printf("[qmckl_get_jastrow_factor_een_deriv_e_device] About to memcpy\n");
+  omp_target_memcpy(factor_een_deriv_e, ctx->jastrow.factor_een_deriv_e_device,
                     sze*sizeof(double),
                     0, 0,
                     device_id, device_id
                     );
 
+  printf("[qmckl_get_jastrow_factor_een_deriv_e_device] Out\n");
 
   return QMCKL_SUCCESS;
 }
@@ -9819,7 +9824,7 @@ qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, i
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, int device_id)
 {
-
+  printf("[qmckl_provide_factor_een_deriv_e_device] In\n");
   qmckl_exit_code rc;
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
@@ -9829,37 +9834,46 @@ qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, i
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   assert (ctx != NULL);
 
+  printf("[qmckl_provide_factor_een_deriv_e_device] About to check provides\n");
   /* Check if en rescaled distance is provided */
   rc = qmckl_provide_een_rescaled_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 1\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_een_rescaled_n_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 2\n");
 
   /* Check if en rescaled distance is provided */
   rc = qmckl_provide_een_rescaled_e_deriv_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 3\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_een_rescaled_n_deriv_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 4\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_cord_vect_full_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 5\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_lkpm_combined_index_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 6\n");
 
   /* Check if tmp_c is provided */
   rc = qmckl_provide_tmp_c_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 7\n");
 
   /* Check if dtmp_c is provided */
   rc = qmckl_provide_dtmp_c_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
+  printf("[qmckl_provide_factor_een_deriv_e_device] 8\n");
 
   /* Compute if necessary */
   if (ctx->date > ctx->jastrow.factor_een_deriv_e_date) {
@@ -9906,6 +9920,7 @@ qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, i
     ctx->jastrow.factor_een_deriv_e_date = ctx->date;
   }
 
+  printf("[qmckl_provide_factor_een_deriv_e_device] Out\n");
   return QMCKL_SUCCESS;
 }
 #endif
