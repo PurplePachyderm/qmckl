@@ -10302,6 +10302,45 @@ end function qmckl_compute_factor_een_deriv_e_f
         return QMCKL_INVALID_ARG_5;
       }
 
+/*
+  integer*8             , intent(in)  :: lkpm_combined_index(dim_cord_vect,4)
+  double precision      , intent(in)  :: cord_vect_full(nucl_num, dim_cord_vect)
+  double precision      , intent(in)  :: tmp_c(elec_num, nucl_num,0:cord_num, 0:cord_num-1,  walk_num)
+  double precision      , intent(in)  :: dtmp_c(elec_num, 4, nucl_num,0:cord_num, 0:cord_num-1,  walk_num)
+  double precision      , intent(in)  :: een_rescaled_n(elec_num, nucl_num, 0:cord_num, walk_num)
+  double precision      , intent(in)  :: een_rescaled_n_deriv_e(elec_num, 4, nucl_num, 0:cord_num, walk_num)
+  double precision      , intent(out) :: factor_een_deriv_e(elec_num,4,walk_num)
+,*/
+
+      // Pre-compute arrays offsets
+      // For tmp_c:
+      int tmp_offset_1 = elec_num;
+      int tmp_offset_2 = tmp_offset_1 * nucl_num;
+      int tmp_offset_3 = tmp_offset_1 * (cord_num+1);
+      int tmp_offset_4 = tmp_offset_1 * cord_num;
+
+      // For dtmp_c:
+      int dtmp_offset_1 = elec_num;
+      int dtmp_offset_2 = dtmp_offset_1 * 4;
+      int dtmp_offset_3 = dtmp_offset_2 * nucl_num;
+      int dtmp_offset_4 = dtmp_offset_3 * (cord_num+1);
+      int dtmp_offset_5 = dtmp_offset_4 * cord_num;
+
+      // For een_rescaled_n:
+      int een_r_offset_1 = elec_num;
+      int een_r_offset_2 = een_r_offset_1 * nucl_num;
+      int een_r_offset_3 = een_r_offset_2 * (cord_num+1);
+
+      // For een_rescaled_n_deriv_e:
+      int een_rd_offset_1 = elec_num;
+      int een_rd_offset_2 = een_rd_offset_1 * 4;
+      int een_rd_offset_3 = een_rd_offset_2 * nucl_num;
+      int een_rd_offset_4 = een_rd_offset_3 * (cord_num+1);
+
+      // For factor_een_deriv_e:
+      int factor_offset_1 = elec_num;
+      int factor_offset_2 = factor_offset_1 * 4;
+
 
       printf("[qmckl_compute_factor_een_deriv_e_device] About to compute\n");
       #pragma omp target is_device_ptr(cord_vect_full, lkpm_combined_index, tmp_c, dtmp_c, een_rescaled_n, een_rescaled_n_deriv_e, factor_een_deriv_e)
@@ -10310,36 +10349,29 @@ end function qmckl_compute_factor_een_deriv_e_f
       #pragma omp parallel for collapse(2)
       for(int nw = 0; nw < walk_num; nw++){
         for(int n =0; n < dim_cord_vect; n++){
-          l = lkpm_combined_index[0 * dim_cord_vect + n];
-          k = lkpm_combined_index[1 * dim_cord_vect + n];
-          p = lkpm_combined_index[2 * dim_cord_vect + n];
-          m = lkpm_combined_index[3 * dim_cord_vect + n];
 
 
-          for(int a = 1; a < nucl_num; a++){
-            cn = cord_vect_full[n * dim_cord_vect + a];
-            if (cn != 0){
-             for(int ii = 0; ii < 4; ii++){
-               for(int j = 0; j < elec_num; j++){
-                 factor_een_deriv_e[nw * 4 * elec_num + ii * elec_num + j] = factor_een_deriv_e[nw * 4 * elec_num + ii * elec_num + j] \
-                   + tmp_c[nw * cord_num * (cord_num + 1) * nucl_num * elec_num + k * (cord_num + 1) * nucl_num * elec_num + m * nucl_num * elec_num + a * elec_num + j]    * een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + ii * elec_num + j]    + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + ii * elec_num + j]    * een_rescaled_n[nw * (cord_num + 1) * nucl_num * elec_num + m * nucl_num * elec_num + a * elec_num + j]    + tmp_c[nw * cord_num * (cord_num + 1) * nucl_num * elec_num + k * (cord_num + 1) * nucl_num * elec_num + m * nucl_num * elec_num + a * elec_num + j] *    een_rescaled_n[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + m * nucl_num * 4 * elec_num + a * 4 * elec_num + ii * elec_num + j] * cn;
-               }
-             }
+          l = lkpm_combined_index[n + 1*dim_cord_vect];
+          k = lkpm_combined_index[n + 2*dim_cord_vect];
+          p = lkpm_combined_index[n + 3*dim_cord_vect];
+          m = lkpm_combined_index[n + 4*dim_cord_vect];
 
-             cn = cn + cn;
-             for(int j=0; j < elec_num ; j++){
-               factor_een_deriv_e[nw * 4 * elec_num + 4 * elec_num + j] = factor_een_deriv_e[nw * 4 * elec_num + 4 * elec_num + j] \
-                   + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j]\
-                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j]\
-                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j]\
-                 + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 0 * elec_num + j]\
-                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 1 * elec_num + j]\
-                  + dtmp_c[nw * cord_num * (cord_num +1) * nucl_num * 4 * elec_num + k * (cord_num + 1) * nucl_num * 4 * elec_num + (m) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j] *   een_rescaled_n_deriv_e[nw * (cord_num  + 1) * nucl_num * 4 * elec_num + (m+l) * nucl_num * 4 * elec_num + a * 4 * elec_num + 2 * elec_num + j] * cn;
+          for(int a = 1; a<nucl_num; a++) {
+            cn = cord_vect_full[a + n*nucl_num];
+            if(cn == 0.0) continue;
 
+            for(int ii = 1; ii<4; ii++) {
+              for(int j = 1; j<elec_num; j++) {
+                factor_een_deriv_e[j + ii*factor_offset_1 + nw*factor_offset_2] = factor_een_deriv_e[j + ii*factor_offset_1 + nw*factor_offset_2] + (tmp_c[j + a*tmp_offset_1 + m*tmp_offset_2 + k*tmp_offset_3 + nw*tmp_offset_4] * een_rescaled_n_deriv_e[j + ii*een_rd_offset_1 + a*een_rd_offset_2 + (m+l)*een_rd_offset_3 + nw*een_rd_offset_4] + dtmp_c[j + ii*dtmp_offset_1 + a*dtmp_offset_2 + m*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n[j + a*een_r_offset_1 + (m+l)*een_r_offset_2 + nw*een_r_offset_3] + dtmp_c[j + ii*dtmp_offset_1 + a*dtmp_offset_2 + (m+l)*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n[j + a*een_r_offset_1 + m*een_r_offset_2 + nw*een_r_offset_3] + tmp_c[j + a*tmp_offset_1 + (m+l)*tmp_offset_2 + k*tmp_offset_3 + nw*tmp_offset_4] * een_rescaled_n_deriv_e[j + ii*een_rd_offset_1 + a*een_rd_offset_2 + m*een_rd_offset_3 + nw*een_rd_offset_4]) * cn;
+              }
+            }
 
-             }
+            cn = cn + cn;
+            for(int j = 1; j<elec_num; j++) {
+              factor_een_deriv_e[j + 3 + nw] = factor_een_deriv_e[j + 4 + nw] + (dtmp_c[j + 0*dtmp_offset_1 + a*dtmp_offset_2 + m*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n_deriv_e[j + 0 + a + (m+l) + nw] + dtmp_c[j + 1*dtmp_offset_1 + a*dtmp_offset_2 + m*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n_deriv_e[j + 1 + a + (m+l) + nw] + dtmp_c[j + 2*dtmp_offset_1 + a*dtmp_offset_2 + m*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n_deriv_e[j + 2 + a + (m+l) + nw] + dtmp_c[j + 0*dtmp_offset_1 + a*dtmp_offset_2 + (m+l)*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n_deriv_e[j + 0 + a + m + nw] + dtmp_c[j + 1*dtmp_offset_1 + a*dtmp_offset_2 + (m+l)*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n_deriv_e[j + 1 + a + m + nw] + dtmp_c[j + 2*dtmp_offset_1 + a*dtmp_offset_2 + (m+l)*dtmp_offset_3 + k*dtmp_offset_4 + nw*dtmp_offset_5] * een_rescaled_n_deriv_e[j + 2 + a + m + nw]) * cn;
             }
           }
+
         }
       }
 
