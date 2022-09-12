@@ -775,8 +775,6 @@ qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
 
 
 if (mask != 0 && !(ctx->jastrow.uninitialized & mask)) {
-    printf("Mask error\n");
-    printf("%d %d\n", mask, ctx->jastrow.uninitialized );
     return qmckl_failwith( context,
                            QMCKL_ALREADY_SET,
                            "qmckl_set_jastrow_*",
@@ -3777,7 +3775,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
 qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int device_id)
 {
 
-  printf("[qmckl_provide_een_rescaled_e_device] In\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
@@ -3789,7 +3786,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
   /* Check if ee distance is provided */
   qmckl_exit_code rc = qmckl_provide_ee_distance_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_een_rescaled_e_device] 1\n");
 
   /* Compute if necessary */
   if (ctx->date > ctx->jastrow.een_rescaled_e_date) {
@@ -3815,7 +3811,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
       }
       ctx->jastrow.een_rescaled_e_device = een_rescaled_e;
     }
-    printf("[qmckl_provide_een_rescaled_e_device] 2\n");
 
     rc = qmckl_compute_een_rescaled_e_device(context,
                                       ctx->electron.walker.num,
@@ -3825,7 +3820,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
                                       ctx->electron.ee_distance_device,
                                       ctx->jastrow.een_rescaled_e_device,
                                       device_id);
-    printf("[qmckl_provide_een_rescaled_e_device] 3\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
@@ -3833,7 +3827,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_device(qmckl_context context, int d
     ctx->jastrow.een_rescaled_e_date = ctx->date;
   }
 
-  printf("[qmckl_provide_een_rescaled_e_device] Out\n");
   return QMCKL_SUCCESS;
 }
 #endif
@@ -4177,7 +4170,6 @@ qmckl_exit_code qmckl_compute_een_rescaled_e_device (
   double* const een_rescaled_e,
   int device_id ) {
 
-  printf("[qmckl_compute_een_rescaled_e_device] In\n");
 
   double   *een_rescaled_e_ij;
   double   x;
@@ -4609,7 +4601,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
 qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context context, int device_id)
 {
 
-  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] In\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
@@ -4619,11 +4610,9 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
   assert (ctx != NULL);
 
   /* Check if ee distance is provided */
-  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] Need ee distance ?\n");
   qmckl_exit_code rc = qmckl_provide_een_rescaled_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
 
-  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] 1\n");
   /* Compute if necessary */
   if (ctx->date > ctx->jastrow.een_rescaled_e_deriv_e_date) {
 
@@ -4649,7 +4638,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
       ctx->jastrow.een_rescaled_e_deriv_e_device = een_rescaled_e_deriv_e;
     }
 
-    printf("[qmckl_provide_een_rescaled_e_deriv_e_device] About to compute\n");
     rc = qmckl_compute_factor_een_rescaled_e_deriv_e_device(context,
                                                      ctx->electron.walker.num,
                                                      ctx->electron.num,
@@ -4660,7 +4648,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
                                                      ctx->jastrow.een_rescaled_e_device,
                                                      ctx->jastrow.een_rescaled_e_deriv_e_device,
                                                      device_id);
-    printf("[qmckl_provide_een_rescaled_e_deriv_e_device] Done computing\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
@@ -4668,7 +4655,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_e_deriv_e_device(qmckl_context contex
     ctx->jastrow.een_rescaled_e_deriv_e_date = ctx->date;
   }
 
-  printf("[qmckl_provide_een_rescaled_e_deriv_e_device] In\n");
 
   return QMCKL_SUCCESS;
 }
@@ -4886,7 +4872,6 @@ qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
   int device_id
 ){
 
-  printf("[qmckl_compute_factor_een_rescaled_e_deriv_e_device] In\n");
 
   double rij_inv, kappa_l;
 
@@ -4981,7 +4966,6 @@ qmckl_exit_code qmckl_compute_factor_een_rescaled_e_deriv_e_device (
 
   omp_target_free(elec_dist_deriv_e, device_id);
 
-  printf("[qmckl_compute_factor_een_rescaled_e_deriv_e_device] Out\n");
   return QMCKL_SUCCESS;
 
 }
@@ -5221,7 +5205,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
 qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int device_id)
 {
 
-  printf("[qmckl_provide_een_rescaled_n_device] In\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
@@ -5259,7 +5242,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
       ctx->jastrow.een_rescaled_n_device = een_rescaled_n;
     }
 
-    printf("[qmckl_provide_een_rescaled_n_device] About to compute\n");
     rc = qmckl_compute_een_rescaled_n_device(context,
                                       ctx->electron.walker.num,
                                       ctx->electron.num,
@@ -5269,7 +5251,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
                                       ctx->electron.en_distance_device,
                                       ctx->jastrow.een_rescaled_n_device,
                                       device_id);
-    printf("[qmckl_provide_een_rescaled_n_device] Done computing\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
@@ -5277,7 +5258,6 @@ qmckl_exit_code qmckl_provide_een_rescaled_n_device(qmckl_context context, int d
     ctx->jastrow.een_rescaled_n_date = ctx->date;
   }
 
-  printf("[qmckl_provide_een_rescaled_n_device] Out\n");
 
   return QMCKL_SUCCESS;
 }
@@ -5469,7 +5449,6 @@ qmckl_exit_code qmckl_compute_een_rescaled_n_device (
       double* const een_rescaled_n,
       int device_id ) {
 
-  printf("[qmckl_compute_een_rescaled_n_device] In\n");
 
   if (context == QMCKL_NULL_CONTEXT) {
     return QMCKL_INVALID_CONTEXT;
@@ -5533,7 +5512,6 @@ qmckl_exit_code qmckl_compute_een_rescaled_n_device (
 
   }
 
-  printf("[qmckl_compute_een_rescaled_n_device] Out\n");
 
   return QMCKL_SUCCESS;
 }
@@ -6851,7 +6829,6 @@ qmckl_exit_code qmckl_provide_dtmp_c_device(qmckl_context context, int device_id
 qmckl_exit_code qmckl_provide_cord_vect_full_device(qmckl_context context, int device_id)
 {
 
-  printf("[qmckl_provide_cord_vect_full_device] In\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
@@ -6862,9 +6839,7 @@ qmckl_exit_code qmckl_provide_cord_vect_full_device(qmckl_context context, int d
 
   /* Check if dim_cord_vect is provided */
 
-  printf("[qmckl_provide_cord_vect_full_device] Checking for dim_cord_vect\n");
   qmckl_exit_code rc = qmckl_provide_dim_cord_vect(context);
-  printf("[qmckl_provide_cord_vect_full_device] Ok for dim_cord_vect\n");
   if(rc != QMCKL_SUCCESS) return rc;
 
   /* Compute if necessary */
@@ -6886,7 +6861,6 @@ qmckl_exit_code qmckl_provide_cord_vect_full_device(qmckl_context context, int d
       ctx->jastrow.cord_vect_full_device = cord_vect_full;
     }
 
-    printf("[qmckl_provide_cord_vect_full_device] About to compute\n");
     rc = qmckl_compute_cord_vect_full_device(context,
                                              ctx->nucleus.num,
                                              ctx->jastrow.dim_cord_vect,
@@ -6895,7 +6869,6 @@ qmckl_exit_code qmckl_provide_cord_vect_full_device(qmckl_context context, int d
                                              ctx->jastrow.cord_vector_device,
                                              ctx->jastrow.cord_vect_full_device,
                                              device_id);
-    printf("[qmckl_provide_cord_vect_full_device] Done computing\n");
     if (rc != QMCKL_SUCCESS) {
       return rc;
     }
@@ -6903,14 +6876,12 @@ qmckl_exit_code qmckl_provide_cord_vect_full_device(qmckl_context context, int d
     ctx->jastrow.cord_vect_full_date = ctx->date;
   }
 
-  printf("[qmckl_provide_cord_vect_full_device] Out\n");
   return QMCKL_SUCCESS;
 }
 
 qmckl_exit_code qmckl_provide_lkpm_combined_index_device(qmckl_context context, int device_id)
 {
 
-  printf("[qmckl_provide_lkpm_combined_index_device] In\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
@@ -6954,7 +6925,6 @@ qmckl_exit_code qmckl_provide_lkpm_combined_index_device(qmckl_context context, 
     ctx->jastrow.lkpm_combined_index_date = ctx->date;
   }
 
-  printf("[qmckl_provide_lkpm_combined_index_device] Out\n");
   return QMCKL_SUCCESS;
 }
 
@@ -9589,7 +9559,6 @@ qmckl_get_jastrow_factor_een_deriv_e_device(
 )
 {
 
-  printf("[qmckl_get_jastrow_factor_een_deriv_e_device] In\n");
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     return QMCKL_NULL_CONTEXT;
@@ -9611,14 +9580,12 @@ qmckl_get_jastrow_factor_een_deriv_e_device(
                            "Array too small. Expected 4*walk_num*elec_num");
   }
   // memcpy(factor_een_deriv_e, ctx->jastrow.factor_een_deriv_e, sze*sizeof(double));
-  printf("[qmckl_get_jastrow_factor_een_deriv_e_device] About to memcpy\n");
   omp_target_memcpy(factor_een_deriv_e, ctx->jastrow.factor_een_deriv_e_device,
                     sze*sizeof(double),
                     0, 0,
                     device_id, device_id
                     );
 
-  printf("[qmckl_get_jastrow_factor_een_deriv_e_device] Out\n");
 
   return QMCKL_SUCCESS;
 }
@@ -9740,7 +9707,6 @@ qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, i
 #ifdef HAVE_DEVICE_POINTERS
 qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, int device_id)
 {
-  printf("[qmckl_provide_factor_een_deriv_e_device] In\n");
   qmckl_exit_code rc;
 
   if (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
@@ -9750,46 +9716,37 @@ qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, i
   qmckl_context_struct* const ctx = (qmckl_context_struct*) context;
   assert (ctx != NULL);
 
-  printf("[qmckl_provide_factor_een_deriv_e_device] About to check provides\n");
   /* Check if en rescaled distance is provided */
   rc = qmckl_provide_een_rescaled_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 1\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_een_rescaled_n_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 2\n");
 
   /* Check if en rescaled distance is provided */
   rc = qmckl_provide_een_rescaled_e_deriv_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 3\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_een_rescaled_n_deriv_e_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 4\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_cord_vect_full_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 5\n");
 
   /* Check if en rescaled distance derivatives is provided */
   rc = qmckl_provide_lkpm_combined_index_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 6\n");
 
   /* Check if tmp_c is provided */
   rc = qmckl_provide_tmp_c_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 7\n");
 
   /* Check if dtmp_c is provided */
   rc = qmckl_provide_dtmp_c_device(context, device_id);
   if(rc != QMCKL_SUCCESS) return rc;
-  printf("[qmckl_provide_factor_een_deriv_e_device] 8\n");
 
   /* Compute if necessary */
   if (ctx->date > ctx->jastrow.factor_een_deriv_e_date) {
@@ -9836,7 +9793,6 @@ qmckl_exit_code qmckl_provide_factor_een_deriv_e_device(qmckl_context context, i
     ctx->jastrow.factor_een_deriv_e_date = ctx->date;
   }
 
-  printf("[qmckl_provide_factor_een_deriv_e_device] Out\n");
   return QMCKL_SUCCESS;
 }
 #endif
@@ -10275,7 +10231,6 @@ end function qmckl_compute_factor_een_deriv_e_f
       double* const factor_een_deriv_e,
       int device_id ){
 
-      printf("[qmckl_compute_factor_een_deriv_e_device] In\n");
 
       qmckl_exit_code rc = QMCKL_SUCCESS;
 
@@ -10342,7 +10297,6 @@ end function qmckl_compute_factor_een_deriv_e_f
       int factor_offset_2 = factor_offset_1 * 4;
 
 
-      printf("[qmckl_compute_factor_een_deriv_e_device] About to compute\n");
       #pragma omp target is_device_ptr(cord_vect_full, lkpm_combined_index, tmp_c, dtmp_c, een_rescaled_n, een_rescaled_n_deriv_e, factor_een_deriv_e)
       {
 
@@ -10377,7 +10331,6 @@ end function qmckl_compute_factor_een_deriv_e_f
 
       }
 
-      printf("[qmckl_compute_factor_een_deriv_e_device] Out\n");
       return rc;
       }
 #endif
