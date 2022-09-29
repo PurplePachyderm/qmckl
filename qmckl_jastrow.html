@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-09-02 Fri 11:39 -->
+<!-- 2022-09-29 Thu 08:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Jastrow Factor</title>
@@ -333,105 +333,166 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5325786">1. Introduction</a></li>
-<li><a href="#orgd60f9db">2. Context</a>
+<li><a href="#orgaa933a3">1. Introduction</a></li>
+<li><a href="#org07db1c6">2. Context</a>
 <ul>
-<li><a href="#org20824d4">2.1. Data structure</a></li>
-<li><a href="#orga9ba417">2.2. Access functions</a></li>
-<li><a href="#org88a7311">2.3. Initialization functions</a></li>
-<li><a href="#orge0a4061">2.4. Test</a></li>
+<li><a href="#orgb6e65d7">2.1. Data structure</a></li>
+<li><a href="#orge20365f">2.2. Access functions</a></li>
+<li><a href="#org7933b83">2.3. Initialization functions</a>
+<ul>
+<li><a href="#org312450d">2.3.1. Host initialization</a></li>
+<li><a href="#org845e091">2.3.2. Device initialization</a></li>
+<li><a href="#orgb4e48ca">2.3.3. Finalize basis (host &amp; device)</a></li>
 </ul>
 </li>
-<li><a href="#org7020675">3. Computation</a>
-<ul>
-<li><a href="#org241135d">3.1. Asymptotic component for \(J_{ee}\)</a>
-<ul>
-<li><a href="#orgaca10e2">3.1.1. Get</a></li>
-<li><a href="#orga4445f9">3.1.2. Compute</a></li>
-<li><a href="#orgd71d268">3.1.3. Test</a></li>
+<li><a href="#org14eb23a">2.4. Test</a></li>
 </ul>
 </li>
-<li><a href="#org26d4763">3.2. Electron-electron component \(f_{ee}\)</a>
+<li><a href="#orgf172300">3. Computation</a>
 <ul>
-<li><a href="#orge0e898a">3.2.1. Get</a></li>
-<li><a href="#orgbb349db">3.2.2. Compute</a></li>
-<li><a href="#org5232a69">3.2.3. Test</a></li>
+<li><a href="#org875463a">3.1. Asymptotic component for \(J_{ee}\)</a>
+<ul>
+<li><a href="#orgb8201aa">3.1.1. Get</a></li>
+<li><a href="#orgc1a48c1">3.1.2. Compute</a></li>
+<li><a href="#orgdee1344">3.1.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orgb7268ca">3.3. Electron-electron component derivative \(f'_{ee}\)</a>
+<li><a href="#org5c1d276">3.2. Electron-electron component \(f_{ee}\)</a>
 <ul>
-<li><a href="#org9280e8b">3.3.1. Get</a></li>
-<li><a href="#org2080367">3.3.2. Compute</a></li>
-<li><a href="#orgee8a62d">3.3.3. Test</a></li>
+<li><a href="#org5b0a045">3.2.1. Get</a></li>
+<li><a href="#org3a4c6f9">3.2.2. Compute</a></li>
+<li><a href="#orgb4686d9">3.2.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org26114ec">3.4. Electron-nucleus component \(f_{en}\)</a>
+<li><a href="#org1ad311b">3.3. Electron-electron component derivative \(f'_{ee}\)</a>
 <ul>
-<li><a href="#org2c20cb7">3.4.1. Get</a></li>
-<li><a href="#orga0606b0">3.4.2. Compute</a></li>
-<li><a href="#org1bb5fad">3.4.3. Test</a></li>
+<li><a href="#orgcba7cce">3.3.1. Get</a></li>
+<li><a href="#org7cd7d2d">3.3.2. Compute</a></li>
+<li><a href="#orgf904778">3.3.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orgadd5bd8">3.5. Electron-nucleus component derivative \(f'_{en}\)</a>
+<li><a href="#orgdf2190d">3.4. Electron-nucleus component \(f_{en}\)</a>
 <ul>
-<li><a href="#org8d9d57e">3.5.1. Get</a></li>
-<li><a href="#org173fc3c">3.5.2. Compute</a></li>
-<li><a href="#orgf967bd3">3.5.3. Test</a></li>
+<li><a href="#orgd1e65a3">3.4.1. Get</a></li>
+<li><a href="#org66daea5">3.4.2. Compute</a></li>
+<li><a href="#orga586b76">3.4.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#orgcdf1ba5">3.6. Electron-electron rescaled distances for each order</a>
+<li><a href="#org0b068f6">3.5. Electron-nucleus component derivative \(f'_{en}\)</a>
 <ul>
-<li><a href="#orgfde8eae">3.6.1. Get</a></li>
-<li><a href="#org7ac30ee">3.6.2. Compute</a></li>
-<li><a href="#org9620757">3.6.3. Test</a></li>
+<li><a href="#org384368e">3.5.1. Get</a></li>
+<li><a href="#orgfccf45e">3.5.2. Compute</a></li>
+<li><a href="#orgd4e9ef5">3.5.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org700e0ae">3.7. Electron-electron rescaled distances for each order and derivatives</a>
+<li><a href="#org536ac98">3.6. Electron-electron rescaled distances for each order</a>
 <ul>
-<li><a href="#org735ac07">3.7.1. Get</a></li>
-<li><a href="#org3f28e83">3.7.2. Compute</a></li>
-<li><a href="#orge7a859a">3.7.3. Test</a></li>
+<li><a href="#org2ed76cd">3.6.1. Get</a></li>
+<li><a href="#org1af5286">3.6.2. Compute</a>
+<ul>
+<li><a href="#org3ded9d6">3.6.2.1. CPU</a></li>
+<li><a href="#org9c78a0b">3.6.2.2. Device pointers</a></li>
 </ul>
 </li>
-<li><a href="#orgbf0b22f">3.8. Electron-nucleus rescaled distances for each order</a>
-<ul>
-<li><a href="#org38a252f">3.8.1. Get</a></li>
-<li><a href="#org0d46431">3.8.2. Compute</a></li>
-<li><a href="#orgabdd380">3.8.3. Test</a></li>
+<li><a href="#org6bfe6f8">3.6.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org30fdb33">3.9. Electron-nucleus rescaled distances for each order and derivatives</a>
+<li><a href="#org838567c">3.7. Electron-electron rescaled distances for each order and derivatives</a>
 <ul>
-<li><a href="#org8c59af4">3.9.1. Get</a></li>
-<li><a href="#orgc49b1a6">3.9.2. Compute</a></li>
-<li><a href="#orge472bb5">3.9.3. Test</a></li>
+<li><a href="#org872ffaf">3.7.1. Get</a></li>
+<li><a href="#org8122eda">3.7.2. Compute</a>
+<ul>
+<li><a href="#orgf297d6f">3.7.2.1. CPU</a></li>
+<li><a href="#org5ccc013">3.7.2.2. Device pointers</a></li>
 </ul>
 </li>
-<li><a href="#org45d1683">3.10. Prepare for electron-electron-nucleus Jastrow \(f_{een}\)</a>
-<ul>
-<li><a href="#org32d61ce">3.10.1. Get</a></li>
-<li><a href="#orgebcba06">3.10.2. Compute dim<sub>cord</sub><sub>vect</sub></a></li>
-<li><a href="#org182f5d0">3.10.3. Compute cord<sub>vect</sub><sub>full</sub></a></li>
-<li><a href="#orgfc11dde">3.10.4. Compute lkpm<sub>combined</sub><sub>index</sub></a></li>
-<li><a href="#orgb6b0e73">3.10.5. Compute tmp<sub>c</sub></a></li>
-<li><a href="#orgbb8acf9">3.10.6. Compute dtmp<sub>c</sub></a></li>
-<li><a href="#org38d9883">3.10.7. Test</a></li>
+<li><a href="#org072605c">3.7.3. Test</a></li>
 </ul>
 </li>
-<li><a href="#org9ec9611">3.11. Electron-electron-nucleus Jastrow \(f_{een}\)</a>
+<li><a href="#org397f104">3.8. Electron-nucleus rescaled distances for each order</a>
 <ul>
-<li><a href="#org72f2a90">3.11.1. Get</a></li>
-<li><a href="#org40c4b47">3.11.2. Compute naive</a></li>
-<li><a href="#org3c9f3e5">3.11.3. Compute</a></li>
-<li><a href="#org4736982">3.11.4. Test</a></li>
+<li><a href="#orgb70d93a">3.8.1. Get</a></li>
+<li><a href="#org12bf8bf">3.8.2. Compute</a>
+<ul>
+<li><a href="#org6ee5484">3.8.2.1. CPU</a></li>
+<li><a href="#orge9aaee7">3.8.2.2. Device pointers</a></li>
 </ul>
 </li>
-<li><a href="#org67a8a85">3.12. Electron-electron-nucleus Jastrow \(f_{een}\) derivative</a>
+<li><a href="#orgc9f63a3">3.8.3. Test</a></li>
+</ul>
+</li>
+<li><a href="#org8efa2ed">3.9. Electron-nucleus rescaled distances for each order and derivatives</a>
 <ul>
-<li><a href="#orgb3a7abc">3.12.1. Get</a></li>
-<li><a href="#org932382e">3.12.2. Compute Naive</a></li>
-<li><a href="#orge5d0322">3.12.3. Compute</a></li>
-<li><a href="#orge1482e7">3.12.4. Test</a></li>
+<li><a href="#org4d5381b">3.9.1. Get</a></li>
+<li><a href="#orgd91721c">3.9.2. Compute</a>
+<ul>
+<li><a href="#org474dd90">3.9.2.1. CPU</a></li>
+<li><a href="#org3599c05">3.9.2.2. Device pointers</a></li>
+</ul>
+</li>
+<li><a href="#orgc5a2d6c">3.9.3. Test</a></li>
+</ul>
+</li>
+<li><a href="#org4527f23">3.10. Prepare for electron-electron-nucleus Jastrow \(f_{een}\)</a>
+<ul>
+<li><a href="#orgb293ae2">3.10.1. Get</a>
+<ul>
+<li><a href="#orge13c0a6">3.10.1.1. CPU &amp; offload version</a></li>
+<li><a href="#org8a44f59">3.10.1.2. Device pointers version</a></li>
+</ul>
+</li>
+<li><a href="#org906871a">3.10.2. Compute dim<sub>cord</sub><sub>vect</sub></a></li>
+<li><a href="#org36fd1d4">3.10.3. Compute cord<sub>vect</sub><sub>full</sub></a>
+<ul>
+<li><a href="#org7b67649">3.10.3.1. CPU &amp; offload version</a></li>
+<li><a href="#org831cbee">3.10.3.2. Device pointers version</a></li>
+</ul>
+</li>
+<li><a href="#org426ecb2">3.10.4. Compute lkpm<sub>combined</sub><sub>index</sub></a>
+<ul>
+<li><a href="#orga8f7be7">3.10.4.1. CPU &amp; offload version</a></li>
+<li><a href="#org4af3852">3.10.4.2. Device pointers version</a></li>
+</ul>
+</li>
+<li><a href="#org523a15e">3.10.5. Compute tmp<sub>c</sub></a>
+<ul>
+<li><a href="#orgfffe9a4">3.10.5.1. Doc</a></li>
+<li><a href="#orgc400ebf">3.10.5.2. Device pointers</a></li>
+</ul>
+</li>
+<li><a href="#orgf1e817b">3.10.6. Compute dtmp<sub>c</sub></a>
+<ul>
+<li><a href="#orgd91627c">3.10.6.1. Doc</a></li>
+<li><a href="#org4d53fff">3.10.6.2. Device pointers</a></li>
+</ul>
+</li>
+<li><a href="#orgc92a087">3.10.7. Test</a></li>
+</ul>
+</li>
+<li><a href="#org08ea323">3.11. Electron-electron-nucleus Jastrow \(f_{een}\)</a>
+<ul>
+<li><a href="#orgb785c8a">3.11.1. Get</a></li>
+<li><a href="#orgb82fb53">3.11.2. Compute naive</a></li>
+<li><a href="#org7d188b7">3.11.3. Compute</a></li>
+<li><a href="#orgc64fb87">3.11.4. Test</a></li>
+</ul>
+</li>
+<li><a href="#org6a6e974">3.12. Electron-electron-nucleus Jastrow \(f_{een}\) derivative</a>
+<ul>
+<li><a href="#org2e99f45">3.12.1. Get</a>
+<ul>
+<li><a href="#org5619983">3.12.1.1. CPU</a></li>
+<li><a href="#orgf1e3bb5">3.12.1.2. Device pointers</a></li>
+</ul>
+</li>
+<li><a href="#org50ad71b">3.12.2. Compute Naive</a></li>
+<li><a href="#org7887ec7">3.12.3. Compute</a>
+<ul>
+<li><a href="#orgd347a1c">3.12.3.1. CPU</a></li>
+<li><a href="#orgbfa5d04">3.12.3.2. Device pointers</a></li>
+</ul>
+</li>
+<li><a href="#org17fa80a">3.12.4. Test</a></li>
 </ul>
 </li>
 </ul>
@@ -440,8 +501,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org5325786" class="outline-2">
-<h2 id="org5325786"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-orgaa933a3" class="outline-2">
+<h2 id="orgaa933a3"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The Jastrow factor depends on the electronic (\(\mathbf{r}\)) and
@@ -522,14 +583,14 @@ The terms \(J_{\text{ee}}^\infty\) and \(J_{\text{eN}}^\infty\) are shifts to en
 </div>
 </div>
 
-<div id="outline-container-orgd60f9db" class="outline-2">
-<h2 id="orgd60f9db"><span class="section-number-2">2</span> Context</h2>
+<div id="outline-container-org07db1c6" class="outline-2">
+<h2 id="org07db1c6"><span class="section-number-2">2</span> Context</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The following data stored in the context:
 </p>
 
-<table id="org3cb1ab0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org96d0470" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -820,8 +881,8 @@ computed data:
 </table>
 </div>
 
-<div id="outline-container-org20824d4" class="outline-3">
-<h3 id="org20824d4"><span class="section-number-3">2.1</span> Data structure</h3>
+<div id="outline-container-orgb6e65d7" class="outline-3">
+<h3 id="orgb6e65d7"><span class="section-number-3">2.1</span> Data structure</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">qmckl_jastrow_struct</span>{
@@ -872,6 +933,29 @@ computed data:
 <span style="color: #483d8b;">  #ifdef</span> HAVE_HPC
   <span style="color: #228b22;">bool</span>     <span style="color: #a0522d;">gpu_offload</span>;
 <span style="color: #483d8b;">  #endif</span>
+
+<span style="color: #483d8b;">  #ifdef</span> HAVE_DEVICE_POINTERS
+  <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">type_nucl_vector_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">aord_vector_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">bord_vector_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">cord_vector_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">asymp_jasb_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">factor_ee_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">factor_en_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">factor_een_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">factor_ee_deriv_e_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">factor_en_deriv_e_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">factor_een_deriv_e_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">cord_vect_full_device</span>;
+  <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">lkpm_combined_index_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">tmp_c_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">dtmp_c_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">een_rescaled_e_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">een_rescaled_n_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">een_rescaled_e_deriv_e_device</span>;
+  <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">een_rescaled_n_deriv_e_device</span>;
+<span style="color: #483d8b;">  #endif</span>
+
 } <span style="color: #228b22;">qmckl_jastrow_struct</span>;
 </pre>
 </div>
@@ -893,7 +977,6 @@ this mechanism.
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_init_jastrow</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>) {
-
   <span style="color: #a020f0;">if</span> (qmckl_context_check(context) == QMCKL_NULL_CONTEXT) {
     <span style="color: #a020f0;">return</span> <span style="color: #008b8b;">false</span>;
   }
@@ -904,7 +987,6 @@ this mechanism.
   ctx-&gt;jastrow.uninitialized = (1 &lt;&lt; 6) - 1;
 
   /* <span style="color: #b22222;">Default values </span>*/
-
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
 }
 </pre>
@@ -912,8 +994,8 @@ this mechanism.
 </div>
 </div>
 
-<div id="outline-container-orga9ba417" class="outline-3">
-<h3 id="orga9ba417"><span class="section-number-3">2.2</span> Access functions</h3>
+<div id="outline-container-orge20365f" class="outline-3">
+<h3 id="orge20365f"><span class="section-number-3">2.2</span> Access functions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Along with these core functions, calculation of the jastrow factor
@@ -933,9 +1015,13 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org88a7311" class="outline-3">
-<h3 id="org88a7311"><span class="section-number-3">2.3</span> Initialization functions</h3>
+<div id="outline-container-org7933b83" class="outline-3">
+<h3 id="org7933b83"><span class="section-number-3">2.3</span> Initialization functions</h3>
 <div class="outline-text-3" id="text-2-3">
+</div>
+<div id="outline-container-org312450d" class="outline-4">
+<h4 id="org312450d"><span class="section-number-4">2.3.1</span> Host initialization</h4>
+<div class="outline-text-4" id="text-2-3-1">
 <p>
 To prepare for the Jastrow and its derivative, all the following functions need to be
 called.
@@ -950,7 +1036,29 @@ called.
 <span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_jastrow_cord_vector</span>       (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">cord_vector</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
+</div>
+</div>
 
+<div id="outline-container-org845e091" class="outline-4">
+<h4 id="org845e091"><span class="section-number-4">2.3.2</span> Device initialization</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_jastrow_type_nucl_vector_device</span>  (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">type_nucl_vector</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_jastrow_aord_vector_device</span>       (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">aord_vector</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_jastrow_bord_vector_device</span>       (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">bord_vector</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #228b22;">qmckl_exit_code</span>  <span style="color: #0000ff;">qmckl_set_jastrow_cord_vector_device</span>       (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> * <span style="color: #a0522d;">cord_vector</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgb4e48ca" class="outline-4">
+<h4 id="orgb4e48ca"><span class="section-number-4">2.3.3</span> Finalize basis (host &amp; device)</h4>
+<div class="outline-text-4" id="text-2-3-3">
 <p>
 When the required information is completely entered, other data structures are
 computed to accelerate the calculations. The intermediates factors
@@ -958,9 +1066,10 @@ are precontracted using BLAS LEVEL 3 operations for an optimal flop count.
 </p>
 </div>
 </div>
+</div>
 
-<div id="outline-container-orge0a4061" class="outline-3">
-<h3 id="orge0a4061"><span class="section-number-3">2.4</span> Test</h3>
+<div id="outline-container-org14eb23a" class="outline-3">
+<h3 id="org14eb23a"><span class="section-number-3">2.4</span> Test</h3>
 <div class="outline-text-3" id="text-2-4">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Reference input data </span>*/
@@ -1092,8 +1201,8 @@ rc = qmckl_get_nucleus_charge(context, nucl_charge2, nucl_num);
 </div>
 </div>
 
-<div id="outline-container-org7020675" class="outline-2">
-<h2 id="org7020675"><span class="section-number-2">3</span> Computation</h2>
+<div id="outline-container-orgf172300" class="outline-2">
+<h2 id="orgf172300"><span class="section-number-2">3</span> Computation</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The computed data is stored in the context so that it can be reused
@@ -1106,8 +1215,8 @@ current date is stored.
 </p>
 </div>
 
-<div id="outline-container-org241135d" class="outline-3">
-<h3 id="org241135d"><span class="section-number-3">3.1</span> Asymptotic component for \(J_{ee}\)</h3>
+<div id="outline-container-org875463a" class="outline-3">
+<h3 id="org875463a"><span class="section-number-3">3.1</span> Asymptotic component for \(J_{ee}\)</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Calculate the asymptotic component <code>asymp_jasb</code> to be substracted from the final
@@ -1122,8 +1231,8 @@ via the <code>bord_vector</code> and the electron-electron rescale factor <code>
 </p>
 </div>
 
-<div id="outline-container-orgaca10e2" class="outline-4">
-<h4 id="orgaca10e2"><span class="section-number-4">3.1.1</span> Get</h4>
+<div id="outline-container-orgb8201aa" class="outline-4">
+<h4 id="orgb8201aa"><span class="section-number-4">3.1.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1135,10 +1244,10 @@ via the <code>bord_vector</code> and the electron-electron rescale factor <code>
 </div>
 </div>
 
-<div id="outline-container-orga4445f9" class="outline-4">
-<h4 id="orga4445f9"><span class="section-number-4">3.1.2</span> Compute</h4>
+<div id="outline-container-orgc1a48c1" class="outline-4">
+<h4 id="orgc1a48c1"><span class="section-number-4">3.1.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-1-2">
-<table id="orgab783c0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org081696e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1274,8 +1383,8 @@ via the <code>bord_vector</code> and the electron-electron rescale factor <code>
 </div>
 </div>
 
-<div id="outline-container-orgd71d268" class="outline-4">
-<h4 id="orgd71d268"><span class="section-number-4">3.1.3</span> Test</h4>
+<div id="outline-container-orgdee1344" class="outline-4">
+<h4 id="orgdee1344"><span class="section-number-4">3.1.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -1326,8 +1435,8 @@ rc = qmckl_get_jastrow_asymp_jasb(context, asymp_jasb,2);
 </div>
 </div>
 
-<div id="outline-container-org26d4763" class="outline-3">
-<h3 id="org26d4763"><span class="section-number-3">3.2</span> Electron-electron component \(f_{ee}\)</h3>
+<div id="outline-container-org5c1d276" class="outline-3">
+<h3 id="org5c1d276"><span class="section-number-3">3.2</span> Electron-electron component \(f_{ee}\)</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Calculate the electron-electron jastrow component <code>factor_ee</code> using the <code>asymp_jasb</code>
@@ -1342,8 +1451,8 @@ f_{ee} = \sum_{i,j<i} \left\{ \frac{ \eta B_0 C_{ij}}{1 - B_1 C_{ij}}  - J_{asym
 </div>
 
 
-<div id="outline-container-orge0e898a" class="outline-4">
-<h4 id="orge0e898a"><span class="section-number-4">3.2.1</span> Get</h4>
+<div id="outline-container-org5b0a045" class="outline-4">
+<h4 id="org5b0a045"><span class="section-number-4">3.2.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1355,10 +1464,10 @@ f_{ee} = \sum_{i,j<i} \left\{ \frac{ \eta B_0 C_{ij}}{1 - B_1 C_{ij}}  - J_{asym
 </div>
 </div>
 
-<div id="outline-container-orgbb349db" class="outline-4">
-<h4 id="orgbb349db"><span class="section-number-4">3.2.2</span> Compute</h4>
+<div id="outline-container-org3a4c6f9" class="outline-4">
+<h4 id="org3a4c6f9"><span class="section-number-4">3.2.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-2-2">
-<table id="org06b2e01" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org45e502f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1585,8 +1694,8 @@ f_{ee} = \sum_{i,j<i} \left\{ \frac{ \eta B_0 C_{ij}}{1 - B_1 C_{ij}}  - J_{asym
 </div>
 </div>
 
-<div id="outline-container-org5232a69" class="outline-4">
-<h4 id="org5232a69"><span class="section-number-4">3.2.3</span> Test</h4>
+<div id="outline-container-orgb4686d9" class="outline-4">
+<h4 id="orgb4686d9"><span class="section-number-4">3.2.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-2-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Check if Jastrow is properly initialized </span>*/
@@ -1604,8 +1713,8 @@ rc = qmckl_get_jastrow_factor_ee(context, factor_ee, walk_num);
 </div>
 </div>
 
-<div id="outline-container-orgb7268ca" class="outline-3">
-<h3 id="orgb7268ca"><span class="section-number-3">3.3</span> Electron-electron component derivative \(f'_{ee}\)</h3>
+<div id="outline-container-org1ad311b" class="outline-3">
+<h3 id="org1ad311b"><span class="section-number-3">3.3</span> Electron-electron component derivative \(f'_{ee}\)</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 Calculate the derivative of the <code>factor_ee</code> using the <code>ee_distance_rescaled</code> and
@@ -1620,8 +1729,8 @@ TODO: Add equation
 </div>
 
 
-<div id="outline-container-org9280e8b" class="outline-4">
-<h4 id="org9280e8b"><span class="section-number-4">3.3.1</span> Get</h4>
+<div id="outline-container-orgcba7cce" class="outline-4">
+<h4 id="orgcba7cce"><span class="section-number-4">3.3.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1633,10 +1742,10 @@ TODO: Add equation
 </div>
 </div>
 
-<div id="outline-container-org2080367" class="outline-4">
-<h4 id="org2080367"><span class="section-number-4">3.3.2</span> Compute</h4>
+<div id="outline-container-org7cd7d2d" class="outline-4">
+<h4 id="org7cd7d2d"><span class="section-number-4">3.3.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-3-2">
-<table id="org7bd4877" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org4853c2c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1998,8 +2107,8 @@ TODO: Add equation
 
 
 
-<div id="outline-container-orgee8a62d" class="outline-4">
-<h4 id="orgee8a62d"><span class="section-number-4">3.3.3</span> Test</h4>
+<div id="outline-container-orgf904778" class="outline-4">
+<h4 id="orgf904778"><span class="section-number-4">3.3.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Check if Jastrow is properly initialized </span>*/
@@ -2020,8 +2129,8 @@ rc = qmckl_get_jastrow_factor_ee_deriv_e(context, &amp;(factor_ee_deriv_e[0][0][
 </div>
 </div>
 
-<div id="outline-container-org26114ec" class="outline-3">
-<h3 id="org26114ec"><span class="section-number-3">3.4</span> Electron-nucleus component \(f_{en}\)</h3>
+<div id="outline-container-orgdf2190d" class="outline-3">
+<h3 id="orgdf2190d"><span class="section-number-3">3.4</span> Electron-nucleus component \(f_{en}\)</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 Calculate the electron-electron jastrow component <code>factor_en</code> using the <code>aord_vector</code>
@@ -2036,8 +2145,8 @@ f_{en} = \sum_{i,j<i} \left\{ \frac{ A_0 C_{ij}}{1 - A_1 C_{ij}} + \sum^{nord}_{
 </div>
 
 
-<div id="outline-container-org2c20cb7" class="outline-4">
-<h4 id="org2c20cb7"><span class="section-number-4">3.4.1</span> Get</h4>
+<div id="outline-container-orgd1e65a3" class="outline-4">
+<h4 id="orgd1e65a3"><span class="section-number-4">3.4.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-4-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -2049,10 +2158,10 @@ f_{en} = \sum_{i,j<i} \left\{ \frac{ A_0 C_{ij}}{1 - A_1 C_{ij}} + \sum^{nord}_{
 </div>
 </div>
 
-<div id="outline-container-orga0606b0" class="outline-4">
-<h4 id="orga0606b0"><span class="section-number-4">3.4.2</span> Compute</h4>
+<div id="outline-container-org66daea5" class="outline-4">
+<h4 id="org66daea5"><span class="section-number-4">3.4.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-4-2">
-<table id="org9e43778" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3d471cc" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2305,8 +2414,8 @@ f_{en} = \sum_{i,j<i} \left\{ \frac{ A_0 C_{ij}}{1 - A_1 C_{ij}} + \sum^{nord}_{
 </div>
 </div>
 
-<div id="outline-container-org1bb5fad" class="outline-4">
-<h4 id="org1bb5fad"><span class="section-number-4">3.4.3</span> Test</h4>
+<div id="outline-container-orga586b76" class="outline-4">
+<h4 id="orga586b76"><span class="section-number-4">3.4.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-4-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Check if Jastrow is properly initialized </span>*/
@@ -2324,8 +2433,8 @@ rc = qmckl_get_jastrow_factor_en(context, factor_en,walk_num);
 </div>
 </div>
 
-<div id="outline-container-orgadd5bd8" class="outline-3">
-<h3 id="orgadd5bd8"><span class="section-number-3">3.5</span> Electron-nucleus component derivative \(f'_{en}\)</h3>
+<div id="outline-container-org0b068f6" class="outline-3">
+<h3 id="org0b068f6"><span class="section-number-3">3.5</span> Electron-nucleus component derivative \(f'_{en}\)</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 Calculate the electron-electron jastrow component <code>factor_en_deriv_e</code> derivative
@@ -2338,8 +2447,8 @@ TODO: write equations.
 </p>
 </div>
 
-<div id="outline-container-org8d9d57e" class="outline-4">
-<h4 id="org8d9d57e"><span class="section-number-4">3.5.1</span> Get</h4>
+<div id="outline-container-org384368e" class="outline-4">
+<h4 id="org384368e"><span class="section-number-4">3.5.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-5-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -2351,10 +2460,10 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-org173fc3c" class="outline-4">
-<h4 id="org173fc3c"><span class="section-number-4">3.5.2</span> Compute</h4>
+<div id="outline-container-orgfccf45e" class="outline-4">
+<h4 id="orgfccf45e"><span class="section-number-4">3.5.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-5-2">
-<table id="org9590c8a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org488fe0d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2559,8 +2668,8 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-orgf967bd3" class="outline-4">
-<h4 id="orgf967bd3"><span class="section-number-4">3.5.3</span> Test</h4>
+<div id="outline-container-orgd4e9ef5" class="outline-4">
+<h4 id="orgd4e9ef5"><span class="section-number-4">3.5.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-5-3">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Check if Jastrow is properly initialized </span>*/
@@ -2582,8 +2691,8 @@ rc = qmckl_get_jastrow_factor_en_deriv_e(context, &amp;(factor_en_deriv_e[0][0][
 </div>
 </div>
 
-<div id="outline-container-orgcdf1ba5" class="outline-3">
-<h3 id="orgcdf1ba5"><span class="section-number-3">3.6</span> Electron-electron rescaled distances for each order</h3>
+<div id="outline-container-org536ac98" class="outline-3">
+<h3 id="org536ac98"><span class="section-number-3">3.6</span> Electron-electron rescaled distances for each order</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 <code>een_rescaled_e</code> stores the table of the rescaled distances between all
@@ -2601,8 +2710,8 @@ where \(C_{ij}\) is the matrix of electron-electron distances.
 </p>
 </div>
 
-<div id="outline-container-orgfde8eae" class="outline-4">
-<h4 id="orgfde8eae"><span class="section-number-4">3.6.1</span> Get</h4>
+<div id="outline-container-org2ed76cd" class="outline-4">
+<h4 id="org2ed76cd"><span class="section-number-4">3.6.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-6-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -2614,10 +2723,14 @@ where \(C_{ij}\) is the matrix of electron-electron distances.
 </div>
 </div>
 
-<div id="outline-container-org7ac30ee" class="outline-4">
-<h4 id="org7ac30ee"><span class="section-number-4">3.6.2</span> Compute</h4>
+<div id="outline-container-org1af5286" class="outline-4">
+<h4 id="org1af5286"><span class="section-number-4">3.6.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-6-2">
-<table id="org644d1ca" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-org3ded9d6" class="outline-5">
+<h5 id="org3ded9d6"><span class="section-number-5">3.6.2.1</span> CPU</h5>
+<div class="outline-text-5" id="text-3-6-2-1">
+<table id="org6ba5af1" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2946,8 +3059,137 @@ where \(C_{ij}\) is the matrix of electron-electron distances.
 </div>
 
 
-<div id="outline-container-org9620757" class="outline-4">
-<h4 id="org9620757"><span class="section-number-4">3.6.3</span> Test</h4>
+<div id="outline-container-org9c78a0b" class="outline-5">
+<h5 id="org9c78a0b"><span class="section-number-5">3.6.2.2</span> Device pointers</h5>
+<div class="outline-text-5" id="text-3-6-2-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_een_rescaled_e_device</span> (
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">walk_num</span>,
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">elec_num</span>,
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">cord_num</span>,
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">rescale_factor_kappa_ee</span>,
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ee_distance</span>,
+  <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">een_rescaled_e</span>,
+  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span> ) {
+
+
+  <span style="color: #228b22;">double</span>   *<span style="color: #a0522d;">een_rescaled_e_ij</span>;
+  <span style="color: #228b22;">double</span>   <span style="color: #a0522d;">x</span>;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">elec_pairs</span> = (elec_num * (elec_num - 1)) / 2;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">len_een_ij</span> = elec_pairs * (cord_num + 1);
+  <span style="color: #228b22;">int64_t</span>   <span style="color: #a0522d;">k</span>;
+
+  // <span style="color: #b22222;">number of element for the een_rescaled_e_ij[N_e*(N_e-1)/2][cord+1]</span>
+  // <span style="color: #b22222;">probably in C is better [cord+1, Ne*(Ne-1)/2]</span>
+  //<span style="color: #b22222;">elec_pairs = (elec_num * (elec_num - 1)) / 2;</span>
+  //<span style="color: #b22222;">len_een_ij = elec_pairs * (cord_num + 1);</span>
+  een_rescaled_e_ij = (<span style="color: #228b22;">double</span> *) omp_target_alloc (<span style="color: #228b22;">len_een_ij</span> * <span style="color: #a020f0;">sizeof</span>(<span style="color: #228b22;">double</span>), device_id);
+
+  <span style="color: #a020f0;">if</span> (context == QMCKL_NULL_CONTEXT) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_CONTEXT;
+  }
+
+  <span style="color: #a020f0;">if</span> (walk_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_2;
+  }
+
+  <span style="color: #a020f0;">if</span> (elec_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_3;
+  }
+
+  <span style="color: #a020f0;">if</span> (cord_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
+  }
+
+  // <span style="color: #b22222;">Prepare table of exponentiated distances raised to appropriate power</span>
+  // <span style="color: #b22222;">init</span>
+
+  // <span style="color: #b22222;">TODO Parallelism can probably be heavily optimized</span>
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(een_rescaled_e)
+  {
+<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> simd
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">kk</span> = 0; kk &lt; walk_num*(cord_num+1)*elec_num*elec_num; ++kk) {
+    een_rescaled_e[kk]= 0.0;
+  }
+  }
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(ee_distance, een_rescaled_e, een_rescaled_e_ij)
+  {
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">nw</span> = 0; nw &lt; walk_num; ++nw) {
+<span style="color: #483d8b;">    #pragma</span> omp parallel <span style="color: #a020f0;">for</span>
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">kk</span> = 0; kk &lt; len_een_ij; ++kk) {
+      // <span style="color: #b22222;">this array initialized at 0 except een_rescaled_e_ij(:, 1) = 1.0d0</span>
+      // <span style="color: #b22222;">and the arrangement of indices is [cord_num+1, ne*(ne-1)/2]</span>
+      een_rescaled_e_ij[kk]= ( kk &lt; (elec_pairs) ? 1.0 : 0.0 );
+    }
+
+    k = 0;
+<span style="color: #483d8b;">    #pragma</span> omp parallel <span style="color: #a020f0;">for</span> collapse(2)
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; elec_num; ++i) {
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">j</span> = 0; j &lt; i; ++j) {
+        // <span style="color: #b22222;">een_rescaled_e_ij(k, 2) = dexp(-rescale_factor_kappa_ee * ee_distance(i, j, nw));</span>
+        een_rescaled_e_ij[k + elec_pairs] = exp(-rescale_factor_kappa_ee * \
+                                    ee_distance[j + i*elec_num + nw*(elec_num*elec_num)]);
+        k = k + 1;
+      }
+    }
+
+<span style="color: #483d8b;">    #pragma</span> omp parallel <span style="color: #a020f0;">for</span> collapse(2)
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span> = 2; l &lt; (cord_num+1); ++l) {
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">k</span> = 0; k &lt; elec_pairs; ++k) {
+      // <span style="color: #b22222;">een_rescaled_e_ij(k, l + 1) = een_rescaled_e_ij(k, l + 1 - 1) * een_rescaled_e_ij(k, 2)</span>
+        een_rescaled_e_ij[k+l*elec_pairs] = een_rescaled_e_ij[k + (l - 1)*elec_pairs] * \
+                                                  een_rescaled_e_ij[k + elec_pairs];
+      }
+    }
+
+<span style="color: #483d8b;">  #pragma</span> omp parallel <span style="color: #a020f0;">for</span> collapse(2)
+  // <span style="color: #b22222;">prepare the actual een table</span>
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; elec_num; ++i){
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">j</span> = 0; j &lt; elec_num; ++j) {
+      een_rescaled_e[j + i*elec_num + 0 + nw*(cord_num+1)*elec_num*elec_num] = 1.0;
+    }
+  }
+
+    // <span style="color: #b22222;">Up to here it should work.</span>
+<span style="color: #483d8b;">  #pragma</span> omp parallel <span style="color: #a020f0;">for</span> collapse(3)
+  <span style="color: #a020f0;">for</span> ( <span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span> = 1; l &lt; (cord_num+1); ++l) {
+    //<span style="color: #b22222;">k = 0;</span>
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; elec_num; ++i) {
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">j</span> = 0; j &lt; i; ++j) {
+        x = een_rescaled_e_ij[i*elec_num+j + l*elec_pairs];
+        een_rescaled_e[j + i*elec_num + l*elec_num*elec_num + nw*elec_num*elec_num*(cord_num+1)] = x;
+        een_rescaled_e[i + j*elec_num + l*elec_num*elec_num + nw*elec_num*elec_num*(cord_num+1)] = x;
+        //<span style="color: #b22222;">k = k + 1;</span>
+      }
+    }
+  }
+
+<span style="color: #483d8b;">  #pragma</span> omp parallel <span style="color: #a020f0;">for</span> collapse(2)
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span> = 0; l &lt; (cord_num + 1); ++l) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">j</span> = 0; j &lt; elec_num; ++j) {
+      een_rescaled_e[j + j*elec_num + l*elec_num*elec_num + nw*elec_num*elec_num*(cord_num+1)] = 0.0;
+    }
+  }
+
+  }
+  }
+
+  omp_target_free(een_rescaled_e_ij, device_id);
+
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6bfe6f8" class="outline-4">
+<h4 id="org6bfe6f8"><span class="section-number-4">3.6.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-6-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -2969,8 +3211,8 @@ rc = qmckl_get_jastrow_een_rescaled_e(context, &amp;(een_rescaled_e[0][0][0][0])
 </div>
 </div>
 
-<div id="outline-container-org700e0ae" class="outline-3">
-<h3 id="org700e0ae"><span class="section-number-3">3.7</span> Electron-electron rescaled distances for each order and derivatives</h3>
+<div id="outline-container-org838567c" class="outline-3">
+<h3 id="org838567c"><span class="section-number-3">3.7</span> Electron-electron rescaled distances for each order and derivatives</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 <code>een_rescaled_e_deriv_e</code> stores the table of the derivatives of the
@@ -2985,8 +3227,8 @@ TODO: write formulae
 </div>
 
 
-<div id="outline-container-org735ac07" class="outline-4">
-<h4 id="org735ac07"><span class="section-number-4">3.7.1</span> Get</h4>
+<div id="outline-container-org872ffaf" class="outline-4">
+<h4 id="org872ffaf"><span class="section-number-4">3.7.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-7-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -2998,10 +3240,14 @@ TODO: write formulae
 </div>
 </div>
 
-<div id="outline-container-org3f28e83" class="outline-4">
-<h4 id="org3f28e83"><span class="section-number-4">3.7.2</span> Compute</h4>
+<div id="outline-container-org8122eda" class="outline-4">
+<h4 id="org8122eda"><span class="section-number-4">3.7.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-7-2">
-<table id="org24cc4a7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-orgf297d6f" class="outline-5">
+<h5 id="orgf297d6f"><span class="section-number-5">3.7.2.1</span> CPU</h5>
+<div class="outline-text-5" id="text-3-7-2-1">
+<table id="orgd02b3e2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3179,8 +3425,19 @@ TODO: write formulae
 </div>
 </div>
 
-<div id="outline-container-orge7a859a" class="outline-4">
-<h4 id="orge7a859a"><span class="section-number-4">3.7.3</span> Test</h4>
+<div id="outline-container-org5ccc013" class="outline-5">
+<h5 id="org5ccc013"><span class="section-number-5">3.7.2.2</span> Device pointers</h5>
+<div class="outline-text-5" id="text-3-7-2-2">
+<p>
+#+end<sub>src</sub>
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org072605c" class="outline-4">
+<h4 id="org072605c"><span class="section-number-4">3.7.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-7-3">
 <div class="org-src-container">
 <pre class="src src-c">//<span style="color: #b22222;">assert(qmckl_electron_provided(context));</span>
@@ -3202,8 +3459,8 @@ rc = qmckl_get_jastrow_een_rescaled_e_deriv_e(context,
 </div>
 </div>
 
-<div id="outline-container-orgbf0b22f" class="outline-3">
-<h3 id="orgbf0b22f"><span class="section-number-3">3.8</span> Electron-nucleus rescaled distances for each order</h3>
+<div id="outline-container-org397f104" class="outline-3">
+<h3 id="org397f104"><span class="section-number-3">3.8</span> Electron-nucleus rescaled distances for each order</h3>
 <div class="outline-text-3" id="text-3-8">
 <p>
 <code>een_rescaled_n</code> stores the table of the rescaled distances between
@@ -3221,8 +3478,8 @@ where \(C_{ia}\) is the matrix of electron-nucleus distances.
 </p>
 </div>
 
-<div id="outline-container-org38a252f" class="outline-4">
-<h4 id="org38a252f"><span class="section-number-4">3.8.1</span> Get</h4>
+<div id="outline-container-orgb70d93a" class="outline-4">
+<h4 id="orgb70d93a"><span class="section-number-4">3.8.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-8-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -3234,10 +3491,14 @@ where \(C_{ia}\) is the matrix of electron-nucleus distances.
 </div>
 </div>
 
-<div id="outline-container-org0d46431" class="outline-4">
-<h4 id="org0d46431"><span class="section-number-4">3.8.2</span> Compute</h4>
+<div id="outline-container-org12bf8bf" class="outline-4">
+<h4 id="org12bf8bf"><span class="section-number-4">3.8.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-8-2">
-<table id="orgbd215bf" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-org6ee5484" class="outline-5">
+<h5 id="org6ee5484"><span class="section-number-5">3.8.2.1</span> CPU</h5>
+<div class="outline-text-5" id="text-3-8-2-1">
+<table id="orgb984900" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3439,8 +3700,7 @@ where \(C_{ia}\) is the matrix of electron-nucleus distances.
     <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span> = 2; l &lt; (cord_num+1); ++l){
       <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">a</span> = 0; a &lt; nucl_num; ++a) {
         <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; elec_num; ++i) {
-          een_rescaled_n[i + a*elec_num + l*elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] = een_rescaled_n[i + a*elec_num + (l-1)*elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] *\
-                                                                                                     een_rescaled_n[i + a*elec_num +       elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)];
+          een_rescaled_n[i + a*elec_num + l*elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] = een_rescaled_n[i + a*elec_num + (l-1)*elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] * een_rescaled_n[i+a*elec_num+elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)];
         }
       }
     }
@@ -3454,8 +3714,95 @@ where \(C_{ia}\) is the matrix of electron-nucleus distances.
 </div>
 </div>
 
-<div id="outline-container-orgabdd380" class="outline-4">
-<h4 id="orgabdd380"><span class="section-number-4">3.8.3</span> Test</h4>
+<div id="outline-container-orge9aaee7" class="outline-5">
+<h5 id="orge9aaee7"><span class="section-number-5">3.8.2.2</span> Device pointers</h5>
+<div class="outline-text-5" id="text-3-8-2-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_een_rescaled_n_device</span> (
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">walk_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">elec_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">cord_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">rescale_factor_kappa_en</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">en_distance</span>,
+      <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">een_rescaled_n</span>,
+      <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span> ) {
+
+
+  <span style="color: #a020f0;">if</span> (context == QMCKL_NULL_CONTEXT) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_CONTEXT;
+  }
+
+  <span style="color: #a020f0;">if</span> (walk_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_2;
+  }
+
+  <span style="color: #a020f0;">if</span> (elec_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_3;
+  }
+
+  <span style="color: #a020f0;">if</span> (nucl_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
+  }
+
+  <span style="color: #a020f0;">if</span> (cord_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_5;
+  }
+
+
+  // <span style="color: #b22222;">TODO Parallelize this stuff</span>
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(en_distance, een_rescaled_n)
+  {
+  // <span style="color: #b22222;">Prepare table of exponentiated distances raised to appropriate power</span>
+<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> simd
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; (walk_num*(cord_num+1)*nucl_num*elec_num); ++i) {
+    een_rescaled_n[i] = 17.0;
+  }
+  }
+
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(en_distance, een_rescaled_n)
+  {
+
+<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> simd
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">nw</span> = 0; nw &lt; walk_num; ++nw) {
+
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">a</span> = 0; a &lt; nucl_num; ++a) {
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; elec_num; ++i) {
+        // <span style="color: #b22222;">prepare the actual een table</span>
+        //<span style="color: #b22222;">een_rescaled_n(:, :, 0, nw) = 1.0d0</span>
+        een_rescaled_n[i + a * elec_num + nw * elec_num*nucl_num*(cord_num+1)] = 1.0;
+        //<span style="color: #b22222;">een_rescaled_n(i, a, 1, nw) = dexp(-rescale_factor_kappa_en * en_distance(i, a, nw))</span>
+        een_rescaled_n[i + a*elec_num + elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] = exp(-rescale_factor_kappa_en * \
+                                                                              en_distance[i + a*elec_num + nw*elec_num*nucl_num]);
+      }
+    }
+
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span> = 2; l &lt; (cord_num+1); ++l){
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">a</span> = 0; a &lt; nucl_num; ++a) {
+        <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; elec_num; ++i) {
+          een_rescaled_n[i + a*elec_num + l*elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] = een_rescaled_n[i + a*elec_num + (l-1)*elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)] * een_rescaled_n[i+a*elec_num+elec_num*nucl_num + nw*elec_num*nucl_num*(cord_num+1)];
+        }
+      }
+    }
+
+  }
+
+  }
+
+
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc9f63a3" class="outline-4">
+<h4 id="orgc9f63a3"><span class="section-number-4">3.8.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-8-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -3477,8 +3824,8 @@ rc = qmckl_get_jastrow_een_rescaled_n(context, &amp;(een_rescaled_n[0][0][0][0])
 </div>
 </div>
 
-<div id="outline-container-org30fdb33" class="outline-3">
-<h3 id="org30fdb33"><span class="section-number-3">3.9</span> Electron-nucleus rescaled distances for each order and derivatives</h3>
+<div id="outline-container-org8efa2ed" class="outline-3">
+<h3 id="org8efa2ed"><span class="section-number-3">3.9</span> Electron-nucleus rescaled distances for each order and derivatives</h3>
 <div class="outline-text-3" id="text-3-9">
 <p>
 <code>een_rescaled_n_deriv_e</code> stores the table of the rescaled distances between
@@ -3487,8 +3834,8 @@ electrons and nucleii raised to the power \(p\) defined by <code>cord_num</code>
 </div>
 
 
-<div id="outline-container-org8c59af4" class="outline-4">
-<h4 id="org8c59af4"><span class="section-number-4">3.9.1</span> Get</h4>
+<div id="outline-container-org4d5381b" class="outline-4">
+<h4 id="org4d5381b"><span class="section-number-4">3.9.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-9-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -3500,10 +3847,14 @@ electrons and nucleii raised to the power \(p\) defined by <code>cord_num</code>
 </div>
 </div>
 
-<div id="outline-container-orgc49b1a6" class="outline-4">
-<h4 id="orgc49b1a6"><span class="section-number-4">3.9.2</span> Compute</h4>
+<div id="outline-container-orgd91721c" class="outline-4">
+<h4 id="orgd91721c"><span class="section-number-4">3.9.2</span> Compute</h4>
 <div class="outline-text-4" id="text-3-9-2">
-<table id="org21cc988" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-org474dd90" class="outline-5">
+<h5 id="org474dd90"><span class="section-number-5">3.9.2.1</span> CPU</h5>
+<div class="outline-text-5" id="text-3-9-2-1">
+<table id="org0e18fb4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3703,8 +4054,13 @@ electrons and nucleii raised to the power \(p\) defined by <code>cord_num</code>
 </div>
 </div>
 
-<div id="outline-container-orge472bb5" class="outline-4">
-<h4 id="orge472bb5"><span class="section-number-4">3.9.3</span> Test</h4>
+<div id="outline-container-org3599c05" class="outline-5">
+<h5 id="org3599c05"><span class="section-number-5">3.9.2.2</span> Device pointers</h5>
+</div>
+</div>
+
+<div id="outline-container-orgc5a2d6c" class="outline-4">
+<h4 id="orgc5a2d6c"><span class="section-number-4">3.9.3</span> Test</h4>
 <div class="outline-text-4" id="text-3-9-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -3727,8 +4083,8 @@ rc = qmckl_get_jastrow_een_rescaled_n_deriv_e(context, &amp;(een_rescaled_n_deri
 </div>
 </div>
 
-<div id="outline-container-org45d1683" class="outline-3">
-<h3 id="org45d1683"><span class="section-number-3">3.10</span> Prepare for electron-electron-nucleus Jastrow \(f_{een}\)</h3>
+<div id="outline-container-org4527f23" class="outline-3">
+<h3 id="org4527f23"><span class="section-number-3">3.10</span> Prepare for electron-electron-nucleus Jastrow \(f_{een}\)</h3>
 <div class="outline-text-3" id="text-3-10">
 <p>
 Prepare <code>cord_vect_full</code> and <code>lkpm_combined_index</code> tables required for the
@@ -3737,9 +4093,13 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </p>
 </div>
 
-<div id="outline-container-org32d61ce" class="outline-4">
-<h4 id="org32d61ce"><span class="section-number-4">3.10.1</span> Get</h4>
+<div id="outline-container-orgb293ae2" class="outline-4">
+<h4 id="orgb293ae2"><span class="section-number-4">3.10.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-10-1">
+</div>
+<div id="outline-container-orge13c0a6" class="outline-5">
+<h5 id="orge13c0a6"><span class="section-number-5">3.10.1.1</span> CPU &amp; offload version</h5>
+<div class="outline-text-5" id="text-3-10-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_jastrow_dim_cord_vect</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">dim_cord_vect</span>);
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_jastrow_cord_vect_full</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">cord_vect_full</span>);
@@ -3751,10 +4111,24 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </div>
 </div>
 
-<div id="outline-container-orgebcba06" class="outline-4">
-<h4 id="orgebcba06"><span class="section-number-4">3.10.2</span> Compute dim<sub>cord</sub><sub>vect</sub></h4>
+<div id="outline-container-org8a44f59" class="outline-5">
+<h5 id="org8a44f59"><span class="section-number-5">3.10.1.2</span> Device pointers version</h5>
+<div class="outline-text-5" id="text-3-10-1-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_jastrow_cord_vect_full_device</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">cord_vect_full</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_jastrow_lkpm_combined_index_device</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">lkpm_combined_index</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_jastrow_tmp_c_device</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">tmp_c</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_jastrow_dtmp_c_device</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>, <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">dtmp_c</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org906871a" class="outline-4">
+<h4 id="org906871a"><span class="section-number-4">3.10.2</span> Compute dim<sub>cord</sub><sub>vect</sub></h4>
 <div class="outline-text-4" id="text-3-10-2">
-<table id="org393f82e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgbe4a404" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3882,10 +4256,14 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </div>
 </div>
 
-<div id="outline-container-org182f5d0" class="outline-4">
-<h4 id="org182f5d0"><span class="section-number-4">3.10.3</span> Compute cord<sub>vect</sub><sub>full</sub></h4>
+<div id="outline-container-org36fd1d4" class="outline-4">
+<h4 id="org36fd1d4"><span class="section-number-4">3.10.3</span> Compute cord<sub>vect</sub><sub>full</sub></h4>
 <div class="outline-text-4" id="text-3-10-3">
-<table id="org499b530" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-org7b67649" class="outline-5">
+<h5 id="org7b67649"><span class="section-number-5">3.10.3.1</span> CPU &amp; offload version</h5>
+<div class="outline-text-5" id="text-3-10-3-1">
+<table id="org609193c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4089,11 +4467,63 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </div>
 
 
+<div id="outline-container-org831cbee" class="outline-5">
+<h5 id="org831cbee"><span class="section-number-5">3.10.3.2</span> Device pointers version</h5>
+<div class="outline-text-5" id="text-3-10-3-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_cord_vect_full_device</span> (
+          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">dim_cord_vect</span>,
+          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">type_nucl_num</span>,
+          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">type_nucl_vector</span>,
+          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">cord_vector</span>,
+          <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">cord_vect_full</span>,
+      <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>
+ ) {
 
-<div id="outline-container-orgfc11dde" class="outline-4">
-<h4 id="orgfc11dde"><span class="section-number-4">3.10.4</span> Compute lkpm<sub>combined</sub><sub>index</sub></h4>
+  <span style="color: #a020f0;">if</span> (context == QMCKL_NULL_CONTEXT) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_CONTEXT;
+  }
+
+  <span style="color: #a020f0;">if</span> (nucl_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_2;
+  }
+
+  <span style="color: #a020f0;">if</span> (type_nucl_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
+  }
+
+  <span style="color: #a020f0;">if</span> (dim_cord_vect &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_5;
+  }
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(type_nucl_vector, cord_vector, cord_vect_full)
+  {
+<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> collapse(2)
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>=0; i &lt; dim_cord_vect; ++i) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">a</span>=0; a &lt; nucl_num; ++a){
+      cord_vect_full[a + i*nucl_num] = cord_vector[(type_nucl_vector[a]-1)+i*type_nucl_num];
+    }
+  }
+  }
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+  }
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org426ecb2" class="outline-4">
+<h4 id="org426ecb2"><span class="section-number-4">3.10.4</span> Compute lkpm<sub>combined</sub><sub>index</sub></h4>
 <div class="outline-text-4" id="text-3-10-4">
-<table id="orgd6673a5" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-orga8f7be7" class="outline-5">
+<h5 id="orga8f7be7"><span class="section-number-5">3.10.4.1</span> CPU &amp; offload version</h5>
+<div class="outline-text-5" id="text-3-10-4-1">
+<table id="org5acad7b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4249,10 +4679,73 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </div>
 </div>
 
-<div id="outline-container-orgb6b0e73" class="outline-4">
-<h4 id="orgb6b0e73"><span class="section-number-4">3.10.5</span> Compute tmp<sub>c</sub></h4>
+<div id="outline-container-org4af3852" class="outline-5">
+<h5 id="org4af3852"><span class="section-number-5">3.10.4.2</span> Device pointers version</h5>
+<div class="outline-text-5" id="text-3-10-4-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_lkpm_combined_index_device</span> (
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">cord_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">dim_cord_vect</span>,
+      <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">lkpm_combined_index</span>,
+      <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>
+) {
+
+  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">kk</span>, <span style="color: #a0522d;">lmax</span>, <span style="color: #a0522d;">m</span>;
+
+  <span style="color: #a020f0;">if</span> (context == QMCKL_NULL_CONTEXT) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_CONTEXT;
+  }
+
+  <span style="color: #a020f0;">if</span> (cord_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_2;
+  }
+
+  <span style="color: #a020f0;">if</span> (dim_cord_vect &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_3;
+  }
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(lkpm_combined_index)
+  {
+  kk = 0;
+<span style="color: #483d8b;">  #pragma</span> omp parallel <span style="color: #a020f0;">for</span> collapse(2)
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">p</span> = 2; p &lt;= cord_num; ++p) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">k</span>=(p-1); k &gt;= 0; --k) {
+      <span style="color: #a020f0;">if</span> (k != 0) {
+        lmax = p - k;
+      } <span style="color: #a020f0;">else</span> {
+        lmax = p - k - 2;
+      }
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span>=lmax; l &gt;= 0; --l) {
+        <span style="color: #a020f0;">if</span> (((p - k - l) &amp; 1) == 1) <span style="color: #a020f0;">continue</span>;
+        m = (p - k - l)/2;
+        lkpm_combined_index[kk                  ] = l;
+        lkpm_combined_index[kk +   dim_cord_vect] = k;
+        lkpm_combined_index[kk + 2*dim_cord_vect] = p;
+        lkpm_combined_index[kk + 3*dim_cord_vect] = m;
+        kk = kk + 1;
+      }
+    }
+  }
+  }
+
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org523a15e" class="outline-4">
+<h4 id="org523a15e"><span class="section-number-4">3.10.5</span> Compute tmp<sub>c</sub></h4>
 <div class="outline-text-4" id="text-3-10-5">
-<table id="org3a2fa31" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-orgfffe9a4" class="outline-5">
+<h5 id="orgfffe9a4"><span class="section-number-5">3.10.5.1</span> Doc</h5>
+<div class="outline-text-5" id="text-3-10-5-1">
+<table id="org7a5f33f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4434,11 +4927,105 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </div>
 </div>
 
+<div id="outline-container-orgc400ebf" class="outline-5">
+<h5 id="orgc400ebf"><span class="section-number-5">3.10.5.2</span> Device pointers</h5>
+<div class="outline-text-5" id="text-3-10-5-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_compute_tmp_c_device</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">cord_num</span>,
+                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">elec_num</span>,
+                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">walk_num</span>,
+                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">een_rescaled_e</span>,
+                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">een_rescaled_n</span>,
+                            <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">tmp_c</span>,
 
-<div id="outline-container-orgbb8acf9" class="outline-4">
-<h4 id="orgbb8acf9"><span class="section-number-4">3.10.6</span> Compute dtmp<sub>c</sub></h4>
+                            <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span> )
+{
+
+  <span style="color: #a020f0;">if</span> (context == QMCKL_NULL_CONTEXT) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_CONTEXT;
+  }
+
+  <span style="color: #a020f0;">if</span> (cord_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_2;
+  }
+
+  <span style="color: #a020f0;">if</span> (elec_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_3;
+  }
+
+  <span style="color: #a020f0;">if</span> (nucl_num &lt;= 0) {
+    <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
+  }
+
+  // <span style="color: #b22222;">Compute array access strides:</span>
+  // <span style="color: #b22222;">For tmp_c...</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_k_c</span>  = elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_j_c</span>  = stride_k_c * nucl_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_i_c</span>  = stride_j_c * (cord_num+1);
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_nw_c</span> = stride_i_c * cord_num;
+  // <span style="color: #b22222;">For een_rescaled_e...</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_m_e</span>  = elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_i_e</span>  = stride_m_e * elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_nw_e</span> = stride_i_e * (cord_num+1);
+  // <span style="color: #b22222;">For een_rescaled_n...</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_k_n</span>  = elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_j_n</span>  = stride_k_n * nucl_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_nw_n</span> = stride_j_n * (cord_num+1);
+
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_tmp_c</span> = elec_num*nucl_num*(cord_num+1)*cord_num*walk_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_e</span> = walk_num*(cord_num+1)*elec_num*elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_n</span> = walk_num*(cord_num+1)*nucl_num*elec_num;
+
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(tmp_c, een_rescaled_e, een_rescaled_n)
+  {
+<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> collapse(4)
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">nw</span>=0; nw &lt; walk_num; ++nw) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>=0; i&lt;cord_num; ++i){
+
+      // <span style="color: #b22222;">Replacement for single DGEMM</span>
+      <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">jk</span>=0; jk&lt;nucl_num*(cord_num+1); jk++) {
+        <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">l</span>=0; l&lt;elec_num; l++) {
+
+          <span style="color: #228b22;">int</span> <span style="color: #a0522d;">index_e_base</span> = l + i*stride_i_e + nw*stride_nw_e;
+          <span style="color: #228b22;">int</span> <span style="color: #a0522d;">index_n_base</span> = jk*stride_k_n + nw*stride_nw_n;
+
+          // <span style="color: #b22222;">Single reduction</span>
+          <span style="color: #228b22;">double</span> <span style="color: #a0522d;">sum</span> = 0.;
+<span style="color: #483d8b;">          #pragma</span> omp simd reduction(+:sum)
+          <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">m</span>=0; m&lt;elec_num; m++) {
+            sum +=
+            een_rescaled_e[index_e_base + m*stride_m_e] *
+            een_rescaled_n[index_n_base + m];
+          }
+          tmp_c[l + jk*stride_k_c + i*stride_i_c + nw*stride_nw_c] = sum;
+
+        }
+      }
+    }
+  }
+  }
+
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+}
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf1e817b" class="outline-4">
+<h4 id="orgf1e817b"><span class="section-number-4">3.10.6</span> Compute dtmp<sub>c</sub></h4>
 <div class="outline-text-4" id="text-3-10-6">
-<table id="org5abd6a7" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-orgd91627c" class="outline-5">
+<h5 id="orgd91627c"><span class="section-number-5">3.10.6.1</span> Doc</h5>
+<div class="outline-text-5" id="text-3-10-6-1">
+<table id="org748e1c5" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4610,8 +5197,101 @@ calculation of the three-body jastrow <code>factor_een</code> and its derivative
 </div>
 </div>
 </div>
-<div id="outline-container-org38d9883" class="outline-4">
-<h4 id="org38d9883"><span class="section-number-4">3.10.7</span> Test</h4>
+
+<div id="outline-container-org4d53fff" class="outline-5">
+<h5 id="org4d53fff"><span class="section-number-5">3.10.6.2</span> Device pointers</h5>
+<div class="outline-text-5" id="text-3-10-6-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_dtmp_c_device</span> (
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">cord_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">elec_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">walk_num</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">een_rescaled_e_deriv_e</span>,
+      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">een_rescaled_n</span>,
+      <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">dtmp_c</span> ) {
+
+  <span style="color: #a020f0;">if</span> (context == QMCKL_NULL_CONTEXT) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_CONTEXT;
+  }
+
+  <span style="color: #a020f0;">if</span> (cord_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_2;
+  }
+
+  <span style="color: #a020f0;">if</span> (elec_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_3;
+  }
+
+  <span style="color: #a020f0;">if</span> (nucl_num &lt;= 0) {
+     <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
+  }
+
+  // <span style="color: #b22222;">Compute strides...</span>
+  // <span style="color: #b22222;">For dtmp_c</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_l_d</span>  = elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_k_d</span>  = stride_l_d * 4;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_j_d</span>  = stride_k_d * nucl_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_i_d</span>  = stride_j_d * (cord_num+1);
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_nw_d</span> = stride_i_d * cord_num;
+  // <span style="color: #b22222;">For een_rescaled_e_deriv_e</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_l_e</span>  = elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_n_e</span>  = stride_l_e * 4;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_i_e</span>  = stride_n_e * elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_nw_e</span> = stride_i_e * cord_num;
+  // <span style="color: #b22222;">For een_rescaled_n</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_k_n</span>  = elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_j_n</span>  = stride_k_n * nucl_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">stride_nw_n</span> = stride_j_n * (cord_num+1);
+
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_dtmp_c</span> = walk_num*cord_num*(cord_num+1)*nucl_num*4*elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_n</span> = walk_num*(cord_num+1)*nucl_num*elec_num;
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_e</span> = walk_num*(cord_num+1)*elec_num*4*elec_num;
+
+
+  <span style="color: #228b22;">double</span> <span style="color: #a0522d;">sum</span> = 0.;
+<span style="color: #483d8b;">  #pragma</span> omp target is_device_ptr(dtmp_c, een_rescaled_e_deriv_e, een_rescaled_n)
+  {
+<span style="color: #483d8b;">  #pragma</span> omp teams distribute parallel <span style="color: #a020f0;">for</span> collapse(4)
+  <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">nw</span>=0; nw &lt; walk_num; nw++) {
+    <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>=0; i &lt; cord_num; i++) {
+
+      // <span style="color: #b22222;">Single DGEMM</span>
+      <span style="color: #a020f0;">for</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">jk</span>=0; jk&lt;nucl_num*(cord_num+1); jk++) {
+        <span style="color: #a020f0;">for</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">ml</span>=0; ml&lt;4*elec_num; ml++) {
+
+          // <span style="color: #b22222;">Single reduction</span>
+          <span style="color: #228b22;">int</span> <span style="color: #a0522d;">index_n_base</span> = jk * stride_k_n  + nw * stride_nw_n;
+          <span style="color: #228b22;">int</span> <span style="color: #a0522d;">index_e_base</span> = ml + i * stride_i_e + nw * stride_nw_e;
+          sum = 0.;
+<span style="color: #483d8b;">          #pragma</span> omp simd reduction(+:sum)
+          <span style="color: #a020f0;">for</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">n</span>=0; n&lt;elec_num; n++){
+            sum +=
+            een_rescaled_e_deriv_e[index_e_base + n * stride_n_e] *
+            een_rescaled_n[index_n_base + n];
+          }
+          dtmp_c[ml + jk * stride_k_d + i * stride_i_d + nw * stride_nw_d] = sum;
+
+        }
+      }
+    }
+  }
+  }
+
+  <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
+}
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgc92a087" class="outline-4">
+<h4 id="orgc92a087"><span class="section-number-4">3.10.7</span> Test</h4>
 <div class="outline-text-4" id="text-3-10-7">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #0000ff;">assert</span>(<span style="color: #228b22;">qmckl_electron_provided</span>(<span style="color: #a0522d;">context</span>));
@@ -4633,8 +5313,8 @@ printf(<span style="color: #8b2252;">"%e\n%e\n"</span>, tmp_c[0][1][0][0][0],0.2
 </div>
 </div>
 
-<div id="outline-container-org9ec9611" class="outline-3">
-<h3 id="org9ec9611"><span class="section-number-3">3.11</span> Electron-electron-nucleus Jastrow \(f_{een}\)</h3>
+<div id="outline-container-org08ea323" class="outline-3">
+<h3 id="org08ea323"><span class="section-number-3">3.11</span> Electron-electron-nucleus Jastrow \(f_{een}\)</h3>
 <div class="outline-text-3" id="text-3-11">
 <p>
 Calculate the electron-electron-nuclear three-body jastrow component <code>factor_een</code>
@@ -4646,8 +5326,8 @@ TODO: write equations.
 </p>
 </div>
 
-<div id="outline-container-org72f2a90" class="outline-4">
-<h4 id="org72f2a90"><span class="section-number-4">3.11.1</span> Get</h4>
+<div id="outline-container-orgb785c8a" class="outline-4">
+<h4 id="orgb785c8a"><span class="section-number-4">3.11.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-11-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -4659,10 +5339,10 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-org40c4b47" class="outline-4">
-<h4 id="org40c4b47"><span class="section-number-4">3.11.2</span> Compute naive</h4>
+<div id="outline-container-orgb82fb53" class="outline-4">
+<h4 id="orgb82fb53"><span class="section-number-4">3.11.2</span> Compute naive</h4>
 <div class="outline-text-4" id="text-3-11-2">
-<table id="org123fb0c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org886e37d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4843,10 +5523,10 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-org3c9f3e5" class="outline-4">
-<h4 id="org3c9f3e5"><span class="section-number-4">3.11.3</span> Compute</h4>
+<div id="outline-container-org7d188b7" class="outline-4">
+<h4 id="org7d188b7"><span class="section-number-4">3.11.3</span> Compute</h4>
 <div class="outline-text-4" id="text-3-11-3">
-<table id="org805cbd0" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org41d5fb4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -5020,8 +5700,8 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-org4736982" class="outline-4">
-<h4 id="org4736982"><span class="section-number-4">3.11.4</span> Test</h4>
+<div id="outline-container-orgc64fb87" class="outline-4">
+<h4 id="orgc64fb87"><span class="section-number-4">3.11.4</span> Test</h4>
 <div class="outline-text-4" id="text-3-11-4">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Check if Jastrow is properly initialized </span>*/
@@ -5037,8 +5717,8 @@ rc = qmckl_get_jastrow_factor_een(context, &amp;(factor_een[0]),walk_num);
 </div>
 </div>
 
-<div id="outline-container-org67a8a85" class="outline-3">
-<h3 id="org67a8a85"><span class="section-number-3">3.12</span> Electron-electron-nucleus Jastrow \(f_{een}\) derivative</h3>
+<div id="outline-container-org6a6e974" class="outline-3">
+<h3 id="org6a6e974"><span class="section-number-3">3.12</span> Electron-electron-nucleus Jastrow \(f_{een}\) derivative</h3>
 <div class="outline-text-3" id="text-3-12">
 <p>
 Calculate the electron-electron-nuclear three-body jastrow component <code>factor_een_deriv_e</code>
@@ -5050,9 +5730,13 @@ TODO: write equations.
 </p>
 </div>
 
-<div id="outline-container-orgb3a7abc" class="outline-4">
-<h4 id="orgb3a7abc"><span class="section-number-4">3.12.1</span> Get</h4>
+<div id="outline-container-org2e99f45" class="outline-4">
+<h4 id="org2e99f45"><span class="section-number-4">3.12.1</span> Get</h4>
 <div class="outline-text-4" id="text-3-12-1">
+</div>
+<div id="outline-container-org5619983" class="outline-5">
+<h5 id="org5619983"><span class="section-number-5">3.12.1.1</span> CPU</h5>
+<div class="outline-text-5" id="text-3-12-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_jastrow_factor_een_deriv_e</span>(<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -5063,10 +5747,29 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-org932382e" class="outline-4">
-<h4 id="org932382e"><span class="section-number-4">3.12.2</span> Compute Naive</h4>
+<div id="outline-container-orgf1e3bb5" class="outline-5">
+<h5 id="orgf1e3bb5"><span class="section-number-5">3.12.1.2</span> Device pointers</h5>
+<div class="outline-text-5" id="text-3-12-1-2">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_get_jastrow_factor_een_deriv_e_device</span>(
+  <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+  <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">factor_een_deriv_e</span>,
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>
+);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org50ad71b" class="outline-4">
+<h4 id="org50ad71b"><span class="section-number-4">3.12.2</span> Compute Naive</h4>
 <div class="outline-text-4" id="text-3-12-2">
-<table id="org25e2e41" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orga4f205e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -5280,10 +5983,14 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-orge5d0322" class="outline-4">
-<h4 id="orge5d0322"><span class="section-number-4">3.12.3</span> Compute</h4>
+<div id="outline-container-org7887ec7" class="outline-4">
+<h4 id="org7887ec7"><span class="section-number-4">3.12.3</span> Compute</h4>
 <div class="outline-text-4" id="text-3-12-3">
-<table id="org864bcc8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+</div>
+<div id="outline-container-orgd347a1c" class="outline-5">
+<h5 id="orgd347a1c"><span class="section-number-5">3.12.3.1</span> CPU</h5>
+<div class="outline-text-5" id="text-3-12-3-1">
+<table id="org1bbd217" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -5491,8 +6198,13 @@ TODO: write equations.
 </div>
 </div>
 
-<div id="outline-container-orge1482e7" class="outline-4">
-<h4 id="orge1482e7"><span class="section-number-4">3.12.4</span> Test</h4>
+<div id="outline-container-orgbfa5d04" class="outline-5">
+<h5 id="orgbfa5d04"><span class="section-number-5">3.12.3.2</span> Device pointers</h5>
+</div>
+</div>
+
+<div id="outline-container-org17fa80a" class="outline-4">
+<h4 id="org17fa80a"><span class="section-number-4">3.12.4</span> Test</h4>
 <div class="outline-text-4" id="text-3-12-4">
 <div class="org-src-container">
 <pre class="src src-c">/* <span style="color: #b22222;">Check if Jastrow is properly initialized </span>*/
@@ -5511,7 +6223,7 @@ rc = qmckl_get_jastrow_factor_een_deriv_e(context, &amp;(factor_een_deriv_e[0][0
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-09-02 Fri 11:39</p>
+<p class="date">Created: 2022-09-29 Thu 08:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
