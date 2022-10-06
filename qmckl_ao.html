@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-09-29 Thu 08:00 -->
+<!-- 2022-10-06 Thu 09:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Atomic Orbitals</title>
@@ -333,64 +333,66 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3cfff25">1. Introduction</a></li>
-<li><a href="#org4127269">2. Context</a>
+<li><a href="#org8a56f25">1. Introduction</a></li>
+<li><a href="#orgcaafb58">2. Context</a>
 <ul>
-<li><a href="#org1beb957">2.1. Constant data</a>
+<li><a href="#org0bf9024">2.1. Constant data</a>
 <ul>
-<li><a href="#org0adf2d8">2.1.1. Initialization functions</a>
+<li><a href="#org1c81e2b">2.1.1. Initialization functions</a>
 <ul>
-<li><a href="#org14d3735">2.1.1.1. C interface</a></li>
-<li><a href="#orge3300fb">2.1.1.2. Fortran interface</a></li>
+<li><a href="#org211af49">2.1.1.1. C interface</a></li>
+<li><a href="#org4bfa352">2.1.1.2. Fortran interface</a></li>
 </ul>
 </li>
-<li><a href="#org7103e75">2.1.2. Access functions</a>
+<li><a href="#org1fdbdb7">2.1.2. Access functions</a>
 <ul>
-<li><a href="#org031232b">2.1.2.1. C interface</a></li>
-<li><a href="#orgf3c4a7e">2.1.2.2. Fortran interface</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org6b0d0e3">2.2. Computed data</a>
-<ul>
-<li><a href="#orgfabbee1">2.2.1. After initialization</a></li>
-<li><a href="#orgc532688">2.2.2. <span class="todo TODO">TODO</span> HPC-specific data structures</a></li>
-<li><a href="#orgff29d87">2.2.3. Access functions</a></li>
+<li><a href="#org4972805">2.1.2.1. C interface</a></li>
+<li><a href="#org9956a91">2.1.2.2. Fortran interface</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org9b765f8">3. Radial part</a>
+<li><a href="#orgea0f69b">2.2. Computed data</a>
 <ul>
-<li><a href="#orgf0872d1">3.1. General functions for Gaussian basis functions</a></li>
-<li><a href="#orga4db906">3.2. Computation of primitives</a></li>
-<li><a href="#orga31bbe5">3.3. Computation of shells</a></li>
+<li><a href="#org3e0c1e7">2.2.1. After initialization</a></li>
+<li><a href="#orgffcb80f">2.2.2. <span class="todo TODO">TODO</span> HPC-specific data structures</a></li>
+<li><a href="#orgf778900">2.2.3. Access functions</a></li>
 </ul>
 </li>
-<li><a href="#orgb244f70">4. Polynomial part</a>
-<ul>
-<li><a href="#org984428e">4.1. General functions for Powers of \(x-X_i\)</a></li>
-<li><a href="#org8cbb8ee">4.2. General functions for Value, Gradient and Laplacian of a polynomial</a></li>
 </ul>
 </li>
-<li><a href="#orgc7c48b9">5. Combining radial and polynomial parts</a>
+<li><a href="#org029c431">3. Radial part</a>
 <ul>
-<li><a href="#org4da0798">5.1. Values only</a>
-<ul>
-<li><a href="#orgf62d703">5.1.1. Unoptimized version</a></li>
-<li><a href="#org26ada36">5.1.2. HPC version</a></li>
-<li><a href="#org2444479">5.1.3. Interfaces</a></li>
+<li><a href="#org818d63d">3.1. General functions for Gaussian basis functions</a></li>
+<li><a href="#orgc060d3a">3.2. Computation of primitives</a></li>
+<li><a href="#orgceb7eef">3.3. Computation of shells</a></li>
 </ul>
 </li>
-<li><a href="#org6fe354e">5.2. Value, gradients, Laplacian</a>
+<li><a href="#orgaa58b9c">4. Polynomial part</a>
 <ul>
-<li><a href="#orgae7e6f6">5.2.1. Unoptimized version</a></li>
-<li><a href="#org346ea06">5.2.2. HPC version</a></li>
-<li><a href="#org43786a3">5.2.3. OpenMP offload</a></li>
-<li><a href="#orgca921e0">5.2.4. OpenACC offload</a></li>
-<li><a href="#org4f09908">5.2.5. Device pointers version</a></li>
-<li><a href="#org81c6f87">5.2.6. Interfaces</a></li>
+<li><a href="#org88c7c45">4.1. General functions for Powers of \(x-X_i\)</a></li>
+<li><a href="#org795be31">4.2. General functions for Value, Gradient and Laplacian of a polynomial</a></li>
+<li><a href="#orgb1ea2c8">4.3. OpenMP offload version</a></li>
+<li><a href="#orgd98a6f4">4.4. OpenMP offload version</a></li>
+</ul>
+</li>
+<li><a href="#org0c7060a">5. Combining radial and polynomial parts</a>
+<ul>
+<li><a href="#org3a094a3">5.1. Values only</a>
+<ul>
+<li><a href="#org7ef13bc">5.1.1. Unoptimized version</a></li>
+<li><a href="#org3610ea9">5.1.2. HPC version</a></li>
+<li><a href="#org6ea5d2a">5.1.3. Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#org3106589">5.2. Value, gradients, Laplacian</a>
+<ul>
+<li><a href="#orga030d24">5.2.1. Unoptimized version</a></li>
+<li><a href="#orgfe3947a">5.2.2. HPC version</a></li>
+<li><a href="#org017e6d9">5.2.3. OpenMP offload</a></li>
+<li><a href="#orgc30c20b">5.2.4. OpenACC offload</a></li>
+<li><a href="#org7f7ea08">5.2.5. Device pointers version</a></li>
+<li><a href="#orga18b894">5.2.6. Interfaces</a></li>
 </ul>
 </li>
 </ul>
@@ -399,8 +401,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org3cfff25" class="outline-2">
-<h2 id="org3cfff25"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org8a56f25" class="outline-2">
+<h2 id="org8a56f25"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The atomic basis set is defined as a list of shells. Each shell \(s\) is
@@ -412,9 +414,9 @@ Gaussian (\(p=2\)):
 
 <p>
 \[
-  R_s(\mathbf{r}) = \mathcal{N}_s |\mathbf{r}-\mathbf{R}_A|^{n_s}
-  \sum_{k=1}^{N_{\text{prim}}} a_{ks}\, f_{ks}
- \exp \left( - \gamma_{ks} | \mathbf{r}-\mathbf{R}_A | ^p \right).
+R_s(\mathbf{r}) = \mathcal{N}_s |\mathbf{r}-\mathbf{R}_A|^{n_s}
+\sum_{k=1}^{N_{\text{prim}}} a_{ks}\, f_{ks}
+\exp \left( - \gamma_{ks} | \mathbf{r}-\mathbf{R}_A | ^p \right).
 \]
 </p>
 
@@ -453,19 +455,19 @@ gradients and Laplacian of the atomic basis functions.
 </div>
 </div>
 
-<div id="outline-container-org4127269" class="outline-2">
-<h2 id="org4127269"><span class="section-number-2">2</span> Context</h2>
+<div id="outline-container-orgcaafb58" class="outline-2">
+<h2 id="orgcaafb58"><span class="section-number-2">2</span> Context</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1beb957" class="outline-3">
-<h3 id="org1beb957"><span class="section-number-3">2.1</span> Constant data</h3>
+<div id="outline-container-org0bf9024" class="outline-3">
+<h3 id="org0bf9024"><span class="section-number-3">2.1</span> Constant data</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The following arrays are stored in the context, and need to be set
 when initializing the library:
 </p>
 
-<table id="org7a15ac3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org93f71f6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -639,7 +641,7 @@ calling the functions:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orgf0a5fe5"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-C" id="orgbba8aee"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                          <span style="color: #a020f0;">const</span> $type_of_V$ $V$);
 
 <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_get_ao_basis_$V$</span> ( <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
@@ -676,7 +678,7 @@ For array variables, use the rule:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orgc3a77bd"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+<pre class="src src-C" id="org008188e"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_set_ao_basis_$V$</span> ( <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                                          <span style="color: #a020f0;">const</span> $type_of_V$ $V$,
                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 
@@ -714,459 +716,427 @@ For array variables, use the rule:
 </div>
 </div>
 
-<div id="outline-container-org0adf2d8" class="outline-4">
-<h4 id="org0adf2d8"><span class="section-number-4">2.1.1</span> Initialization functions</h4>
+<div id="outline-container-org1c81e2b" class="outline-4">
+<h4 id="org1c81e2b"><span class="section-number-4">2.1.1</span> Initialization functions</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 <code>size_max</code> is the dimension of the input array, which should be
-equal of larger than the value given in the table of section <a href="#org4127269">2</a>.
+equal of larger than the value given in the table of section <a href="#orgcaafb58">2</a>.
 </p>
 </div>
 
-<div id="outline-container-org14d3735" class="outline-5">
-<h5 id="org14d3735"><span class="section-number-5">2.1.1.1</span> C interface</h5>
+<div id="outline-container-org211af49" class="outline-5">
+<h5 id="org211af49"><span class="section-number-5">2.1.1.1</span> C interface</h5>
 <div class="outline-text-5" id="text-2-1-1-1">
 <p>
 To set the basis set, all the following functions need to be
 called.
 </p>
-</div>
 
-<ol class="org-ol">
-<li><a id="org1a4d9b4"></a>basis<sub>type</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_type</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">char</span> <span style="color: #a0522d;">basis_type</span>);
+                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">char</span> <span style="color: #a0522d;">basis_type</span>);
 </pre>
 </div>
-</div>
-</li>
 
-<li><a id="org025783c"></a>shell<sub>num</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-2">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_shell_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>);
+                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>);
 </pre>
 </div>
-</div>
-</li>
 
-<li><a id="orgf4d27e3"></a>prim<sub>num</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_prim_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">prim_num</span>);
+                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">prim_num</span>);
 </pre>
 </div>
-</div>
-</li>
 
-<li><a id="orgd68c4a2"></a>basis<sub>nucleus</sub><sub>shell</sub><sub>num</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-4">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
-                                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                            <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="orgec550a5"></a>basis<sub>nucleus</sub><sub>index</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-5">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="org2019567"></a>basis<sub>shell</sub><sub>ang</sub><sub>mom</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-6">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="org6995c66"></a>basis<sub>shell</sub><sub>prim</sub><sub>num</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-7">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="orgafb232a"></a>basis<sub>shell</sub><sub>prim</sub><sub>index</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-8">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_index</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_index</span>,
-                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="org7fc9412"></a>basis<sub>shell</sub><sub>factor</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-9">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_factor</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_factor</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="orgf552559"></a>basis<sub>exponent</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-10">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_exponent</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">exponent</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_exponent_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">exponent</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="orgeca3e65"></a>basis<sub>coefficient</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-11">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_coefficient</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coefficient</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_coefficient_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coefficient</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_pointers</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="org5459a71"></a>basis<sub>prim</sub><sub>factor</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-12">
-<div class="org-src-container">
-<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">prim_factor</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">prim_factor</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                    <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
-</pre>
-</div>
-</div>
-</li>
-
-<li><a id="org0dad6c7"></a>basis<sub>ao</sub><sub>num</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-13">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_ao_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>);
+                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>);
 </pre>
 </div>
-</div>
-</li>
 
-<li><a id="org43271af"></a>basis<sub>ao</sub><sub>factor</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-14">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
 
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
 <span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                         <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+                                      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+                                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                             <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
+                                         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                         <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
+                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                          <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_index</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">shell_prim_index</span>,
+                                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                            <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_factor</span>,
+                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_factor</span>,
+                                        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                        <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_exponent</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">exponent</span>,
+                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_exponent_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">exponent</span>,
                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
                                     <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
 <span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
-</div>
-</li>
 
-<li><a id="org4808871"></a>ao<sub>basis</sub><sub>cartesian</sub><br />
-<div class="outline-text-6" id="text-2-1-1-1-15">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_coefficient</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coefficient</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_coefficient_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coefficient</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                       <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">prim_factor</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">prim_factor</span>,
+                                       <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                       <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
+<span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                     <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+<span style="color: #483d8b;">#endif</span>
+</pre>
+</div>
+
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_set_ao_basis_cartesian</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">bool</span> <span style="color: #a0522d;">cartesian</span>);
+                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">bool</span> <span style="color: #a0522d;">cartesian</span>);
 </pre>
 </div>
 </div>
-</li>
-</ol>
 </div>
 
-<div id="outline-container-orge3300fb" class="outline-5">
-<h5 id="orge3300fb"><span class="section-number-5">2.1.1.2</span> Fortran interface</h5>
+<div id="outline-container-org4bfa352" class="outline-5">
+<h5 id="org4bfa352"><span class="section-number-5">2.1.1.2</span> Fortran interface</h5>
 <div class="outline-text-5" id="text-2-1-1-2">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_type (context, </span><span style="color: #a020f0;">&amp;</span>
-    basis_type) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">character</span>(<span style="color: #008b8b;">c_char</span>)   , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> basis_type</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_type</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_type (context, </span><span style="color: #a020f0;">&amp;</span>
+        basis_type) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">character</span>(<span style="color: #008b8b;">c_char</span>)   , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> basis_type</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_type</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    num) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        num) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    num) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_prim_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        num) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_prim_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_nucleus_index(context, </span><span style="color: #a020f0;">&amp;</span>
-    idx, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> idx(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_nucleus_index(context, </span><span style="color: #a020f0;">&amp;</span>
+        idx, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> idx(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_index</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_nucleus_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_num, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_num(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_nucleus_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_num, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_num(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_nucleus_shell_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_ang_mom(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_ang_mom, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int32_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_ang_mom(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_ang_mom(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_ang_mom, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int32_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_ang_mom(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_ang_mom</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_prim_num, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_prim_num(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_prim_num, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_prim_num(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_prim_index(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_prim_index, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_prim_index(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_prim_index(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_prim_index, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_prim_index(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_prim_index</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_factor(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_factor(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_shell_factor(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> shell_factor(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_shell_factor</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_exponent(context, </span><span style="color: #a020f0;">&amp;</span>
-    exponent, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> exponent(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_exponent</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_exponent(context, </span><span style="color: #a020f0;">&amp;</span>
+        exponent, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> exponent(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_exponent</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_coefficient(context, </span><span style="color: #a020f0;">&amp;</span>
-    coefficient, size_max)  <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> coefficient(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_coefficient</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_coefficient(context, </span><span style="color: #a020f0;">&amp;</span>
+        coefficient, size_max)  <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> coefficient(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_coefficient</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_prim_factor(context, </span><span style="color: #a020f0;">&amp;</span>
-    prim_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> prim_factor(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_prim_factor(context, </span><span style="color: #a020f0;">&amp;</span>
+        prim_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> prim_factor(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_prim_factor</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_ao_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    num) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_ao_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_ao_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        num) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> num</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_ao_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_cartesian(context, </span><span style="color: #a020f0;">&amp;</span>
-    cartesian) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">logical</span> (<span style="color: #008b8b;">c_bool</span>)    , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> cartesian</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_cartesian</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_cartesian(context, </span><span style="color: #a020f0;">&amp;</span>
+        cartesian) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">logical</span> (<span style="color: #008b8b;">c_bool</span>)    , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> cartesian</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_cartesian</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_ao_factor(context, </span><span style="color: #a020f0;">&amp;</span>
-    ao_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> ao_factor(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_set_ao_basis_ao_factor(context, </span><span style="color: #a020f0;">&amp;</span>
+        ao_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(in)          ::<span style="color: #a0522d;"> ao_factor(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_set_ao_basis_ao_factor</span>
 <span style="color: #a020f0;">end interface</span>
 </pre>
 </div>
@@ -1174,123 +1144,123 @@ called.
 </div>
 </div>
 
-<div id="outline-container-org7103e75" class="outline-4">
-<h4 id="org7103e75"><span class="section-number-4">2.1.2</span> Access functions</h4>
+<div id="outline-container-org1fdbdb7" class="outline-4">
+<h4 id="org1fdbdb7"><span class="section-number-4">2.1.2</span> Access functions</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 <code>size_max</code> is the dimension of the input array, which should be
-equal of larger than the value given in the table of section <a href="#org4127269">2</a>.
+equal of larger than the value given in the table of section <a href="#orgcaafb58">2</a>.
 </p>
 </div>
 
-<div id="outline-container-org031232b" class="outline-5">
-<h5 id="org031232b"><span class="section-number-5">2.1.2.1</span> C interface</h5>
+<div id="outline-container-org4972805" class="outline-5">
+<h5 id="org4972805"><span class="section-number-5">2.1.2.1</span> C interface</h5>
 <div class="outline-text-5" id="text-2-1-2-1">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_type</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                        <span style="color: #228b22;">char</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">basis_type</span>);
+                         <span style="color: #228b22;">char</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">basis_type</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_shell_num</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_num</span>);
+                              <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_num</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_prim_num</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">prim_num</span>);
+                             <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">prim_num</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_nucleus_shell_num</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">nucleus_shell_num</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                      <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">nucleus_shell_num</span>,
+                                      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_nucleus_index</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">nucleus_index</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                  <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">nucleus_index</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_shell_ang_mom</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #228b22;">int32_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_ang_mom</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                  <span style="color: #228b22;">int32_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_ang_mom</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_shell_prim_num</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_prim_num</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                   <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_prim_num</span>,
+                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_shell_prim_index</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                    <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_prim_index</span>,
-                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                     <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_prim_index</span>,
+                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_shell_factor</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_factor</span>,
-                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                 <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">shell_factor</span>,
+                                 <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_exponent</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">exponent</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                             <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">exponent</span>,
+                             <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_coefficient</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">coefficient</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">coefficient</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_prim_factor</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">prim_factor</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                                <span style="color: #228b22;">double</span>*  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">prim_factor</span>,
+                                <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_ao_num</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                        <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_num</span>);
+                           <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_num</span>);
 </pre>
 </div>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_ao_factor</span> (<span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                            <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_factor</span>,
-                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
+                              <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_factor</span>,
+                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
 </pre>
 </div>
 
@@ -1306,183 +1276,183 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-orgf3c4a7e" class="outline-5">
-<h5 id="orgf3c4a7e"><span class="section-number-5">2.1.2.2</span> Fortran interface</h5>
+<div id="outline-container-org9956a91" class="outline-5">
+<h5 id="org9956a91"><span class="section-number-5">2.1.2.2</span> Fortran interface</h5>
 <div class="outline-text-5" id="text-2-1-2-2">
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_type (context, </span><span style="color: #a020f0;">&amp;</span>
-    basis_type) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">character</span>(<span style="color: #008b8b;">c_char</span>)   , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> basis_type</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_type</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_type (context, </span><span style="color: #a020f0;">&amp;</span>
+        basis_type) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">character</span>(<span style="color: #008b8b;">c_char</span>)   , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> basis_type</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_type</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    num) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> num</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        num) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> num</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    num) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> num</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_prim_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        num) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> num</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_prim_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_nucleus_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_num, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_num(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_nucleus_shell_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_nucleus_shell_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_num, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_num(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_nucleus_shell_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_nucleus_index(context, </span><span style="color: #a020f0;">&amp;</span>
-    idx, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> idx(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_nucleus_index</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_nucleus_index(context, </span><span style="color: #a020f0;">&amp;</span>
+        idx, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> idx(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_nucleus_index</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_ang_mom(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_ang_mom, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int32_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_ang_mom(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_ang_mom</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_ang_mom(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_ang_mom, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int32_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_ang_mom(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_ang_mom</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_prim_num, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_prim_num(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_prim_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_prim_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_prim_num, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_prim_num(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_prim_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_prim_index(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_prim_index, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_prim_index(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_prim_index</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_prim_index(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_prim_index, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_prim_index(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_prim_index</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_factor(context, </span><span style="color: #a020f0;">&amp;</span>
-    shell_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_factor(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_factor</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_shell_factor(context, </span><span style="color: #a020f0;">&amp;</span>
+        shell_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> shell_factor(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_shell_factor</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_exponent(context, </span><span style="color: #a020f0;">&amp;</span>
-    exponent, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> exponent(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_exponent</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_exponent(context, </span><span style="color: #a020f0;">&amp;</span>
+        exponent, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> exponent(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_exponent</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_coefficient(context, </span><span style="color: #a020f0;">&amp;</span>
-    coefficient, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> coefficient(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_coefficient</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_coefficient(context, </span><span style="color: #a020f0;">&amp;</span>
+        coefficient, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> coefficient(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_coefficient</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_prim_factor(context, </span><span style="color: #a020f0;">&amp;</span>
-    prim_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> prim_factor(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_prim_factor</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_prim_factor(context, </span><span style="color: #a020f0;">&amp;</span>
+        prim_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> prim_factor(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_prim_factor</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_ao_num(context, </span><span style="color: #a020f0;">&amp;</span>
-    num) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> num</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_ao_num</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_ao_num(context, </span><span style="color: #a020f0;">&amp;</span>
+        num) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> num</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_ao_num</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_cartesian(context, </span><span style="color: #a020f0;">&amp;</span>
-    cartesian) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">logical</span> (<span style="color: #008b8b;">c_bool</span>)    , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> cartesian</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_cartesian</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_cartesian(context, </span><span style="color: #a020f0;">&amp;</span>
+        cartesian) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">logical</span> (<span style="color: #008b8b;">c_bool</span>)    , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> cartesian</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_cartesian</span>
 <span style="color: #a020f0;">end interface</span>
 
 <span style="color: #a020f0;">interface</span>
-<span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_ao_factor(context, </span><span style="color: #a020f0;">&amp;</span>
-    ao_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
-<span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
-<span style="color: #a020f0;">import</span>
-<span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
-<span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> ao_factor(*)</span>
-<span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
-<span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_ao_factor</span>
+   <span style="color: #228b22;">integer</span>(<span style="color: #008b8b;">c_int32_t</span>)<span style="color: #a0522d;"> function qmckl_get_ao_basis_ao_factor(context, </span><span style="color: #a020f0;">&amp;</span>
+        ao_factor, size_max) <span style="color: #a020f0;">bind</span>(C)
+     <span style="color: #a020f0;">use</span>, <span style="color: #a020f0;">intrinsic</span> :: <span style="color: #0000ff;">iso_c_binding</span>
+     <span style="color: #a020f0;">import</span>
+     <span style="color: #a020f0;">implicit</span> <span style="color: #228b22;">none</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> context</span>
+     <span style="color: #228b22;">real</span>    (<span style="color: #008b8b;">c_double</span>)  , <span style="color: #a020f0;">intent</span>(out)         ::<span style="color: #a0522d;"> ao_factor(*)</span>
+     <span style="color: #228b22;">integer</span> (<span style="color: #008b8b;">c_int64_t</span>) , <span style="color: #a020f0;">intent</span>(in)  , <span style="color: #a020f0;">value</span> ::<span style="color: #a0522d;"> size_max</span>
+   <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_get_ao_basis_ao_factor</span>
 <span style="color: #a020f0;">end interface</span>
 </pre>
 </div>
@@ -1491,8 +1461,8 @@ function returns <code>true</code>.
 </div>
 </div>
 
-<div id="outline-container-org6b0d0e3" class="outline-3">
-<h3 id="org6b0d0e3"><span class="section-number-3">2.2</span> Computed data</h3>
+<div id="outline-container-orgea0f69b" class="outline-3">
+<h3 id="orgea0f69b"><span class="section-number-3">2.2</span> Computed data</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 The following data is computed as described in the next sections:
@@ -1567,8 +1537,8 @@ The following data is computed as described in the next sections:
 </table>
 </div>
 
-<div id="outline-container-orgfabbee1" class="outline-4">
-<h4 id="orgfabbee1"><span class="section-number-4">2.2.1</span> After initialization</h4>
+<div id="outline-container-org3e0c1e7" class="outline-4">
+<h4 id="org3e0c1e7"><span class="section-number-4">2.2.1</span> After initialization</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 When the basis set is completely entered, extra data structures may be
@@ -1582,16 +1552,17 @@ the context.
 </div>
 </div>
 
-<div id="outline-container-orgc532688" class="outline-4">
-<h4 id="orgc532688"><span class="section-number-4">2.2.2</span> <span class="todo TODO">TODO</span> HPC-specific data structures</h4>
+<div id="outline-container-orgffcb80f" class="outline-4">
+<h4 id="orgffcb80f"><span class="section-number-4">2.2.2</span> <span class="todo TODO">TODO</span> HPC-specific data structures</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 For faster access, we provide extra arrays for the shell information as:
 </p>
 <ul class="org-ul">
 <li>\(C_{psa}\) = <code>coef_per_nucleus[inucl][ishell][iprim]</code></li>
-<li>\(\gamma_{pa}\) <code>expo_per_nucleus[inucl][iprim]</code></li>
-</ul>
+<li><p>
+\(\gamma_{pa}\) <code>expo_per_nucleus[inucl][iprim]</code>
+</p>
 
 <p>
 such that the computation of the radial parts can be vectorized.
@@ -1606,15 +1577,16 @@ exponents to enable vectorization of exponentials.
 <p>
 The computation of the radial part is made as
 \[
-      R_{sa} = \sum_p C_{psa} \gamma_{pa}
-    \]
+  R_{sa} = \sum_p C_{psa} \gamma_{pa}
+  \]
 which is a matrix-vector product.
-</p>
+</p></li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orgff29d87" class="outline-4">
-<h4 id="orgff29d87"><span class="section-number-4">2.2.3</span> Access functions</h4>
+<div id="outline-container-orgf778900" class="outline-4">
+<h4 id="orgf778900"><span class="section-number-4">2.2.3</span> Access functions</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1627,7 +1599,7 @@ which is a matrix-vector product.
 <p>
 Returns the array of values, gradients an Laplacian of primitive
 basis functions evaluated at the current coordinates.
-See section <a href="#orga4db906">3.2</a>.
+See section <a href="#orgc060d3a">3.2</a>.
 </p>
 
 <div class="org-src-container">
@@ -1640,7 +1612,7 @@ See section <a href="#orga4db906">3.2</a>.
 
 <p>
 Returns the array of values, gradients an Laplacian of contracted shells
-evaluated at the current coordinates. See section <a href="#orga31bbe5">3.3</a>.
+evaluated at the current coordinates. See section <a href="#orgceb7eef">3.3</a>.
 </p>
 
 <div class="org-src-container">
@@ -1648,21 +1620,13 @@ evaluated at the current coordinates. See section <a href="#orga31bbe5">3.3</a>.
 <span style="color: #0000ff;">qmckl_get_ao_basis_ao_vgl</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                            <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span>,
                            <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
-
-<span style="color: #483d8b;">#ifdef</span> HAVE_DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_get_ao_basis_ao_vgl_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                  <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span>,
-                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
-                                  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
-<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 
 <p>
 Returns the array of values, gradients an Laplacian of the atomic orbitals
 evaluated at the current coordinates.
-See section <a href="#orgc7c48b9">5</a>.
+See section <a href="#org0c7060a">5</a>.
 </p>
 
 <p>
@@ -1679,6 +1643,15 @@ Uses the given array to compute the VGL.
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
+<span style="color: #0000ff;">qmckl_get_ao_basis_ao_vgl_device</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                  <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span>,
+                                  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>,
+                                  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span>);
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
 <span style="color: #0000ff;">qmckl_get_ao_basis_ao_value</span> (<span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
                              <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_value</span>,
                              <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">size_max</span>);
@@ -1687,7 +1660,7 @@ Uses the given array to compute the VGL.
 
 <p>
 Returns the array of values of the atomic orbitals evaluated at
-the current coordinates. See section <a href="#orgc7c48b9">5</a>.
+the current coordinates. See section <a href="#org0c7060a">5</a>.
 </p>
 
 <p>
@@ -1706,12 +1679,12 @@ Uses the given array to compute the value.
 </div>
 </div>
 
-<div id="outline-container-org9b765f8" class="outline-2">
-<h2 id="org9b765f8"><span class="section-number-2">3</span> Radial part</h2>
+<div id="outline-container-org029c431" class="outline-2">
+<h2 id="org029c431"><span class="section-number-2">3</span> Radial part</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgf0872d1" class="outline-3">
-<h3 id="orgf0872d1"><span class="section-number-3">3.1</span> General functions for Gaussian basis functions</h3>
+<div id="outline-container-org818d63d" class="outline-3">
+<h3 id="org818d63d"><span class="section-number-3">3.1</span> General functions for Gaussian basis functions</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <code>qmckl_ao_gaussian_vgl</code> computes the values, gradients and
@@ -1801,8 +1774,9 @@ Requirements:
 <li><code>X</code> is allocated with at least \(3 \times 8\) bytes</li>
 <li><code>R</code> is allocated with at least \(3 \times 8\) bytes</li>
 <li><code>A</code> is allocated with at least \(n \times 8\) bytes</li>
-<li><code>VGL</code> is allocated with at least \(n \times 5 \times 8\) bytes</li>
-</ul>
+<li><p>
+<code>VGL</code> is allocated with at least \(n \times 5 \times 8\) bytes
+</p>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span>
@@ -1878,14 +1852,15 @@ Requirements:
 
 <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_ao_gaussian_vgl_f</span>
 </pre>
-</div>
+</div></li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orga4db906" class="outline-3">
-<h3 id="orga4db906"><span class="section-number-3">3.2</span> Computation of primitives</h3>
+<div id="outline-container-orgc060d3a" class="outline-3">
+<h3 id="orgc060d3a"><span class="section-number-3">3.2</span> Computation of primitives</h3>
 <div class="outline-text-3" id="text-3-2">
-<table id="org384be7b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org58662cc" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2011,7 +1986,7 @@ Requirements:
   info = QMCKL_SUCCESS
 
   ! <span style="color: #b22222;">Don't compute exponentials when the result will be almost zero.</span>
-  cutoff = 27.631021115928547  ! <span style="color: #b22222;">-dlog(1.d-12)</span>
+  cutoff = -dlog(1.d-15)
 
   <span style="color: #a020f0;">do</span> inucl=1,nucl_num
      ! <span style="color: #b22222;">C is zero-based, so shift bounds by one</span>
@@ -2044,10 +2019,10 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-orga31bbe5" class="outline-3">
-<h3 id="orga31bbe5"><span class="section-number-3">3.3</span> Computation of shells</h3>
+<div id="outline-container-orgceb7eef" class="outline-3">
+<h3 id="orgceb7eef"><span class="section-number-3">3.3</span> Computation of shells</h3>
 <div class="outline-text-3" id="text-3-3">
-<table id="orgf5629b6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org71e93cb" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2229,7 +2204,7 @@ Requirements:
 
   ! <span style="color: #b22222;">Don't compute exponentials when the result will be almost zero.</span>
   ! <span style="color: #b22222;">TODO : Use numerical precision here</span>
-  cutoff = 27.631021115928547  !<span style="color: #b22222;">-dlog(1.d-12)</span>
+  cutoff = -dlog(1.d-12)
 
   <span style="color: #a020f0;">do</span> ipoint = 1, point_num
 
@@ -2299,8 +2274,8 @@ Requirements:
 </div>
 </div>
 
-<div id="outline-container-orgb244f70" class="outline-2">
-<h2 id="orgb244f70"><span class="section-number-2">4</span> Polynomial part</h2>
+<div id="outline-container-orgaa58b9c" class="outline-2">
+<h2 id="orgaa58b9c"><span class="section-number-2">4</span> Polynomial part</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Going from the atomic basis set to AOs implies a systematic
@@ -2320,8 +2295,8 @@ f & : & f_{xxx}, f_{xxy}, f_{xxz}, f_{xyy}, f_{xyz}, f_{xzz}, f_{yyy}, f_{yyz}, 
 \end{eqnarray}
 </div>
 
-<div id="outline-container-org984428e" class="outline-3">
-<h3 id="org984428e"><span class="section-number-3">4.1</span> General functions for Powers of \(x-X_i\)</h3>
+<div id="outline-container-org88c7c45" class="outline-3">
+<h3 id="org88c7c45"><span class="section-number-3">4.1</span> General functions for Powers of \(x-X_i\)</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 The <code>qmckl_ao_power</code> function computes all the powers of the <code>n</code>
@@ -2333,7 +2308,7 @@ the \(n\) points:
 \[ P_{ik} = X_i^k \]
 </p>
 
-<table id="org151c266" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3fc3ae3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2408,8 +2383,9 @@ Requirements:
 <li><code>X</code> is allocated with at least \(n \times 8\) bytes</li>
 <li><code>LMAX</code> is allocated with at least \(n \times 4\) bytes</li>
 <li><code>P</code> is allocated with at least \(n \times \max_i \text{LMAX}_i \times 8\) bytes</li>
-<li><code>LDP</code> &gt;= \(\max_i\) <code>LMAX[i]</code></li>
-</ul>
+<li><p>
+<code>LDP</code> &gt;= \(\max_i\) <code>LMAX[i]</code>
+</p>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_ao_power</span> (
@@ -2467,12 +2443,13 @@ Requirements:
 
 <span style="color: #a020f0;">end function</span> <span style="color: #0000ff;">qmckl_ao_power_f</span>
 </pre>
-</div>
+</div></li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-org8cbb8ee" class="outline-3">
-<h3 id="org8cbb8ee"><span class="section-number-3">4.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
+<div id="outline-container-org795be31" class="outline-3">
+<h3 id="org795be31"><span class="section-number-3">4.2</span> General functions for Value, Gradient and Laplacian of a polynomial</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 A polynomial is centered on a nucleus \(\mathbf{R}_i\)
@@ -2480,8 +2457,8 @@ A polynomial is centered on a nucleus \(\mathbf{R}_i\)
 
 <p>
 \[
-   P_l(\mathbf{r},\mathbf{R}_i)  =   (x-X_i)^a (y-Y_i)^b (z-Z_i)^c
-   \]
+P_l(\mathbf{r},\mathbf{R}_i)  =   (x-X_i)^a (y-Y_i)^b (z-Z_i)^c
+\]
 </p>
 
 <p>
@@ -2517,7 +2494,7 @@ Laplacians at a given point in space, of all polynomials with an
 angular momentum up to <code>lmax</code>.
 </p>
 
-<table id="org7f4aefa" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org65db7fe" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -2622,11 +2599,11 @@ Requirements:
 <li>On output, the powers are given in the following order (l=a+b+c):
 <ul class="org-ul">
 <li>Increasing values of <code>l</code></li>
-<li>Within a given value of <code>l</code>, alphabetical order of the
+<li><p>
+Within a given value of <code>l</code>, alphabetical order of the
 string made by a*"x" + b*"y" + c*"z" (in Python notation).
-For example, with a=0, b=2 and c=1 the string is "yyz"</li>
-</ul></li>
-</ul>
+For example, with a=0, b=2 and c=1 the string is "yyz"
+</p>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_ao_polynomial_vgl</span> (
@@ -3121,19 +3098,19 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
                             X[2]-R[2] };
 
       <span style="color: #a020f0;">if</span> (ldv == 50) {
-         <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">tmp</span>[50] = {
-            1.0, Y[0], Y[1], Y[2], Y[0] * Y[0],
-            Y[0] * Y[1], Y[0] * Y[2], Y[1] * Y[1], Y[1] * Y[2], Y[2] * Y[2],
-            0.0, 1.0, 0.0, 0.0, Y[0] + Y[0],
-            Y[1], Y[2], 0.0, 0.0, 0.0,
-            0.0, 0.0, 1.0, 0.0, 0.0,
-            Y[0], 0.0, Y[1] + Y[1], Y[2], 0.0,
-            0.0, 0.0, 0.0, 1.0, 0.0,
-            0.0, Y[0], 0.0, Y[1], Y[2] + Y[2],
-            0.0, 0.0, 0.0, 0.0, 2.0,
-            0.0, 0.0, 2.0, 0., 2.0 };
-         <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;50 ; ++i)
-           VGL[i] = tmp[i];
+        <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span> <span style="color: #a0522d;">tmp</span>[50] = {
+          1.0, Y[0], Y[1], Y[2], Y[0] * Y[0],
+          Y[0] * Y[1], Y[0] * Y[2], Y[1] * Y[1], Y[1] * Y[2], Y[2] * Y[2],
+          0.0, 1.0, 0.0, 0.0, Y[0] + Y[0],
+          Y[1], Y[2], 0.0, 0.0, 0.0,
+          0.0, 0.0, 1.0, 0.0, 0.0,
+          Y[0], 0.0, Y[1] + Y[1], Y[2], 0.0,
+          0.0, 0.0, 0.0, 1.0, 0.0,
+          0.0, Y[0], 0.0, Y[1], Y[2] + Y[2],
+          0.0, 0.0, 0.0, 0.0, 2.0,
+          0.0, 0.0, 2.0, 0., 2.0 };
+        <span style="color: #a020f0;">for</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>=0 ; i&lt;50 ; ++i)
+          VGL[i] = tmp[i];
       } <span style="color: #a020f0;">else</span> {
         <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">vgl1</span> = VGL;
         <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">vgl2</span> = VGL + ldv;
@@ -3276,8 +3253,15 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
   <span style="color: #a020f0;">return</span> QMCKL_SUCCESS;
 }
 </pre>
+</div></li>
+</ul></li>
+</ul>
+</div>
 </div>
 
+<div id="outline-container-orgb1ea2c8" class="outline-3">
+<h3 id="orgb1ea2c8"><span class="section-number-3">4.3</span> OpenMP offload version</h3>
+<div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_OPENMP_OFFLOAD
 <span style="color: #483d8b;">#pragma</span> omp declare target
@@ -3291,6 +3275,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
                                     <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">VGL</span>,
                                     <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ldv</span> )
 {
+  <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context_struct</span>* <span style="color: #a0522d;">ctx</span> = (<span style="color: #228b22;">qmckl_context_struct</span>*) context;
   // <span style="color: #b22222;">assert (ctx != NULL &amp;&amp; X != NULL &amp;&amp; R != NULL &amp;&amp; n != NULL &amp;&amp; VGL != NULL);</span>
   <span style="color: #a020f0;">if</span> (lmax &lt; 0) <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_4;
   <span style="color: #a020f0;">if</span> (ldl &lt; 3) <span style="color: #a020f0;">return</span> QMCKL_INVALID_ARG_7;
@@ -3398,8 +3383,12 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 
 </pre>
 </div>
+</div>
+</div>
 
-
+<div id="outline-container-orgd98a6f4" class="outline-3">
+<h3 id="orgd98a6f4"><span class="section-number-3">4.4</span> OpenMP offload version</h3>
+<div class="outline-text-3" id="text-4-4">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_OPENACC_OFFLOAD
 <span style="color: #483d8b;">#pragma</span> acc routine seq
@@ -3523,18 +3512,18 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-orgc7c48b9" class="outline-2">
-<h2 id="orgc7c48b9"><span class="section-number-2">5</span> Combining radial and polynomial parts</h2>
+<div id="outline-container-org0c7060a" class="outline-2">
+<h2 id="org0c7060a"><span class="section-number-2">5</span> Combining radial and polynomial parts</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org4da0798" class="outline-3">
-<h3 id="org4da0798"><span class="section-number-3">5.1</span> Values only</h3>
+<div id="outline-container-org3a094a3" class="outline-3">
+<h3 id="org3a094a3"><span class="section-number-3">5.1</span> Values only</h3>
 <div class="outline-text-3" id="text-5-1">
 </div>
-<div id="outline-container-orgf62d703" class="outline-4">
-<h4 id="orgf62d703"><span class="section-number-4">5.1.1</span> Unoptimized version</h4>
+<div id="outline-container-org7ef13bc" class="outline-4">
+<h4 id="org7ef13bc"><span class="section-number-4">5.1.1</span> Unoptimized version</h4>
 <div class="outline-text-4" id="text-5-1-1">
-<table id="org169967e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org97891c8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3720,7 +3709,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
   info = QMCKL_SUCCESS
 
   ! <span style="color: #b22222;">Don't compute polynomials when the radial part is zero.</span>
-  cutoff = 27.631021115928547  !<span style="color: #b22222;">-dlog(1.d-12)</span>
+  cutoff = -dlog(1.d-12)
 
   <span style="color: #a020f0;">do</span> ipoint = 1, point_num
      e_coord(1) = coord(ipoint,1)
@@ -3770,10 +3759,10 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-org26ada36" class="outline-4">
-<h4 id="org26ada36"><span class="section-number-4">5.1.2</span> HPC version</h4>
+<div id="outline-container-org3610ea9" class="outline-4">
+<h4 id="org3610ea9"><span class="section-number-4">5.1.2</span> HPC version</h4>
 <div class="outline-text-4" id="text-5-1-2">
-<table id="org6bb27af" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgb8babe1" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -3931,8 +3920,8 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-org2444479" class="outline-4">
-<h4 id="org2444479"><span class="section-number-4">5.1.3</span> Interfaces</h4>
+<div id="outline-container-org6ea5d2a" class="outline-4">
+<h4 id="org6ea5d2a"><span class="section-number-4">5.1.3</span> Interfaces</h4>
 <div class="outline-text-4" id="text-5-1-3">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_value_doc</span> (
@@ -3956,7 +3945,6 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #483d8b;">#ifdef</span> HAVE_HPC
-<span style="color: #483d8b;">#if</span><span style="color: #483d8b;">n</span><span style="color: #483d8b;">def</span> HAVE_DEVICE_POINTERS
     <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_value_hpc_gaussian</span> (
           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
@@ -3976,21 +3964,20 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_tensor</span> <span style="color: #a0522d;">coef_per_nucleus</span>,
           <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_value</span> );
 <span style="color: #483d8b;">#endif</span>
-<span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org6fe354e" class="outline-3">
-<h3 id="org6fe354e"><span class="section-number-3">5.2</span> Value, gradients, Laplacian</h3>
+<div id="outline-container-org3106589" class="outline-3">
+<h3 id="org3106589"><span class="section-number-3">5.2</span> Value, gradients, Laplacian</h3>
 <div class="outline-text-3" id="text-5-2">
 </div>
-<div id="outline-container-orgae7e6f6" class="outline-4">
-<h4 id="orgae7e6f6"><span class="section-number-4">5.2.1</span> Unoptimized version</h4>
+<div id="outline-container-orga030d24" class="outline-4">
+<h4 id="orga030d24"><span class="section-number-4">5.2.1</span> Unoptimized version</h4>
 <div class="outline-text-4" id="text-5-2-1">
-<table id="orgc4993f6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org52f756c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4176,7 +4163,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
   info = QMCKL_SUCCESS
 
   ! <span style="color: #b22222;">Don't compute polynomials when the radial part is zero.</span>
-  cutoff = 27.631021115928547  ! <span style="color: #b22222;">-dlog(1.d-12)</span>
+  cutoff = -dlog(1.d-12)
 
   <span style="color: #a020f0;">do</span> ipoint = 1, point_num
      e_coord(1) = coord(ipoint,1)
@@ -4255,10 +4242,10 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 </div>
 
-<div id="outline-container-org346ea06" class="outline-4">
-<h4 id="org346ea06"><span class="section-number-4">5.2.2</span> HPC version</h4>
+<div id="outline-container-orgfe3947a" class="outline-4">
+<h4 id="orgfe3947a"><span class="section-number-4">5.2.2</span> HPC version</h4>
 <div class="outline-text-4" id="text-5-2-2">
-<table id="orgd6d39f8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgad5fd11" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -4417,38 +4404,37 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 
 
-<div id="outline-container-org43786a3" class="outline-4">
-<h4 id="org43786a3"><span class="section-number-4">5.2.3</span> OpenMP offload</h4>
+<div id="outline-container-org017e6d9" class="outline-4">
+<h4 id="org017e6d9"><span class="section-number-4">5.2.3</span> OpenMP offload</h4>
 </div>
-<div id="outline-container-orgca921e0" class="outline-4">
-<h4 id="orgca921e0"><span class="section-number-4">5.2.4</span> OpenACC offload</h4>
+<div id="outline-container-orgc30c20b" class="outline-4">
+<h4 id="orgc30c20b"><span class="section-number-4">5.2.4</span> OpenACC offload</h4>
 </div>
-<div id="outline-container-org4f09908" class="outline-4">
-<h4 id="org4f09908"><span class="section-number-4">5.2.5</span> Device pointers version</h4>
+<div id="outline-container-org7f7ea08" class="outline-4">
+<h4 id="org7f7ea08"><span class="section-number-4">5.2.5</span> Device pointers version</h4>
 </div>
-<div id="outline-container-org81c6f87" class="outline-4">
-<h4 id="org81c6f87"><span class="section-number-4">5.2.6</span> Interfaces</h4>
+<div id="outline-container-orga18b894" class="outline-4">
+<h4 id="orga18b894"><span class="section-number-4">5.2.6</span> Interfaces</h4>
 <div class="outline-text-4" id="text-5-2-6">
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_doc</span> (
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">point_num</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
-      <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_vgl</span>,
-      <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">point_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+                                          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">shell_vgl</span>,
+                                          <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
 </pre>
 </div>
-
 <div class="org-src-container">
 <pre class="src src-c">
 <span style="color: #483d8b;">#ifdef</span> HAVE_OPENMP_OFFLOAD
@@ -4470,71 +4456,28 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
                                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_matrix</span> <span style="color: #a0522d;">expo_per_nucleus</span>,
                                                    <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_tensor</span> <span style="color: #a0522d;">coef_per_nucleus</span>,
                                                    <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
-<span style="color: #483d8b;">#elif</span> HAVE_OPENACC_OFFLOAD
-<span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_gaussian_openacc_offload</span> (
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">prim_num_per_nucleus</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">point_num</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_matrix</span> <span style="color: #a0522d;">expo_per_nucleus</span>,
-                                                   <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_tensor</span> <span style="color: #a0522d;">coef_per_nucleus</span>,
-                                                   <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
-
 <span style="color: #483d8b;">#elif</span> HAVE_HPC
-<span style="color: #483d8b;">#if</span><span style="color: #483d8b;">n</span><span style="color: #483d8b;">def</span> HAVE_DEVICE_POINTERS
-    <span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_hpc_gaussian</span> (
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">prim_num_per_nucleus</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">point_num</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_matrix</span> <span style="color: #a0522d;">expo_per_nucleus</span>,
-          <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_tensor</span> <span style="color: #a0522d;">coef_per_nucleus</span>,
-          <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
-<span style="color: #483d8b;">#endif</span>
-<span style="color: #483d8b;">#endif</span>
-
-<span style="color: #483d8b;">#ifdef</span> DEVICE_POINTERS
-<span style="color: #228b22;">qmckl_exit_code</span>
-<span style="color: #0000ff;">qmckl_compute_ao_vgl_gaussian_device_pointers</span> (
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">prim_num_per_nucleus</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">point_num</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">coord</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">nucl_coord</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">nucleus_index</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">nucleus_shell_num</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">shell_ang_mom</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a0522d;">ao_factor</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_matrix</span> <span style="color: #a0522d;">expo_per_nucleus</span>,
-                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_tensor</span> <span style="color: #a0522d;">coef_per_nucleus</span>,
-                                           <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">restrict</span> <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span>,
-
-                                           <span style="color: #228b22;">int</span> <span style="color: #a0522d;">device_id</span> );
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #228b22;">qmckl_exit_code</span> <span style="color: #0000ff;">qmckl_compute_ao_vgl_hpc_gaussian</span> (
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_context</span> <span style="color: #a0522d;">context</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">ao_num</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">shell_num</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">prim_num_per_nucleus</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">point_num</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span> <span style="color: #a0522d;">nucl_num</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">coord</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucl_coord</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_index</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int64_t</span>* <span style="color: #a0522d;">nucleus_shell_num</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">nucleus_range</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">nucleus_max_ang_mom</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int32_t</span>* <span style="color: #a0522d;">shell_ang_mom</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">double</span>* <span style="color: #a0522d;">ao_factor</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_matrix</span> <span style="color: #a0522d;">expo_per_nucleus</span>,
+                                                           <span style="color: #a020f0;">const</span> <span style="color: #228b22;">qmckl_tensor</span> <span style="color: #a0522d;">coef_per_nucleus</span>,
+                                                           <span style="color: #228b22;">double</span>* <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ao_vgl</span> );
 <span style="color: #483d8b;">#endif</span>
 </pre>
 </div>
@@ -4545,7 +4488,7 @@ For example, with a=0, b=2 and c=1 the string is "yyz"</li>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: TREX CoE</p>
-<p class="date">Created: 2022-09-29 Thu 08:00</p>
+<p class="date">Created: 2022-10-06 Thu 09:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
